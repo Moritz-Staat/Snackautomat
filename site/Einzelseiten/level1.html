@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Level 1</title>
+    <link rel="stylesheet" href="stylelevel1.css">
+</head>
+<body>
+<div id="wholepage">
+<div id="Preisauswahl" class="preise">
+    <div id="popup">
+        <p id="popupText">Sichere dir deinen Premium-Preis – ganz einfach mit deinen Kontaktdaten!</p>
+        <img id="popupGif" src="../../images/picmix.com_2350049.gif" alt="Fehler 1">
+        <div id="popupButtons">
+            <button class="popupButton" id="normalButton">Normaler Preis</button>
+            <button class="popupButton" id="premiumButton">Premium Preis</button>
+        </div>
+    </div>
+</div>
+<div id="mainContent">
+    <div class="quiz-container">
+            <iframe src="./QuizLevel1/index.html" frameborder="0"></iframe>
+    </div>
+    <div id="homesweethome">
+        <h3 class="Abbrechen"> Home</h3>
+        <a href="../Automat.html">
+            <img src="../../Images/house-solid.svg" alt="Fehler 1" class="homesweethome">
+        </a>
+    </div>
+</div>
+</div>
+    <img src="../../Images/LOGO.svg" alt="Code-falsch" class="logo" id="logo">
+<div id="pinModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Bitte geben Sie Ihre PIN ein:</p>
+        <input type="password" id="pinInput" readonly>
+        <div id="numpad">
+            <button class="num">1</button>
+            <button class="num">2</button>
+            <button class="num">3</button>
+            <button class="num">4</button>
+            <button class="num">5</button>
+            <button class="num">6</button>
+            <button class="num">7</button>
+            <button class="num">8</button>
+            <button class="num">9</button>
+            <button class="num">0</button>
+            <button id="backspace">⌫</button>
+            <button id="submitPin">Eingabe</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="javalevel1.js"></script>
+</body>
+</html>

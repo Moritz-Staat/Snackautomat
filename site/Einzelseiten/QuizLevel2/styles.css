@@ -1,0 +1,143 @@
+body {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+@font-face {
+    font-family: 'Rajdhani-SemiBold';
+    src: url('../../../fonts/Rajdhani-Semibold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+#quiz-container {
+    background: white;
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    /*box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);*/
+    width: 100%;
+    max-width: 80rem;
+    text-align: center;
+    position: relative;
+    margin-top: -10rem; /* Negative Marge verschiebt das Element nach oben */
+}
+
+/* Fortschrittsbalken stylen */
+#progress-container {
+    background: #e0e0e0;
+    border-radius: 0.3125rem;
+    height: 2rem;
+    margin-top: 1.25rem;
+    width: 100%;
+    max-width: 90rem;
+    position: relative;
+}
+
+#progress-bar {
+    background: #62b55a;
+    height: 100%;
+    width: 0%;
+    border-radius: 0.3125rem;
+    transition: width 0.3s;
+    position: relative;
+}
+
+#progress-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-family: 'Rajdhani-SemiBold', sans-serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+#question-container {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 1.25rem;
+}
+#question-image {
+    width: 80rem;
+    height: 100rem;
+    object-fit: contain;
+    max-width: 80rem;
+    max-height: 100rem;
+    margin: 0.625rem auto;
+    display: block;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.btn {
+    height: 8rem;
+    padding: 0.625rem;
+    background-color: #62b55a;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Rajdhani-SemiBold', sans-serif;
+    font-size: 2rem;
+    border-radius: 4rem;
+}
+
+.btn:hover {
+    background-color: #505050;
+}
+
+.btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#result-image {
+    display: block;
+    max-width: 30rem;
+    margin-left: 28rem;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+#result-text {
+    font-size: 4rem;
+    font-family: "Rajdhani-SemiBold";
+    color:black;
+    margin-bottom: 3rem;
+}
+
+#question-text {
+    font-size: 3rem;
+    font-family: 'Rajdhani-SemiBold', sans-serif;
+    margin-bottom: 4rem;
+    font-weight: 600;
+}
+.blur {
+    filter: blur(4px);
+    transition: filter 0.5s ease;
+}
+
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2em;
+    z-index: 1000;
+}

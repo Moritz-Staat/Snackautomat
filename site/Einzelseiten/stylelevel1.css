@@ -1,0 +1,206 @@
+body, html {
+    margin: 0;
+    height: 100%;
+}
+
+.quiz-container {
+    margin-top: -20rem;
+    height: 180rem;
+    width: 100rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 3.75rem;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 1.25rem;
+    border: 0.0625rem solid #888;
+    width: 80%;
+    max-width: 18.75rem;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#pinInput {
+    padding: 0.625rem;
+    font-size: 1rem;
+    margin: 0.625rem 0;
+    width: 80%;
+}
+
+
+/* Nummern Pad Hinzufügen */
+#numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+}
+
+#numpad button {
+    padding: 1.25rem;
+    font-size: 1.125rem;
+    background-color: #646363;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+#numpad button:hover {
+    background-color: #505050;
+}
+@font-face {
+    font-family: 'Rajdhani-SemiBold';
+    src: url('../../fonts/Rajdhani-Semibold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+/* Stylen Zurück zur Startseite */
+.homesweethome {
+    height: 9rem;
+    width: 9rem;
+    bottom: 2.5rem;
+    left: 2.5rem;
+    position: fixed;
+}
+
+.Abbrechen {
+    font-size: 2rem;
+    position: fixed;
+    bottom: -1.2rem;
+    left: 4.3rem;
+}
+/* Stylen unten rechts Logo */
+.logo {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 9rem;
+    height: 9rem;
+}
+#wholepage {
+    background-image: url('../../Images/Wallpaper_Automat.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Stil für die rote Umrandung bei falschem PIN */
+.error-border {
+    border: 0.125rem solid red;
+}
+
+/* Blurr-Effekt erzeugen */
+#wholepage.blurred {
+    filter: blur(0.3125rem);
+}
+
+
+.preise{
+    display:none;
+}
+.preiseshown {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+#popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background-image: url('../../Images/Wallpaper_Automat.png');
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    text-align: center;
+    z-index: 10;
+}
+
+#popup img {
+    width: 40%;
+    height: auto;
+}
+
+#popupText{
+    font-family: "Rajdhani-SemiBold";
+    font-size: 6rem;
+    margin-top: 40rem;
+    color: black;
+    padding: 15rem;
+}
+#normalButton {
+    margin: 10px;
+    width: 30%;
+    height: 7rem;
+    background-color: #646363;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 4rem;
+    font-family: "Rajdhani-SemiBold";
+    color: white;
+    border-radius: 4rem;
+    margin-top: 30rem;
+}
+
+#premiumButton {
+    margin: 10px;
+    width: 30%;
+    height: 6rem;
+    background-color: #62b55a;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 4rem;
+    font-family: "Rajdhani-SemiBold";
+    color: white;
+    border-radius: 4rem;
+    margin-left: 20rem;
+    margin-top: 30rem;
+}
