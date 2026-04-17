@@ -115,7 +115,14 @@ document.getElementById('submitPin').onclick = function () {
             loses: getFromLocalStorage('loses'),
             kontakt: getFromLocalStorage('kontaktdaten')
         };
-        alert('Level1Stand:' + data.level1 + '\nLevel2Stand:' + data.level2 + '\nLevel3Stand:' + data.level3 + '\nTrostpreise:' + data.loses + '\nkontaktpreise: ' + data.kontakt);
+        closeModal();
+        document.getElementById('stat-level1').textContent = data.level1;
+        document.getElementById('stat-level2').textContent = data.level2;
+        document.getElementById('stat-level3').textContent = data.level3;
+        document.getElementById('stat-loses').textContent = data.loses;
+        document.getElementById('stat-kontakt').textContent = data.kontakt;
+        document.getElementById('statsModal').style.display = 'block';
+        document.getElementById('wholepage').classList.add('blurred');
     } else {
         pinInput.classList.add('error-border');
         setTimeout(() => {
@@ -145,6 +152,14 @@ document.getElementById('backspace').onclick = function () {
     const pinInput = document.getElementById('pinInput');
     pinInput.value = pinInput.value.slice(0, -1);
 };
+
+function closeStatsModal() {
+    document.getElementById('statsModal').style.display = 'none';
+    document.getElementById('wholepage').classList.remove('blurred');
+}
+
+document.getElementById('statsClose').onclick = closeStatsModal;
+document.getElementById('statsCloseBtn').onclick = closeStatsModal;
 
 function doPost(param, url) {
     fetch(url + '?param=' + param, { method: 'POST' })

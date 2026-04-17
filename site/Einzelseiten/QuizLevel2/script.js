@@ -583,7 +583,7 @@ initQuiz({
     questions: questions,
     tiers: [
     {
-        min: 8,
+        min: AUTOMAT_CONFIG.min_richtig,
         win: true,
         text: "Weichen perfekt eingestellt! Du beherrschst das Bahnwissen wie ein Profi!"
     },

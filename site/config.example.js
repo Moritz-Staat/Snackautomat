@@ -12,6 +12,9 @@ const AUTOMAT_CONFIG = {
         statistik: 'XXX'      // Statistiken anzeigen
     },
 
+    // ── Quiz-Einstellungen ────────────────────────────────────
+    min_richtig: 8,          // Mindestanzahl richtiger Antworten für einen Gewinn
+
     // ── Relais-Controller ────────────────────────────────────────────────────
     // IP-Adresse des Microcontrollers, der die Relais steuert
     relais_ip: 'http://192.168.X.X',
