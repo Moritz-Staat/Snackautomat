@@ -234,3 +234,59 @@ h3{
 .animate {
     animation: headingPulse 2s ease-in-out;
 }
+
+/* Stats Modal */
+.stats-modal-content {
+    max-width: 44rem;
+    width: 90%;
+    padding: 2.5rem;
+}
+
+.stats-title {
+    font-size: 3rem;
+    margin: 0 0 1.5rem 0;
+    color: #054824;
+    font-family: 'Rajdhani-Bold';
+    text-align: center;
+    float: none;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+}
+
+.stats-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 0.0625rem solid #e0e0e0;
+    text-align: left;
+}
+
+.stats-table td:last-child {
+    text-align: right;
+    font-weight: bold;
+    color: #054824;
+    min-width: 4rem;
+}
+
+.stats-table tr:last-child td {
+    border-bottom: none;
+}
+
+#statsCloseBtn {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.8rem;
+    background-color: #2e9633;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: 'Rajdhani-Bold';
+}
+
+#statsCloseBtn:active {
+    background-color: #054824;
+}

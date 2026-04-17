@@ -461,7 +461,7 @@ initQuiz({
     questions: questions,
     tiers: [
     {
-        min: 8,
+        min: AUTOMAT_CONFIG.min_richtig,
         win: true,
         text: "Wow,das war spitze! Vielleicht solltest du dich als Trainer bei uns bewerben!"
     },

@@ -465,7 +465,7 @@ initQuiz({
     questions: questions,
     tiers: [
     {
-        min: 8,
+        min: AUTOMAT_CONFIG.min_richtig,
         win: true,
         text: "Wow! Lokführer des Wissens, du hast die Strecke sehr gut gemeistert!"
     },
