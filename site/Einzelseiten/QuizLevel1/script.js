@@ -1,31 +1,3 @@
-const images = [
-    "../QuizImages/Hp0_Licht.svg",
-    "../QuizImages/SunsetTracksCrop.jpg",
-    "../QuizImages/Nahverkehrszüge_Frankfurt.jpg",
-    "../QuizImages/Achszähler.jpg",
-    "../QuizImages/Pfeiftafel.svg.png",
-    "../QuizImages/Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg",
-    "../QuizImages/LOGO.svg",
-    "../QuizImages/Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg",
-    "../QuizImages/ICE_4,_Führerstand_(2).jpg",
-    "../QuizImages/Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg",
-    "../QuizImages/Siemens_K50_Relais.jpg",
-    "../QuizImages/WuS_Logo_L.jpg",
-    "../QuizImages/Bahnübergang-de.jpg",
-    "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg",
-    "../QuizImages/X_72633-34_ETCS_(European_Train_Control_System)A.jpg",
-    "../QuizImages/J39_816_Bf_Sandersleben_(Anh),_von_Güsten.jpg",
-    "../QuizImages/Zwischensignal_FFM-Hoechst_Schnee.jpg"
-];
-
-function preloadImages(imageArray) {
-    imageArray.forEach((imageSrc) => {
-        const img = new Image();
-        img.src = imageSrc;
-    });
-}
-
-preloadImages(images);
 const questions = [
     {
         question: "Welchen Signalbegriff kann jedes Hauptsignal anzeigen?",
@@ -489,185 +461,28 @@ const questions = [
     }
 ];
 
-
-let shuffledQuestions, currentQuestionIndex, correctAnswers;
-let inactivityTimeout, blurTimeout; // Hinzufügen der Variablen für das Blur
-let isBlurred = false; // Variable, um den Blur-Status zu tracken
-
-document.addEventListener('DOMContentLoaded', () => {
-    startGame();
-    resetInactivityTimer(); // Timer bei Spielstart initialisieren
-    setupInactivityListeners(); // Setze die Event-Listener für Inaktivität
+initQuiz({
+    questions: questions,
+    tiers: [
+    {
+        min: 8,
+        win: true,
+        text: "Wow! Lokführer des Wissens, du hast die Strecke sehr gut gemeistert!"
+    },
+    {
+        min: 5,
+        win: false,
+        text: "Dein Wissen nimmt Fahrt auf! Du kommst schon ziemlich gut in die richtige Spur"
+    },
+    {
+        min: 3,
+        win: false,
+        text: "Schon nicht schlecht, wie wärs mit einer Auffrischung deines Wissens?"
+    },
+    {
+        min: 0,
+        win: false,
+        text: "Da musst du wohl nochmal zu unseren Schulungen!"
+    }
+]
 });
-
-function startGame() {
-    shuffledQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10);
-    currentQuestionIndex = 0;
-    correctAnswers = 0;
-    showQuestion(shuffledQuestions[currentQuestionIndex]);
-}
-
-function showQuestion(question) {
-    const questionText = document.getElementById('question-text');
-    const answerButtonsElement = document.getElementById('answer-buttons');
-    const questionImage = document.getElementById('question-image');
-
-    questionText.innerText = question.question;
-    answerButtonsElement.innerHTML = '';
-
-    if (question.image) {
-        questionImage.src = question.image;
-        questionImage.style.display = 'block';
-    } else {
-        questionImage.style.display = 'none';
-    }
-
-    question.answers.forEach(answer => {
-        const button = document.createElement('button');
-        button.innerText = answer.text;
-        button.classList.add('btn');
-        button.addEventListener('click', () => {
-            selectAnswer(button, answer.correct);
-            resetInactivityTimer(); // Timer nach Benutzerinteraktion zurücksetzen
-        });
-        answerButtonsElement.appendChild(button);
-    });
-
-    updateProgressBar();
-}
-
-function selectAnswer(button, correct) {
-    const answerButtons = document.querySelectorAll('#answer-buttons .btn');
-    answerButtons.forEach(btn => {
-        btn.disabled = true;
-        if (btn.innerText === button.innerText) {
-            btn.style.backgroundColor = correct ? 'green' : 'red';
-        } else if (btn.innerText === getCorrectAnswerText()) {
-            btn.style.backgroundColor = 'lightgreen';
-        }
-    });
-
-    if (correct) correctAnswers++;
-
-    setTimeout(() => {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < shuffledQuestions.length) {
-            showQuestion(shuffledQuestions[currentQuestionIndex]);
-        } else {
-            showResults();
-        }
-    }, 1500);
-}
-
-function getCorrectAnswerText() {
-    const currentQuestion = shuffledQuestions[currentQuestionIndex];
-    const correctAnswer = currentQuestion.answers.find(answer => answer.correct);
-    return correctAnswer ? correctAnswer.text : '';
-}
-
-function showResults() {
-    const questionContainer = document.getElementById('question-container');
-    const answerButtonsElement = document.getElementById('answer-buttons');
-    const questionImage = document.getElementById('question-image');
-    const questionText = document.getElementById('question-text');
-
-    questionContainer.innerHTML = '';
-    answerButtonsElement.innerHTML = '';
-
-    const score = (correctAnswers / shuffledQuestions.length) * 100;
-    questionText.innerText = `Dein Ergebnis: ${correctAnswers} von ${shuffledQuestions.length} (${score}%)`;
-
-    let imageUrl, buttonText, buttonOnClick, resultText;
-
-    if (correctAnswers >= 8) {
-        imageUrl = '../QuizImages/LOGO.svg';
-        resultText = "Wow! Lokführer des Wissens, du hast die Strecke sehr gut gemeistert!";
-        buttonText = 'Preis abholen';
-        buttonOnClick = () => {
-            window.parent.postMessage('prizeCollected', '*');
-        };
-    } else if (correctAnswers >= 5) {
-        imageUrl = '../QuizImages/LOGO.svg';
-        resultText = "Dein Wissen nimmt Fahrt auf! Du kommst schon ziemlich gut in die richtige Spur";
-        buttonText = 'Zurück zum Start';
-        buttonOnClick = () => {
-            window.parent.postMessage('quizFailed', '*');
-        };
-    } else if (correctAnswers >= 3) {
-        imageUrl = '../QuizImages/LOGO.svg';
-        resultText = "Schon nicht schlecht, wie wärs mit einer Auffrischung deines Wissens?";
-        buttonText = 'Zurück zum Start';
-        buttonOnClick = () => {
-            window.parent.postMessage('quizFailed', '*');
-        };
-    } else {
-        imageUrl = '../QuizImages/LOGO.svg';
-        resultText = "Da musst du wohl nochmal zu unseren Schulungen!";
-        buttonText = 'Zurück zum Start';
-        buttonOnClick = () => {
-            window.parent.postMessage('quizFailed', '*');
-        };
-    }
-
-    if (imageUrl) {
-        const resultImage = document.createElement('img');
-        resultImage.src = imageUrl;
-        resultImage.id = 'result-image';
-        questionContainer.appendChild(resultImage);
-    }
-
-    const resultTextElement = document.createElement('div');
-    resultTextElement.id = 'result-text';
-    resultTextElement.innerText = resultText;
-    questionContainer.appendChild(resultTextElement);
-
-    const resultButton = document.createElement('button');
-    resultButton.innerText = buttonText;
-    resultButton.classList.add('btn');
-    resultButton.addEventListener('click', buttonOnClick);
-    questionContainer.appendChild(resultButton);
-}
-
-function updateProgressBar() {
-    const progressBar = document.getElementById('progress-bar');
-    const progressText = document.getElementById('progress-text');
-    const currentQuestionNumber = currentQuestionIndex + 1;
-    const totalQuestions = shuffledQuestions.length;
-    const progressPercentage = (currentQuestionNumber / totalQuestions) * 100;
-
-    progressBar.style.width = `${progressPercentage}%`;
-    progressText.innerText = `${currentQuestionNumber}/${totalQuestions}`;
-}
-
-// Funktion zum Blurren der Seite
-function blurPage() {
-    document.body.classList.add('blur');
-    document.getElementById('blur-overlay').style.display = 'flex'; // Overlay sichtbar machen
-    isBlurred = true;
-}
-
-// Funktion zum Zurücksetzen des Inaktivitäts-Timers
-function resetInactivityTimer() {
-    clearTimeout(inactivityTimeout); // Vorherigen Timeout löschen
-    clearTimeout(blurTimeout); // Blur Timeout ebenfalls löschen
-
-    if (isBlurred) {
-        document.body.classList.remove('blur'); // Entferne den Blur-Effekt
-        document.getElementById('blur-overlay').style.display = 'none'; // Overlay verstecken
-        isBlurred = false;
-    }
-
-    // Blurre die Seite nach 20 Sekunden Inaktivität
-    blurTimeout = setTimeout(blurPage, 20000);
-
-    // Leitet nach 30 Sekunden im Hauptfenster auf Automat.html weiter
-    inactivityTimeout = setTimeout(() => {
-        window.top.location.href = '../../Automat.html';
-    }, 30000);
-}
-
-// Setzt Event-Listener für **Mausklick-Aktivität**
-function setupInactivityListeners() {
-    document.addEventListener('click', resetInactivityTimer);
-    document.addEventListener('touchstart', resetInactivityTimer);
-}

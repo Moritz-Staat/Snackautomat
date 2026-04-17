@@ -57,18 +57,18 @@ function resetTimer() {
 }
 
 // Event-Listener für Touchscreens
-document.addEventListener('touchstart', function(event) {
+document.addEventListener('touchstart', function (event) {
     if (screensaverActive) {
-        event.preventDefault(); // Verhindert Klicks auf darunterliegende Links beim ersten Touch
-        hideScreensaver(); // Blendet den Screensaver aus
-        resetTimer(); // Setzt den Timer zurück
-    } else {
-        resetTimer();
+        event.preventDefault();
+        hideScreensaver();
     }
+    resetTimer();
 });
 
-// Event-Listener für Mausbewegung und Klicks (für den PC)
-document.addEventListener('mousemove', resetTimer);
+// Fallback für Nicht-Touch-Umgebungen (PC-Browser / Testing)
+if (!window.matchMedia('(pointer: coarse)').matches) {
+    document.addEventListener('mousemove', resetTimer);
+}
 document.addEventListener('click', resetTimer);
 
 resetTimer();
@@ -147,9 +147,8 @@ document.getElementById('backspace').onclick = function () {
 };
 
 function doPost(param, url) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", url + "?param=" + param, true);
-    xhr.send();
+    fetch(url + '?param=' + param, { method: 'POST' })
+        .catch(function () { /* fire-and-forget relay */ });
 }
 
 function closeModal() {
@@ -196,5 +195,5 @@ window.addEventListener('load', () => {
     animateHeading();
 
     // Wiederhole die Animation alle 10 Sekunden
-    setInterval(animateHeading, 10000); // 10.000 Millisekunden = 10 Sekunden
+    let _headingInterval = setInterval(animateHeading, 10000); // 10.000 Millisekunden = 10 Sekunden
 });

@@ -225,3 +225,12 @@ h3{
     color:black;
     font-family: 'Rajdhani-SemiBold';
 }
+/* Heading pulse animation — used by script.js */
+@keyframes headingPulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+.animate {
+    animation: headingPulse 2s ease-in-out;
+}
