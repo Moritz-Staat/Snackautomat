@@ -1,14 +1,14 @@
 /* Shared level wrapper — reads level config from body data attributes:
    data-storage-key  : localStorage key for win counter (e.g. "level1win")
-   data-prize-url    : relay endpoint for a won quiz (e.g. "http://192.168.0.120/Hyper")
+   data-prize-endpoint : Schlüssel in AUTOMAT_CONFIG.relais_endpunkte (z.B. "level1_gewinn")
 */
 (function () {
     'use strict';
 
-    var TROSTPREIS_URL = 'http://192.168.0.120/Expert';
+    var TROSTPREIS_URL = AUTOMAT_CONFIG.relais_ip + AUTOMAT_CONFIG.relais_endpunkte.trostpreis;
     var body           = document.body;
     var storageKey     = body.dataset.storageKey;
-    var prizeUrl       = body.dataset.prizeUrl;
+    var prizeUrl       = AUTOMAT_CONFIG.relais_ip + AUTOMAT_CONFIG.relais_endpunkte[body.dataset.prizeEndpoint];
 
     var timeout;
     var _data;
@@ -88,10 +88,10 @@
     });
 
     document.getElementById('submitPin').addEventListener('click', function () {
-        if (pinInput.value === '151107') {
+        if (pinInput.value === AUTOMAT_CONFIG.pins.kontakt) {
             var k = parseInt(localStorage.getItem('kontaktdaten') || '0', 10) + 1;
             localStorage.setItem('kontaktdaten', k.toString());
-            doPost('1', 'http://192.168.0.120/Expert');
+            doPost('1', AUTOMAT_CONFIG.relais_ip + AUTOMAT_CONFIG.relais_endpunkte.trostpreis);
             closeModal();
         }
     });
