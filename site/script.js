@@ -93,7 +93,7 @@ window.onclick = function (event) {
 document.getElementById('submitPin').onclick = function () {
     const pinInput = document.getElementById('pinInput');
 
-    if (pinInput.value === '151107') {
+    if (pinInput.value === AUTOMAT_CONFIG.pins.kontakt) {
         let kontakt = localStorage.getItem('kontaktdaten');
         if (kontakt == null) {
             kontakt = 1;
@@ -102,12 +102,12 @@ document.getElementById('submitPin').onclick = function () {
             kontakt += 1;
         }
         localStorage.setItem('kontaktdaten', kontakt);
-        doPost('1', 'http://192.168.0.120/Expert');
+        doPost('1', AUTOMAT_CONFIG.relais_ip + AUTOMAT_CONFIG.relais_endpunkte.trostpreis);
         closeModal();
-    } else if (pinInput.value === '1111') {
+    } else if (pinInput.value === AUTOMAT_CONFIG.pins.reset) {
         localStorage.clear();
-        doPost('1', 'http://192.168.0.120/Start');
-    } else if (pinInput.value === '258') {
+        doPost('1', AUTOMAT_CONFIG.relais_ip + AUTOMAT_CONFIG.relais_endpunkte.reset);
+    } else if (pinInput.value === AUTOMAT_CONFIG.pins.statistik) {
         const data = {
             level1: getFromLocalStorage('level1win'),
             level2: getFromLocalStorage('level2win'),
