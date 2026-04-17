@@ -3,6 +3,7 @@
     src: url('../../../fonts/Rajdhani-Semibold.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 body {
     background-color: white;
@@ -124,10 +125,7 @@ body {
     margin-bottom: 4rem;
     font-weight: 600;
 }
-.blur {
-    filter: blur(4px);
-    transition: filter 0.5s ease;
-}
+
 
 .blur-overlay {
     position: fixed;
@@ -141,4 +139,16 @@ body {
     color: white;
     font-size: 2em;
     z-index: 1000;
+}
+/* Answer button states — GPU-friendly CSS classes instead of inline styles */
+.btn-correct { background-color: #2e7d32 !important; }
+.btn-wrong   { background-color: #c62828 !important; }
+.btn-hint    { background-color: #81c784 !important; }
+
+/* GPU-accelerated blur */
+.blur {
+    filter: blur(4px);
+    will-change: filter;
+    transform: translateZ(0);
+    transition: filter 0.3s ease;
 }

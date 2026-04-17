@@ -1,45 +1,3 @@
-const images = [
-    "../QuizImages/Bahnübergang-de.jpg",
-    "../QuizImages/J27_099_Bf_Twistesee,_Ausfsig_N1,_N2.jpg",
-    "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg",
-    "../QuizImages/J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg",
-    "../QuizImages/Achszähler.jpg",
-    "../QuizImages/GPÜ_Ingolstadt.jpg",
-    "../QuizImages/Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg",
-    "../QuizImages/SunsetTracksCrop.jpg",
-    "../QuizImages/X_72633-34_ETCS_(European_Train_Control_System)A.jpg",
-    "../QuizImages/J39_816_Bf_Sandersleben_(Anh),_von_Güsten.jpg",
-    "../QuizImages/Formsignale.jpg",
-    "../QuizImages/Kabel.jpg",
-    "../QuizImages/Doppelweichungskreuzung.jpg",
-    "../QuizImages/Nahverkehrszüge_Frankfurt.jpg",
-    "../QuizImages/Zwischensignal_FFM-Hoechst_Schnee.jpg",
-    "../QuizImages/Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg",
-    "../QuizImages/LOGO.svg",
-    "../QuizImages/Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg",
-    "../QuizImages/L03_190_Abzw_Anger,_Weiche_02.jpg",
-    "../QuizImages/Ks-Mehrabschnittssignal.jpg",
-    "../QuizImages/Triebfahrzeugführer_IC-Steuerwagen.jpg",
-    "../QuizImages/Elektromechanisches_Motorzählwerk_für_Achszähler_von_Siemens.jpg",
-    "../QuizImages/Elektronisches_Stellwerk_Köln-Betriebsbahnhof-3887.jpg",
-    "../QuizImages/Einfahrt_der_Dreiseenbahn_in_den_Bahnhof_Titisee.jpg",
-    "../QuizImages/Schienenkontakt_Siemens_DMK.jpg",
-    "../QuizImages/Technik_Relaisstellwerk_Köln_Kf-4038.jpg",
-    "../QuizImages/Ks_Ks2+Zusatzlicht_(oben).svg",
-    "../QuizImages/WuS_Logo_L.jpg",
-    "../QuizImages/Achszähler.jpg",
-    "../QuizImages/Ks_Ks2+Zusatzlicht_(unten).svg"
-];
-
-function preloadImages(imageArray) {
-    imageArray.forEach((imageSrc) => {
-        const img = new Image();
-        img.src = imageSrc;
-    });
-}
-
-preloadImages(images);
-
 const questions = [
     {
         question: "Mit welchen Frequenzen arbeitet der Fahrzeugsensor (alt) von Scheidt& Bachmann?",
@@ -621,189 +579,28 @@ const questions = [
 
 ];
 
-
-let shuffledQuestions, currentQuestionIndex, correctAnswers;
-let inactivityTimeout, blurTimeout; // Hinzufügen der Variablen für das Blur
-let isBlurred = false; // Variable, um den Blur-Status zu tracken
-document.addEventListener('DOMContentLoaded', () => {
-    startGame();
-    resetInactivityTimer(); // Timer bei Spielstart initialisieren
-    setupInactivityListeners(); // Setze die Event-Listener für Inaktivität
+initQuiz({
+    questions: questions,
+    tiers: [
+    {
+        min: 8,
+        win: true,
+        text: "Weichen perfekt eingestellt! Du beherrschst das Bahnwissen wie ein Profi!"
+    },
+    {
+        min: 6,
+        win: false,
+        text: "Du bist auf dem Überholgleis, das war richtig gut!"
+    },
+    {
+        min: 4,
+        win: false,
+        text: "Die Ampel steht auf gelb - du hast einen soliden Start hingelegt, aber da ist noch Platz nach oben!"
+    },
+    {
+        min: 0,
+        win: false,
+        text: "Rote Ampel! Ab zu unseren Schulungen ;)"
+    }
+]
 });
-
-function startGame() {
-    shuffledQuestions = questions.sort(() => Math.random() - 0.5).slice(0, 10);
-    currentQuestionIndex = 0;
-    correctAnswers = 0;
-    showQuestion(shuffledQuestions[currentQuestionIndex]);
-}
-
-function showQuestion(question) {
-    const questionText = document.getElementById('question-text');
-    const answerButtonsElement = document.getElementById('answer-buttons');
-    const questionImage = document.getElementById('question-image');
-
-    questionText.innerText = question.question;
-    answerButtonsElement.innerHTML = '';
-
-    if (question.image) {
-        questionImage.src = question.image;
-        questionImage.style.display = 'block';
-    } else {
-        questionImage.style.display = 'none';
-    }
-
-    question.answers.forEach(answer => {
-        const button = document.createElement('button');
-        button.innerText = answer.text;
-        button.classList.add('btn');
-        button.addEventListener('click', () => {
-            selectAnswer(button, answer.correct);
-            resetInactivityTimer(); // Timer nach Benutzerinteraktion zurücksetzen
-        });
-        answerButtonsElement.appendChild(button);
-    });
-
-    // Fortschrittsanzeige aktualisieren
-    updateProgressBar();
-}
-
-function selectAnswer(button, correct) {
-    const answerButtons = document.querySelectorAll('#answer-buttons .btn');
-    answerButtons.forEach(btn => {
-        btn.disabled = true;
-        if (btn.innerText === button.innerText) {
-            btn.style.backgroundColor = correct ? 'green' : 'red';
-        } else if (btn.innerText === getCorrectAnswerText()) {
-            btn.style.backgroundColor = 'lightgreen';
-        }
-    });
-
-    if (correct) correctAnswers++;
-
-    // Nach 1,5 Sekunden zur nächsten Frage wechseln
-    setTimeout(() => {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < shuffledQuestions.length) {
-            showQuestion(shuffledQuestions[currentQuestionIndex]);
-        } else {
-            showResults();
-        }
-    }, 1500);
-}
-
-function getCorrectAnswerText() {
-    const currentQuestion = shuffledQuestions[currentQuestionIndex];
-    const correctAnswer = currentQuestion.answers.find(answer => answer.correct);
-    return correctAnswer ? correctAnswer.text : '';
-}
-
-function showResults() {
-    const questionContainer = document.getElementById('question-container');
-    const answerButtonsElement = document.getElementById('answer-buttons');
-    const questionImage = document.getElementById('question-image');
-    const questionText = document.getElementById('question-text');
-
-    questionContainer.innerHTML = '';
-    answerButtonsElement.innerHTML = '';
-
-    const score = (correctAnswers / shuffledQuestions.length) * 100;
-    questionText.innerText = `Dein Ergebnis: ${correctAnswers} von ${shuffledQuestions.length} (${score}%)`;
-
-    let imageUrl, buttonText, buttonOnClick, resultText;
-
-    if (correctAnswers >= 8) {
-        imageUrl = '../QuizImages/LOGO.svg';
-        resultText = "Weichen perfekt eingestellt! Du beherrschst das Bahnwissen wie ein Profi!";
-        buttonText = 'Preis abholen';
-        buttonOnClick = () => {
-            window.parent.postMessage('prizeCollected', '*');
-        };
-    } else if (correctAnswers >= 6) {
-        imageUrl = '../QuizImages/LOGO.svg';
-        resultText = "Du bist auf dem Überholgleis, das war richtig gut!";
-        buttonText = 'Zurück zum Start';
-        buttonOnClick = () => {
-            window.parent.postMessage('quizFailed', '*');
-        };
-    } else if (correctAnswers >= 4) {
-        imageUrl = '../QuizImages/LOGO.svg';
-        resultText = "Die Ampel steht auf gelb - du hast einen soliden Start hingelegt, aber da ist noch Platz nach oben!";
-        buttonText = 'Zurück zum Start';
-        buttonOnClick = () => {
-            window.parent.postMessage('quizFailed', '*');
-        };
-    } else {
-        imageUrl = '../QuizImages/LOGO.svg';
-        resultText = "Rote Ampel! Ab zu unseren Schulungen ;)";
-        buttonText = 'Zurück zum Start';
-        buttonOnClick = () => {
-            window.parent.postMessage('quizFailed', '*');
-        };
-    }
-
-    if (imageUrl) {
-        const resultImage = document.createElement('img');
-        resultImage.src = imageUrl;
-        resultImage.id = 'result-image';
-        questionContainer.appendChild(resultImage);
-    }
-
-    const resultTextElement = document.createElement('div');
-    resultTextElement.id = 'result-text';
-    resultTextElement.innerText = resultText;
-    questionContainer.appendChild(resultTextElement);
-
-    const resultButton = document.createElement('button');
-    resultButton.innerText = buttonText;
-    resultButton.classList.add('btn');
-    resultButton.addEventListener('click', buttonOnClick);
-    questionContainer.appendChild(resultButton);
-}
-
-function updateProgressBar() {
-    const progressBar = document.getElementById('progress-bar');
-    const progressText = document.getElementById('progress-text');
-    const currentQuestionNumber = currentQuestionIndex + 1;
-    const totalQuestions = shuffledQuestions.length;
-    const progressPercentage = (currentQuestionNumber / totalQuestions) * 100;
-
-    // Aktualisiere die Breite der Progress Bar
-    progressBar.style.width = `${progressPercentage}%`;
-
-    // Aktualisiere den Fortschrittstext (z.B. "1/10", "2/10")
-    progressText.innerText = `${currentQuestionNumber}/${totalQuestions}`;
-}
-
-// Funktion zum Blurren der Seite
-function blurPage() {
-    document.body.classList.add('blur');
-    document.getElementById('blur-overlay').style.display = 'flex'; // Overlay sichtbar machen
-    isBlurred = true;
-}
-
-// Funktion zum Zurücksetzen des Inaktivitäts-Timers
-function resetInactivityTimer() {
-    clearTimeout(inactivityTimeout); // Vorherigen Timeout löschen
-    clearTimeout(blurTimeout); // Blur Timeout ebenfalls löschen
-
-    if (isBlurred) {
-        document.body.classList.remove('blur'); // Entferne den Blur-Effekt
-        document.getElementById('blur-overlay').style.display = 'none'; // Overlay verstecken
-        isBlurred = false;
-    }
-
-    // Blurre die Seite nach 20 Sekunden Inaktivität
-    blurTimeout = setTimeout(blurPage, 20000);
-
-    // Leitet nach 30 Sekunden im Hauptfenster auf Automat.html weiter
-    inactivityTimeout = setTimeout(() => {
-        window.top.location.href = '../../Automat.html';
-    }, 30000);
-}
-
-// Setzt Event-Listener für **Mausklick-Aktivität**
-function setupInactivityListeners() {
-    document.addEventListener('click', resetInactivityTimer);
-    document.addEventListener('touchstart', resetInactivityTimer);
-}
