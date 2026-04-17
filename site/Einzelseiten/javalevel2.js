@@ -49,41 +49,8 @@ function closeModal() {
 }
 
 let timeout = undefined
-/* Nach Beenden des Quizzes Zurück Verlinken zur Startseite*/
+/* Nach Beenden des Quizzes, Preis ausspucken und zur Startseite weiterleiten */
 window.addEventListener('message', (event) => {
-    /*
-    if (timeout != undefined) {
-        return
-    }
-    if (event.data === 'prizeCollected') {
-        let level2wins = localStorage.getItem('level2win')
-        if (level2wins == null) {
-            level2wins = 1
-        } else {
-            level2wins = parseInt(level2wins)
-            level2wins += 1;
-        }
-        localStorage.setItem('level2win', level2wins.toString())
-        doPost('1', 'http://192.168.0.120/Expert');
-        timeout = setTimeout(() => {
-            timeout = undefined
-            window.location.href = '../Automat.html';
-        }, 3000);
-    } else if (event.data === 'quizFailed') {
-        let loses = localStorage.getItem('loses')
-        if (loses == null) {
-            loses = 1
-        } else {
-            loses = parseInt(loses)
-            loses += 1;
-        }
-        localStorage.setItem('loses', loses.toString())
-        doPost('1', 'http://192.168.0.120/Trostpreis');
-        timeout = setTimeout(() => {
-            timeout = undefined
-            window.location.href = '../Automat.html';
-        }, 3000);
-    } */
     show(event.data)
 });
 
@@ -141,7 +108,7 @@ normalButton.addEventListener('click', () => {
         timeout = setTimeout(() => {
             timeout = undefined
             window.location.href = '../Automat.html';
-        }, 300);
+        }, 3000);
     }
     popup.style.display = 'none';
     mainContent.classList.remove('blurred');

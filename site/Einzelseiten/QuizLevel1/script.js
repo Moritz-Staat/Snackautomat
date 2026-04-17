@@ -1,21 +1,21 @@
 const images = [
-    "Hp0_Licht.svg",
-    "SunsetTracksCrop.jpg",
-    "Nahverkehrszüge_Frankfurt.jpg",
-    "Achszähler.jpg",
-    "Pfeiftafel.svg.png",
-    "Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg",
-    "LOGO.svg",
-    "Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg",
-    "ICE_4,_Führerstand_(2).jpg",
-    "Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg",
-    "Siemens_K50_Relais.jpg",
-    "WuS_Logo_L.jpg",
-    "Bahnübergang-de.jpg",
-    "146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg",
-    "X_72633-34_ETCS_(European_Train_Control_System)A.jpg",
-    "J39_816_Bf_Sandersleben_(Anh),_von_Güsten.jpg",
-    "Zwischensignal_FFM-Hoechst_Schnee.jpg"
+    "../QuizImages/Hp0_Licht.svg",
+    "../QuizImages/SunsetTracksCrop.jpg",
+    "../QuizImages/Nahverkehrszüge_Frankfurt.jpg",
+    "../QuizImages/Achszähler.jpg",
+    "../QuizImages/Pfeiftafel.svg.png",
+    "../QuizImages/Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg",
+    "../QuizImages/LOGO.svg",
+    "../QuizImages/Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg",
+    "../QuizImages/ICE_4,_Führerstand_(2).jpg",
+    "../QuizImages/Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg",
+    "../QuizImages/Siemens_K50_Relais.jpg",
+    "../QuizImages/WuS_Logo_L.jpg",
+    "../QuizImages/Bahnübergang-de.jpg",
+    "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg",
+    "../QuizImages/X_72633-34_ETCS_(European_Train_Control_System)A.jpg",
+    "../QuizImages/J39_816_Bf_Sandersleben_(Anh),_von_Güsten.jpg",
+    "../QuizImages/Zwischensignal_FFM-Hoechst_Schnee.jpg"
 ];
 
 function preloadImages(imageArray) {
@@ -35,7 +35,7 @@ const questions = [
             {text: "Pause", correct: false},
             {text: "links abbiegen", correct: false}
         ],
-        image: "Hp0_Licht.svg"
+        image: "../QuizImages/Hp0_Licht.svg"
     },
     {
         question: "Wer kann eine ferngestellte Weiche bedienen?",
@@ -45,7 +45,7 @@ const questions = [
             {text: "Triebfahrzeugführer", correct: false},
             {text: "Zugbegleiter", correct: false}
         ],
-        image: "SunsetTracksCrop.jpg"
+        image: "../QuizImages/SunsetTracksCrop.jpg"
     },
     {
         question: "Was bedeutet die Abkürzung LST?",
@@ -55,7 +55,7 @@ const questions = [
             {text: "Lesen-Sehen-Tasten", correct: false},
             {text: "Lampenstromteilung", correct: false}
         ],
-        image: "Nahverkehrszüge_Frankfurt.jpg"
+        image: "../QuizImages/Nahverkehrszüge_Frankfurt.jpg"
     },
     {
         question: "Welche Bedingung muss erfüllt sein, damit ein Abschnitt der mit Achszählern ausgestattet ist beim Fahrdienstleiter wieder als frei gemeldet wird?",
@@ -68,7 +68,7 @@ const questions = [
             {text: "Die Summe der eingezählten und ausgezählten Achsen muss bei 1 liegen", correct: false},
             {text: "Es müssen gleich viele Achsen ausgezählt worden sein, wie vorher eingezählt wurden", correct: true}
         ],
-        image: "Achszähler.jpg"
+        image: "../QuizImages/Achszähler.jpg"
     },
     {
         question: "Was muss der Triebfahrzeugführer an einer Pfeiftafel (eine rechteckige weiße Tafel mit schwarzem „P“) machen?",
@@ -81,7 +81,7 @@ const questions = [
             },
             {text: "Kurz pfeifen, damit die Lok weiß, dass er noch da ist", correct: false}
         ],
-        image: "2560px-Pfeiftafel.svg.png"
+        image: "../QuizImages/2560px-Pfeiftafel.svg.png"
     },
     {
         question: "Was ist die älteste Stellwerksbauform?",
@@ -91,7 +91,7 @@ const questions = [
             {text: "Digitales Stellwerk", correct: false},
             {text: "Relaisstellwerk", correct: false}
         ],
-        image: "Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg"
+        image: "../QuizImages/Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg"
     },
     {
         question: "Wieso gibt es Weichenheizungen?",
@@ -107,7 +107,7 @@ const questions = [
                 correct: false
             }
         ],
-        image: "Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
+        image: "../QuizImages/Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
     },
     {
         question: "Wie ist die Sicherheitsphilosophie bei der DB?",
@@ -117,7 +117,7 @@ const questions = [
             {text: "Hauptsache langsam", correct: false},
             {text: "Hauptsache leise", correct: false}
         ],
-        image: "Nahverkehrszüge_Frankfurt.jpg"
+        image: "../QuizImages/Nahverkehrszüge_Frankfurt.jpg"
     },
     {
         question: "Welche Aufgabe hat ein Abnahmeprüfer?",
@@ -130,7 +130,7 @@ const questions = [
             {text: "Die Planprüfung durchzuführen", correct: false},
             {text: "Die komplizierten Bauteile anschließen", correct: false}
         ],
-        image: "Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
+        image: "../QuizImages/Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
     },
     {
         question: "Was kennzeichnet ein Andreaskreuz?",
@@ -146,7 +146,7 @@ const questions = [
                 correct: true
             }
         ],
-        image: "Bahnübergang-de.jpg"
+        image: "../QuizImages/Bahnübergang-de.jpg"
     },
     {
         question: "Wofür steht die Abkürzung LZB im Bereich der LST?",
@@ -156,7 +156,7 @@ const questions = [
             {text: "Leitzentrale-Bus", correct: false},
             {text: "Lieder zur Beruhigung", correct: false}
         ],
-        image: "ICE_4,_Führerstand_(2).jpg"
+        image: "../QuizImages/ICE_4,_Führerstand_(2).jpg"
     },
     {
         question: "Warum nennt man den Technisch Berechtigten auch \"4.2er\"?",
@@ -172,7 +172,7 @@ const questions = [
                 correct: false
             }
         ],
-        image: "Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
+        image: "../QuizImages/Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
     },
     {
         question: "Was bedeutet es wenn bei einem Formsignal ein Signalflügel waagerecht nach rechts zeigt?",
@@ -182,7 +182,7 @@ const questions = [
             {text: "Hp 2 - Langsamfahrt", correct: false},
             {text: "Vr 2 - Langsamfahrt erwarten", correct: false}
         ],
-        image: "Formsignale.jpg"
+        image: "../QuizImages/Formsignale.jpg"
     },
     {
         question: "Welche Art der Gleisfreimeldung gibt es?",
@@ -192,7 +192,7 @@ const questions = [
             {text: "Punktförmige Gleisfreimeldung", correct: true},
             {text: "Kurvenförmige-Gleisfreimeldung", correct: false}
         ],
-        image: "Achszähler.jpg"
+        image: "../QuizImages/Achszähler.jpg"
     },
     {
         question: "Wie heißt ein großer Hersteller im Bereich der Leit- und Sicherungstechnik?",
@@ -202,7 +202,7 @@ const questions = [
             {text: "Schmidt", correct: false},
             {text: "Leitz", correct: false}
         ],
-        image: "146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
+        image: "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
     },
     {
         question: "Wofür wird Eisenbahnsignalkabel verwendet?",
@@ -212,7 +212,7 @@ const questions = [
             {text: "Zum Empfangen von TV-Programmen", correct: false},
             {text: "Zum Verkabeln von LST-Anlagen", correct: true}
         ],
-        image: "Kabel.jpg"
+        image: "../QuizImages/Kabel.jpg"
     },
     {
         question: "Wofür steht die Abkürzung PZB im Bereich der LST?",
@@ -222,7 +222,7 @@ const questions = [
             {text: "Probe-Zug-Bereich", correct: false},
             {text: "Praktischer Zugbetrieb", correct: false}
         ],
-        image: "J39_816_Bf_Sandersleben_(Anh),_von_Güsten.jpg"
+        image: "../QuizImages/J39_816_Bf_Sandersleben_(Anh),_von_Güsten.jpg"
     },
     {
         question: "Wofür steht die Abkürzung H/V im Bereich der LST?",
@@ -232,7 +232,7 @@ const questions = [
             {text: "Haus-/ Vorgarten", correct: false},
             {text: "Hauptverein", correct: false}
         ],
-        image: "Formsignale.jpg"
+        image: "../QuizImages/Formsignale.jpg"
     },
     {
         question: "Das Zusammenspiel welcher beiden Komponenten sorgt für die Sicherheit im Bahnbetrieb?",
@@ -242,7 +242,7 @@ const questions = [
             {text: "Mensch und Technik", correct: true},
             {text: "Maus und Tastatur", correct: false}
         ],
-        image: "Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg"
+        image: "../QuizImages/Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg"
     },
     {
         question: "Was ist ein Relais?",
@@ -255,7 +255,7 @@ const questions = [
             {text: "Eine Bahnanlage der freien Strecke", correct: false},
             {text: "Eine Lehranlage im Bereich Berlin", correct: false}
         ],
-        image: "Siemens_K50_Relais.jpg"
+        image: "../QuizImages/Siemens_K50_Relais.jpg"
     },
     {
         question: "Wofür steht W&S Technik GmbH?",
@@ -265,7 +265,7 @@ const questions = [
             {text: "Wind und Starkstrom Technik GmbH", correct: false},
             {text: "Wasser & Sonar Technik GmbH", correct: false}
         ],
-        image: "WuS_Logo_L.jpg"
+        image: "../QuizImages/WuS_Logo_L.jpg"
     },
     {
         question: "Wann wurde die Firma W&S Technik gegründet?",
@@ -275,7 +275,7 @@ const questions = [
             {text: "1995", correct: false},
             {text: "2007", correct: true}
         ],
-        image: "WuS_Logo_L.jpg"
+        image: "../QuizImages/WuS_Logo_L.jpg"
     },
     {
         question: "Bei welchem Licht darf ein Zug nicht fahren?",
@@ -285,7 +285,7 @@ const questions = [
             {text: "grün", correct: false},
             {text: "blau", correct: false}
         ],
-        image: "Hp0_Licht.svg"
+        image: "../QuizImages/Hp0_Licht.svg"
     },
     {
         question: "Wofür gibt es Stellwerke?",
@@ -295,7 +295,7 @@ const questions = [
             {text: "Freunde treffen", correct: false},
             {text: "Organisieren von Arbeitsstreiks", correct: false}
         ],
-        image: "Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg"
+        image: "../QuizImages/Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg"
     },
     {
         question: "Wie heißt der Signalbegriff bei dem Züge nicht fahren dürfen?",
@@ -305,7 +305,7 @@ const questions = [
             {text: "Hp 0", correct: true},
             {text: "Hp 7", correct: false}
         ],
-        image: "Hp0_Licht.svg"
+        image: "../QuizImages/Hp0_Licht.svg"
     },
     {
         question: "Wie heißt der Signalbegriff bei dem Züge fahren dürfen?",
@@ -315,7 +315,7 @@ const questions = [
             {text: "Hp 4", correct: false},
             {text: "Hp 12", correct: false}
         ],
-        image: "Zwischensignal_FFM-Hoechst_Schnee.jpg"
+        image: "../QuizImages/Zwischensignal_FFM-Hoechst_Schnee.jpg"
     },
     {
         question: "Wofür wird eine Weiche benötigt?",
@@ -325,7 +325,7 @@ const questions = [
             {text: "Um in ein anderes Gleis zu wechseln", correct: true},
             {text: "Um ein Zug entgleisen zu lassen", correct: false}
         ],
-        image: "SunsetTracksCrop.jpg"
+        image: "../QuizImages/SunsetTracksCrop.jpg"
     },
     {
         question: "Auf welcher Messe befinden Sie sich gerade?",
@@ -335,7 +335,7 @@ const questions = [
             {text: "Zug und Bahn-Messe", correct: false},
             {text: "Modellbahnmesse", correct: false}
         ],
-        image: "Nahverkehrszüge_Frankfurt.jpg"
+        image: "../QuizImages/Nahverkehrszüge_Frankfurt.jpg"
     },
     {
         question: "Wie viele Abteilungen hat die Firma W&S Technik?",
@@ -345,7 +345,7 @@ const questions = [
             {text: "2", correct: false},
             {text: "3", correct: false}
         ],
-        image: "WuS_Logo_L.jpg"
+        image: "../QuizImages/WuS_Logo_L.jpg"
     },
     {
         question: "Welche Spannung hat die Oberleitung bei der Bahn?",
@@ -355,7 +355,7 @@ const questions = [
             {text: "15.000 V", correct: true},
             {text: "10 kV", correct: false}
         ],
-        image: "SunsetTracksCrop.jpg"
+        image: "../QuizImages/SunsetTracksCrop.jpg"
     },
     {
         question: "Auf wieviel Schienen fährt ein Zug?",
@@ -365,7 +365,7 @@ const questions = [
             {text: "2", correct: true},
             {text: "8", correct: false}
         ],
-        image: "Nahverkehrszüge_Frankfurt.jpg"
+        image: "../QuizImages/Nahverkehrszüge_Frankfurt.jpg"
     },
     {
         question: "Wann war die letzte InnoTrans?",
@@ -375,7 +375,7 @@ const questions = [
             {text: "vor 3 Jahren", correct: false},
             {text: "Das ist die erste InnoTrans", correct: false}
         ],
-        image: "Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
+        image: "../QuizImages/Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
     },
     {
         question: "Wo findet die InnoTrans statt?",
@@ -385,7 +385,7 @@ const questions = [
             {text: "Stuttgart", correct: false},
             {text: "Castrop-Rauxel", correct: false}
         ],
-        image: "Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
+        image: "../QuizImages/Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
     },
     {
         question: "Was ist die InnoTrans?",
@@ -395,7 +395,7 @@ const questions = [
             {text: "Fußballmesse", correct: false},
             {text: "Internationale Fachmesse für Verkehrstechnik", correct: true}
         ],
-        image: "146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
+        image: "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
     },
     {
         question: "Wieviele Triebfahrzeugführer fahren i.d.R. ein Zug?",
@@ -405,7 +405,7 @@ const questions = [
             {text: "1,5", correct: false},
             {text: "6", correct: false}
         ],
-        image: "ICE_4,_Führerstand_(2).jpg"
+        image: "../QuizImages/ICE_4,_Führerstand_(2).jpg"
     },
     {
         question: "Ist es gefährlich auf einen Zug zu klettern?",
@@ -415,7 +415,7 @@ const questions = [
             {text: "Nein, das ist eine neue Sportart", correct: false},
             {text: "vielleicht", correct: false}
         ],
-        image: "SunsetTracksCrop.jpg"
+        image: "../QuizImages/SunsetTracksCrop.jpg"
     },
     {
         question: "Wofür steht die Abkürzung Fdl?",
@@ -425,7 +425,7 @@ const questions = [
             {text: "Freie-Deutsche-Linkspartei", correct: false},
             {text: "Fahr-Doch-Langsamer", correct: false}
         ],
-        image: "Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg"
+        image: "../QuizImages/Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg"
     },
     {
         question: "Wofür steht die Abkürzung ETCS?",
@@ -435,7 +435,7 @@ const questions = [
             {text: "Eisenbahntechnik Controll-System", correct: false},
             {text: "Einfaches Training für Communication-Skills", correct: false}
         ],
-        image: "X_72633-34_ETCS_(European_Train_Control_System)A.jpg"
+        image: "../QuizImages/X_72633-34_ETCS_(European_Train_Control_System)A.jpg"
     },
     {
         question: "Wann wurde die Deutsche Bahn privatisiert?",
@@ -445,7 +445,7 @@ const questions = [
             {text: "1994", correct: true},
             {text: "1890", correct: false}
         ],
-        image: "Nahverkehrszüge_Frankfurt.jpg"
+        image: "../QuizImages/Nahverkehrszüge_Frankfurt.jpg"
     },
     {
         question: "In welche Abteilungen teilt sich die W&S Technik GmbH auf?",
@@ -455,7 +455,7 @@ const questions = [
             {text: "Schotter / Schiene / Schwelle / Kleineisen", correct: false},
             {text: "Holz / Stein", correct: false}
         ],
-        image: "WuS_Logo_L.jpg"
+        image: "../QuizImages/WuS_Logo_L.jpg"
     },
     {
         question: "Welche Arbeiten im Bereich der LST übernimmt die Firma W&S Technik GmbH?",
@@ -465,7 +465,7 @@ const questions = [
             {text: "Nur Arbeiten an Stellwerken", correct: false},
             {text: "Alles, was der Bereich LST zu bieten hat!", correct: true}
         ],
-        image: "WuS_Logo_L.jpg"
+        image: "../QuizImages/WuS_Logo_L.jpg"
     },
     {
         question: "Wofür steht die Abkürzung DKW?",
@@ -475,7 +475,7 @@ const questions = [
             {text: "Doppelte Kohlewagen", correct: false},
             {text: "Doppelte Kreuzungsweiche", correct: true}
         ],
-        image: "Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
+        image: "../QuizImages/Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
     },
     {
         question: "Was bedeutet ein Geschwindigkeitsanzeiger mit der Kennziffer '10'?",
@@ -485,7 +485,7 @@ const questions = [
             {text: "Mindestgeschwindigkeit von 10 km/h ist einzuhalten", correct: false},
             {text: "Mit 10 km/h erwartet einem eine 'grüne Welle'", correct: false}
         ],
-        image: "Zwischensignal_FFM-Hoechst_Schnee.jpg"
+        image: "../QuizImages/Zwischensignal_FFM-Hoechst_Schnee.jpg"
     }
 ];
 
@@ -579,29 +579,29 @@ function showResults() {
 
     let imageUrl, buttonText, buttonOnClick, resultText;
 
-    if (correctAnswers >= 7) {
-        imageUrl = 'LOGO.svg';
+    if (correctAnswers >= 8) {
+        imageUrl = '../QuizImages/LOGO.svg';
         resultText = "Wow! Lokführer des Wissens, du hast die Strecke sehr gut gemeistert!";
         buttonText = 'Preis abholen';
         buttonOnClick = () => {
             window.parent.postMessage('prizeCollected', '*');
         };
     } else if (correctAnswers >= 5) {
-        imageUrl = 'LOGO.svg';
+        imageUrl = '../QuizImages/LOGO.svg';
         resultText = "Dein Wissen nimmt Fahrt auf! Du kommst schon ziemlich gut in die richtige Spur";
         buttonText = 'Zurück zum Start';
         buttonOnClick = () => {
             window.parent.postMessage('quizFailed', '*');
         };
     } else if (correctAnswers >= 3) {
-        imageUrl = 'LOGO.svg';
+        imageUrl = '../QuizImages/LOGO.svg';
         resultText = "Schon nicht schlecht, wie wärs mit einer Auffrischung deines Wissens?";
         buttonText = 'Zurück zum Start';
         buttonOnClick = () => {
             window.parent.postMessage('quizFailed', '*');
         };
     } else {
-        imageUrl = 'LOGO.svg';
+        imageUrl = '../QuizImages/LOGO.svg';
         resultText = "Da musst du wohl nochmal zu unseren Schulungen!";
         buttonText = 'Zurück zum Start';
         buttonOnClick = () => {
@@ -668,5 +668,6 @@ function resetInactivityTimer() {
 
 // Setzt Event-Listener für **Mausklick-Aktivität**
 function setupInactivityListeners() {
-    document.addEventListener('click', resetInactivityTimer); // Nur Maus-Klicks
+    document.addEventListener('click', resetInactivityTimer);
+    document.addEventListener('touchstart', resetInactivityTimer);
 }

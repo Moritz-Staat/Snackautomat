@@ -1,30 +1,30 @@
 const images = [
-    "WuS_Logo_L.jpg",
-    "SunsetTracksCrop.jpg",
-    "2009_-_EOW_EDOB.jpg",
-    "Kabel.jpg",
-    "J27_099_Bf_Twistesee,_Ausfsig_N1,_N2.jpg",
-    "Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg",
-    "L03_190_Abzw_Anger,_Weiche_02.jpg",
-    "Achszähler.jpg",
-    "Planausschnitt.jpg",
-    "Bahnübergang-de.jpg",
-    "Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg",
-    "Dülmen,_Börnste,_Eisenbahnlinie_Dortmund-Enschede_--_2015_--_9918.jpg",
-    "Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg",
-    "Haltfallverhindernd.jpg",
-    "anfangssperre.jpg",
-    "Hl_3b_Signal.jpg",
-    "Schienenkontakt_Siemens_DMK.jpg",
-    "Schienenkontakt_Bahnübergang_Bauform_MK_(Magnetschienenkontakt)_in_Vörie.jpg",
-    "Storage_battery_manual.jpg",
-    "J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg",
-    "146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg",
-    "Elektromechanisches_Motorzählwerk_für_Achszähler_von_Siemens.jpg",
-    "Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg",
-    "Technik_Relaisstellwerk_Köln_Kf-4038.jpg",
-    "Zwischensignal_FFM-Hoechst_Schnee.jpg",
-    "Nahverkehrszüge_Frankfurt.jpg"
+    "../QuizImages/WuS_Logo_L.jpg",
+    "../QuizImages/SunsetTracksCrop.jpg",
+    "../QuizImages/2009_-_EOW_EDOB.jpg",
+    "../QuizImages/Kabel.jpg",
+    "../QuizImages/J27_099_Bf_Twistesee,_Ausfsig_N1,_N2.jpg",
+    "../QuizImages/Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg",
+    "../QuizImages/L03_190_Abzw_Anger,_Weiche_02.jpg",
+    "../QuizImages/Achszähler.jpg",
+    "../QuizImages/Planausschnitt.jpg",
+    "../QuizImages/Bahnübergang-de.jpg",
+    "../QuizImages/Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg",
+    "../QuizImages/Dülmen,_Börnste,_Eisenbahnlinie_Dortmund-Enschede_--_2015_--_9918.jpg",
+    "../QuizImages/Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg",
+    "../QuizImages/Haltfallverhindernd.jpg",
+    "../QuizImages/anfangssperre.jpg",
+    "../QuizImages/Hl_3b_Signal.jpg",
+    "../QuizImages/Schienenkontakt_Siemens_DMK.jpg",
+    "../QuizImages/Schienenkontakt_Bahnübergang_Bauform_MK_(Magnetschienenkontakt)_in_Vörie.jpg",
+    "../QuizImages/Storage_battery_manual.jpg",
+    "../QuizImages/J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg",
+    "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg",
+    "../QuizImages/Elektromechanisches_Motorzählwerk_für_Achszähler_von_Siemens.jpg",
+    "../QuizImages/Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg",
+    "../QuizImages/Technik_Relaisstellwerk_Köln_Kf-4038.jpg",
+    "../QuizImages/Zwischensignal_FFM-Hoechst_Schnee.jpg",
+    "../QuizImages/Nahverkehrszüge_Frankfurt.jpg"
 ];
 
 function preloadImages(imageArray) {
@@ -44,7 +44,7 @@ const questions = [
             {text: "Fahrverbot aufgehoben", correct: true},
             {text: "Fahrt für Sperrfahrten", correct: false}
         ],
-        image: "WuS_Logo_L.jpg"
+        image: "../QuizImages/WuS_Logo_L.jpg"
     },
     {
         question: "Wie wird eine Aktiv-, Passivschaltung bei der GPE 'PZ 80' realisiert?",
@@ -57,7 +57,7 @@ const questions = [
                 correct: false
             }
         ],
-        image: "SunsetTracksCrop.jpg"
+        image: "../QuizImages/SunsetTracksCrop.jpg"
     },
     {
         question: "Wie hoch ist die restriktive Geschwindigkeit unter einer 1000 Hz-Beeinflussung mit der Zugart 'O'?",
@@ -77,7 +77,7 @@ const questions = [
             {text: "Weiche ist aufgefahren", correct: false},
             {text: "Gleisfreimeldung besetzt oder gestört", correct: true}
         ],
-        image: "2009_-_EOW_EDOB.jpg"
+        image: "../QuizImages/2009_-_EOW_EDOB.jpg"
     },
     {
         question: "Was bedeutet die Kennzahl 600 bei Eisenbahnsignalkabel?",
@@ -87,7 +87,7 @@ const questions = [
             {text: "Innenraumkabel", correct: false},
             {text: "Reduktionsfaktor von etwa 0,55 bei etwa 100 V/km", correct: true}
         ],
-        image: "Kabel.jpg"
+        image: "../QuizImages/Kabel.jpg"
     },
     {
         question: "Wie lang kann ein FTGS 46 Abschnitt mit Hilfe der Kasdakierung maximal sein?",
@@ -97,7 +97,7 @@ const questions = [
             {text: "1500 m", correct: false},
             {text: "700 m", correct: false}
         ],
-        image: "J27_099_Bf_Twistesee,_Ausfsig_N1,_N2.jpg"
+        image: "../QuizImages/J27_099_Bf_Twistesee,_Ausfsig_N1,_N2.jpg"
     },
     {
         question: "Wie groß darf das Klammerkopfspiel am Mittelverschluss sein?",
@@ -107,7 +107,7 @@ const questions = [
             {text: "1,5 - 2 mm", correct: true},
             {text: "1 - 1,5 mm", correct: false}
         ],
-        image: "Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
+        image: "../QuizImages/Doppelkreuzungsweichen_im_Rbf_München_Nord.jpg"
     },
     {
         question: "Welche Durchfahrrille muss an einer 190er Weiche, Schienenform S49 im abzweigenden Strang mindestens vorhanden sein?",
@@ -117,7 +117,7 @@ const questions = [
             {text: "50 mm", correct: false},
             {text: "62 mm", correct: false}
         ],
-        image: "L03_190_Abzw_Anger,_Weiche_02.jpg"
+        image: "../QuizImages/L03_190_Abzw_Anger,_Weiche_02.jpg"
     },
     {
         question: "Wie groß darf das Klammerkopfspiel am Spitzenverschluss sein?",
@@ -127,7 +127,7 @@ const questions = [
             {text: "0,75 - 1,25 mm", correct: false},
             {text: "0,25 - 0,75 mm", correct: false}
         ],
-        image: "SunsetTracksCrop.jpg"
+        image: "../QuizImages/SunsetTracksCrop.jpg"
     },
     {
         question: "Mit welcher Sendefrequenz wird ein ZP 43 betrieben?",
@@ -137,7 +137,7 @@ const questions = [
             {text: "43 kHz", correct: true},
             {text: "430 kHz", correct: false}
         ],
-        image: "Achszähler.jpg"
+        image: "../QuizImages/Achszähler.jpg"
     },
     {
         question: "Welches ist für Neuanlagen ein wichtiges Planungsregelwerk?",
@@ -147,7 +147,7 @@ const questions = [
             {text: "417", correct: false},
             {text: "967", correct: false}
         ],
-        image: "Planausschnitt.jpg"
+        image: "../QuizImages/Planausschnitt.jpg"
     },
     {
         question: "Welches Regelwerk ist das wichtigste im Bezug auf Bahnübergänge?",
@@ -157,7 +157,7 @@ const questions = [
             {text: "815", correct: true},
             {text: "818", correct: false}
         ],
-        image: "Bahnübergang-de.jpg"
+        image: "../QuizImages/Bahnübergang-de.jpg"
     },
     {
         question: "Mit wieviel Nm wird der Zungenkloben der Einheitsbeistellvorrichtung angezogen?",
@@ -167,7 +167,7 @@ const questions = [
             {text: "450 Nm", correct: false},
             {text: "100 Nm", correct: false}
         ],
-        image: "Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
+        image: "../QuizImages/Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
     },
     {
         question: "Welche Bedeutung hat die 8 in dem Regelwerksbezeichnung 892?",
@@ -177,7 +177,7 @@ const questions = [
             {text: "Modulgruppe", correct: false},
             {text: "Nebengruppe", correct: false}
         ],
-        image: "Dülmen,_Börnste,_Eisenbahnlinie_Dortmund-Enschede_--_2015_--_9918.jpg"
+        image: "../QuizImages/Dülmen,_Börnste,_Eisenbahnlinie_Dortmund-Enschede_--_2015_--_9918.jpg"
     },
     {
         question: "Mit welcher PZB Sicherung werden vorübergehende Langsamfahrstellen Kz 2 gesichert?",
@@ -187,7 +187,7 @@ const questions = [
             {text: "1000 Hz ständig wirksam an Lf1 und 150m vor Lf2 500 Hz ständig wirksam", correct: true},
             {text: "GÜ mit 2000 Hz 485m vor Lf2", correct: false}
         ],
-        image: "J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg"
+        image: "../QuizImages/J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg"
     },
     {
         question: "Woran erkennt der Fahrdienstleiter, dass sein Felderblock zum nächsten Bahnhof in Grundstellung ist?",
@@ -197,7 +197,7 @@ const questions = [
             {text: "Farbscheibe weiß", correct: true},
             {text: "Farbscheibe gelb", correct: false}
         ],
-        image: "Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg"
+        image: "../QuizImages/Mechanisches_Stellwerk_Bahnhof_Fridingen_(2018).jpg"
     },
     {
         question: "In welchem Schriftstück wird der Aufbau und die Ansprüche an Eisenbahnsignalkabeln festgehalten?",
@@ -207,7 +207,7 @@ const questions = [
             {text: "418 technisches Lastenheft", correct: false},
             {text: "419 technisches Kabelheft", correct: false}
         ],
-        image: "Kabel.jpg"
+        image: "../QuizImages/Kabel.jpg"
     },
     {
         question: "Welche besondere Eigenschaft haben PZB-Kabel?",
@@ -217,7 +217,7 @@ const questions = [
             {text: "2,5mm Ader Durchmesser", correct: false},
             {text: "besonders geringe Betriebsinduktivität", correct: false}
         ],
-        image: "Kabel.jpg"
+        image: "../QuizImages/Kabel.jpg"
     },
     {
         question: "Ab welcher Tiefe dürfen Kabelquerungen unter Gleisen durchgeführt werden?",
@@ -227,7 +227,7 @@ const questions = [
             {text: "ab 2,5 m unter SO", correct: false},
             {text: "ab 1 m unter SU", correct: true}
         ],
-        image: "Kabel.jpg"
+        image: "../QuizImages/Kabel.jpg"
     },
     {
         question: "Wie ist die optimale Säuredichte bei 20 Grad Celsius bei Bleiakkumulatoren?",
@@ -237,7 +237,7 @@ const questions = [
             {text: "1,25", correct: false},
             {text: "1,23", correct: false}
         ],
-        image: "Storage_battery_manual.jpg"
+        image: "../QuizImages/Storage_battery_manual.jpg"
     },
     {
         question: "Unter welchem Punkt, in einer Betra, findet man den Anlagenverantwortlichen?",
@@ -247,7 +247,7 @@ const questions = [
             {text: "7", correct: true},
             {text: "2", correct: false}
         ],
-        image: "Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
+        image: "../QuizImages/Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
     },
     {
         question: "Ab wann müssen Einträge vom Arbeits- und Störungsbuch in den Nachweis der vorübergehenden Änderungen übertragen werden?",
@@ -257,7 +257,7 @@ const questions = [
             {text: "ab dem 5. Tag", correct: false},
             {text: "ab dem 2. Tag", correct: false}
         ],
-        image: "Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
+        image: "../QuizImages/Baustelle_S-Bahn_Schönhauser_Allee,_Berlin_(7047921593).jpg"
     },
     {
         question: "Was bedeutet das abgebildete Symbol im Verschlussplan eines Dr S 2-Stellwerkes?",
@@ -270,7 +270,7 @@ const questions = [
             },
             {text: "Bei eingestellter Fahrstraße ist die Erlaubnisabgabe verschlossen", correct: false}
         ],
-        image: "Haltfallverhindernd.jpg"
+        image: "../QuizImages/Haltfallverhindernd.jpg"
     },
     {
         question: "Welche Sperre ist auf dem Bild abgebildet?",
@@ -280,7 +280,7 @@ const questions = [
             {text: "Anfangssperre", correct: true},
             {text: "Bahnhofswiederholungssperre", correct: false}
         ],
-        image: "anfangssperre.jpg"
+        image: "../QuizImages/anfangssperre.jpg"
     },
     {
         question: "Wie schnell darf ein Triebfahrzeugführer bei Hl 3b fahren?",
@@ -290,7 +290,7 @@ const questions = [
             {text: "60 km/h und ab dem nächsten Signal Fahrplangeschwindigkeit", correct: false},
             {text: "Fahrplangeschwindigkeit und ab dem nächsten Signal 40 bzw. 60 km/h", correct: false}
         ],
-        image: "Hl_3b_Signal.jpg"
+        image: "../QuizImages/Hl_3b_Signal.jpg"
     },
     {
         question: "Auf welche Kontaktweglänge wird der DMK mit magnetischen Einsätzen im Regelfall eingestellt?",
@@ -300,7 +300,7 @@ const questions = [
             {text: "165 mm", correct: true},
             {text: "200 mm", correct: false}
         ],
-        image: "Schienenkontakt_Siemens_DMK.jpg"
+        image: "../QuizImages/Schienenkontakt_Siemens_DMK.jpg"
     },
     {
         question: "Auf welche Kontaktweglänge wird der MK im Regelfall eingestellt?",
@@ -310,7 +310,7 @@ const questions = [
             {text: "165 mm", correct: false},
             {text: "199 mm", correct: false}
         ],
-        image: "Schienenkontakt_Bahnübergang_Bauform_MK_(Magnetschienenkontakt)_in_Vörie.jpg"
+        image: "../QuizImages/Schienenkontakt_Bahnübergang_Bauform_MK_(Magnetschienenkontakt)_in_Vörie.jpg"
     },
     {
         question: "Nach welcher Zeit muss ein Triebfahrzeug, nach einer 1000 Hz-Beeinflussung in der oberen Zugart, die Geschwindigkeit von 85 Km/h erreicht haben?",
@@ -320,7 +320,7 @@ const questions = [
             {text: "20 s", correct: false},
             {text: "45 s", correct: false}
         ],
-        image: "J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg"
+        image: "../QuizImages/J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg"
     },
     {
         question: "In welcher Richtlinie finde ich grundsätzlichen und spezifische Informationen über Gleisstromkreise der Firma Siemens?",
@@ -330,7 +330,7 @@ const questions = [
             {text: "892.9204 A20", correct: false},
             {text: "892.9205 A40", correct: false}
         ],
-        image: "146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
+        image: "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
     },
     {
         question: "Welche Relais sind in Grundstellung in der Motorzählwerksgruppe angezogen?",
@@ -340,7 +340,7 @@ const questions = [
             {text: "P1, P2, R, Fz 2", correct: false},
             {text: "Ü1, Ü2, R, P1, P2", correct: false}
         ],
-        image: "Elektromechanisches_Motorzählwerk_für_Achszähler_von_Siemens.jpg"
+        image: "../QuizImages/Elektromechanisches_Motorzählwerk_für_Achszähler_von_Siemens.jpg"
     },
     {
         question: "Mit welchen Frequenzen arbeitet die Fernübertragung bei der Motorzählwerksgruppe?",
@@ -350,7 +350,7 @@ const questions = [
             {text: "2500 Hz / 5000 Hz", correct: false},
             {text: "1000 Hz / 4000 Hz", correct: false}
         ],
-        image: "Elektromechanisches_Motorzählwerk_für_Achszähler_von_Siemens.jpg"
+        image: "../QuizImages/Elektromechanisches_Motorzählwerk_für_Achszähler_von_Siemens.jpg"
     },
     {
         question: "Mit was für einem Drehmoment wird der DEK 43 an der Schiene befestigt?",
@@ -360,7 +360,7 @@ const questions = [
             {text: "45 Nm", correct: true},
             {text: "35 Nm", correct: false}
         ],
-        image: "Achszähler.jpg"
+        image: "../QuizImages/Achszähler.jpg"
     },
     {
         question: "Bei dem GMP 900 handelt es sich um ein",
@@ -370,7 +370,7 @@ const questions = [
             {text: "Schaltkontakt", correct: false},
             {text: "Weichenantrieb", correct: false}
         ],
-        image: "SunsetTracksCrop.jpg"
+        image: "../QuizImages/SunsetTracksCrop.jpg"
     },
     {
         question: "Wie lang ist die Messstrecke bei einer La mit der KZ 8 und einer eingestellten Zeit von 1,2 Sekunden bei der PZ 80",
@@ -380,7 +380,7 @@ const questions = [
             {text: "42,4 m", correct: true},
             {text: "26,5 m", correct: false}
         ],
-        image: "J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg"
+        image: "../QuizImages/J32_957_Bft_Leipzig_Nord,_Sig_ZS301,_N302.jpg"
     },
     {
         question: "Welchen Bohrlochdurchmesser benötige ich zum Anbringen von Schutzerden an der Schiene?",
@@ -390,7 +390,7 @@ const questions = [
             {text: "13 mm", correct: false},
             {text: "25 mm", correct: false}
         ],
-        image: "Zwischensignal_FFM-Hoechst_Schnee.jpg"
+        image: "../QuizImages/Zwischensignal_FFM-Hoechst_Schnee.jpg"
     },
     {
         question: "Woran lässt sich eine Betriebserde im Gleis erkennen?",
@@ -400,7 +400,7 @@ const questions = [
             {text: "An dem Geruch nach verbranntem Fleisch", correct: false},
             {text: "An einem bunten Mast", correct: false}
         ],
-        image: "Nahverkehrszüge_Frankfurt.jpg"
+        image: "../QuizImages/Nahverkehrszüge_Frankfurt.jpg"
     },
     {
         question: "Wie nennt sich der Verbinder an der Flügelschiene?",
@@ -410,7 +410,7 @@ const questions = [
             {text: "U-Verbinder", correct: false},
             {text: "Diagonalverbinder", correct: false}
         ],
-        image: "146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
+        image: "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
     },
     {
         question: "Mit welchem Drehmoment werden die Anschlussseile von Gleisstromkreisen an einem GAG befestigt?",
@@ -420,7 +420,7 @@ const questions = [
             {text: "50 Nm", correct: false},
             {text: "65 Nm", correct: false}
         ],
-        image: "146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
+        image: "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
     },
     {
         question: "Welche Schienenhöhe haben wir bei der UIC 60/ 60 E2 Schiene?",
@@ -430,7 +430,7 @@ const questions = [
             {text: "172 mm", correct: true},
             {text: "185 mm", correct: false}
         ],
-        image: "SunsetTracksCrop.jpg"
+        image: "../QuizImages/SunsetTracksCrop.jpg"
     },
     {
         question: "Wie wird der Längswasserschutz einem Sternvierer verseiltem Kabel realisiert?",
@@ -440,7 +440,7 @@ const questions = [
             {text: "Mittels der Murray-Methode", correct: false},
             {text: "Mittels dickerer Isolierung", correct: false}
         ],
-        image: "Kabel.jpg"
+        image: "../QuizImages/Kabel.jpg"
     },
     {
         question: "Bei Eisenbahnsignalkabel gibt es die Reduktionsfaktoren:",
@@ -450,7 +450,7 @@ const questions = [
             {text: "A / B / C", correct: false},
             {text: "01.02.2003", correct: false}
         ],
-        image: "Kabel.jpg"
+        image: "../QuizImages/Kabel.jpg"
     },
     {
         question: "Bis zu welcher Prüfspannung ist das Tischfeld 2000 in einem SpDrS60 Stellwerk ausgelegt?",
@@ -460,7 +460,7 @@ const questions = [
             {text: "1 kV", correct: false},
             {text: "150 V", correct: false}
         ],
-        image: "Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg"
+        image: "../QuizImages/Spurplan_60_Stellwerk_im_Bahnhof_Steinhausen.jpg"
     },
     {
         question: "Wie viele Relais können maximal in einer Vollgruppe in einem SpDrS60 Stellwerk sein?",
@@ -470,7 +470,7 @@ const questions = [
             {text: "25", correct: false},
             {text: "35", correct: true}
         ],
-        image: "Technik_Relaisstellwerk_Köln_Kf-4038.jpg"
+        image: "../QuizImages/Technik_Relaisstellwerk_Köln_Kf-4038.jpg"
     },
     {
         question: "Bei Signalen schaltet man von Tag und Nachtspannung, wie hoch sind beide Spannungen in einem Dr Sp S60-Stellwerk?",
@@ -480,7 +480,7 @@ const questions = [
             {text: "380 V / 220 V", correct: false},
             {text: "220 V / 60 V", correct: false}
         ],
-        image: "146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
+        image: "../QuizImages/146_271_Köln_Hauptbahnhof_2015-12-17-02.jpg"
     },
     {
         question: "Mit welcher Schrittfrequenz werden die Bitmuster in FTGS gesendet?",
@@ -490,7 +490,7 @@ const questions = [
             {text: "103,5 Hz", correct: true},
             {text: "100 Hz", correct: false}
         ],
-        image: "Zwischensignal_FFM-Hoechst_Schnee.jpg"
+        image: "../QuizImages/Zwischensignal_FFM-Hoechst_Schnee.jpg"
     }
 ];
 
@@ -585,29 +585,29 @@ function showResults() {
 
     let imageUrl, buttonText, buttonOnClick, resultText;
 
-    if (correctAnswers >= 9) {
-        imageUrl = 'LOGO.svg';
+    if (correctAnswers >= 8) {
+        imageUrl = '../QuizImages/LOGO.svg';
         resultText = "Wow,das war spitze! Vielleicht solltest du dich als Trainer bei uns bewerben!";
         buttonText = 'Preis abholen';
         buttonOnClick = () => {
             window.parent.postMessage('prizeCollected', '*');
         };
     } else if (correctAnswers >= 7) {
-        imageUrl = 'LOGO.svg';
+        imageUrl = '../QuizImages/LOGO.svg';
         resultText = "Du scheinst dein Zeug zu können! Ein letztes Signal und du wirst zum Profi!";
         buttonText = 'Zurück zum Start';
         buttonOnClick = () => {
             window.parent.postMessage('quizFailed', '*');
         };
     } else if (correctAnswers >= 3) {
-        imageUrl = 'LOGO.svg';
+        imageUrl = '../QuizImages/LOGO.svg';
         resultText = "Ein paar Weichen musst du wohl noch richtig stellen!";
         buttonText = 'Zurück zum Start';
         buttonOnClick = () => {
             window.parent.postMessage('quizFailed', '*');
         };
     } else {
-        imageUrl = 'LOGO.svg';
+        imageUrl = '../QuizImages/LOGO.svg';
         resultText = "Das war wohl etwas schwer, better luck next time!";
         buttonText = 'Zurück zum Start';
         buttonOnClick = () => {
@@ -677,5 +677,6 @@ function resetInactivityTimer() {
 
 // Setzt Event-Listener für **Mausklick-Aktivität**
 function setupInactivityListeners() {
-    document.addEventListener('click', resetInactivityTimer); // Nur Maus-Klicks
+    document.addEventListener('click', resetInactivityTimer);
+    document.addEventListener('touchstart', resetInactivityTimer);
 }
