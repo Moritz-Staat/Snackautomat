@@ -121,6 +121,67 @@
         }, 1500);
     }
 
+    function startConfetti() {
+        var canvas = document.createElement('canvas');
+        canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;';
+        document.body.appendChild(canvas);
+
+        var ctx = canvas.getContext('2d');
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        var colors = ['#62b55a', '#2e7d32', '#ffd700', '#ff6b35', '#4fc3f7', '#ffffff'];
+        var particles = [];
+        for (var i = 0; i < 130; i++) {
+            particles.push({
+                x:     Math.random() * canvas.width,
+                y:     Math.random() * canvas.height - canvas.height,
+                w:     Math.random() * 12 + 6,
+                h:     Math.random() * 6 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 3 + 2,
+                angle: Math.random() * Math.PI * 2,
+                spin:  (Math.random() - 0.5) * 0.2,
+                drift: (Math.random() - 0.5) * 1.5
+            });
+        }
+
+        var start    = null;
+        var duration = 4000;
+
+        function frame(ts) {
+            if (!start) start = ts;
+            var elapsed = ts - start;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            var alive = false;
+            particles.forEach(function (p) {
+                p.y += p.speed;
+                p.x += p.drift;
+                p.angle += p.spin;
+                if (p.y < canvas.height + 20) alive = true;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.fillStyle = p.color;
+                if (elapsed > duration * 0.7) {
+                    ctx.globalAlpha = 1 - (elapsed - duration * 0.7) / (duration * 0.3);
+                }
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            });
+
+            if (elapsed < duration && alive) {
+                requestAnimationFrame(frame);
+            } else {
+                canvas.parentNode && canvas.parentNode.removeChild(canvas);
+            }
+        }
+
+        requestAnimationFrame(frame);
+    }
+
     function showResults() {
         clearQuestionTimer();
 
@@ -129,6 +190,8 @@
             .sort(function (a, b) { return b.min - a.min; })
             .find(function (t) { return numCorrect >= t.min; })
             || cfg.tiers[cfg.tiers.length - 1];
+
+        if (tier.win) startConfetti();
 
         var container = document.getElementById('question-container');
         aBtns.innerHTML = '';
