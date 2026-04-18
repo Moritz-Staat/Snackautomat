@@ -2,11 +2,11 @@
     'use strict';
 
     var cfg, shuffled, idx, numCorrect;
-    var blurTimer, inactiveTimer;
+    var blurTimer, inactiveTimer, questionTimer;
     var isBlurred = false;
 
     // Cached DOM references — populated once in init()
-    var qText, aBtns, qImg, pBar, pText, blurEl;
+    var qText, aBtns, qImg, pBar, pText, blurEl, timerBar;
 
     /* Fisher-Yates shuffle — O(n), unbiased */
     function shuffle(arr) {
@@ -29,6 +29,38 @@
         /* Preload only the 10 selected question images, not all 40+ */
         shuffled.forEach(function (q) { preload(q.image); });
         showQuestion(shuffled[0]);
+    }
+
+    function startQuestionTimer() {
+        clearQuestionTimer();
+        var seconds = cfg.timerSeconds;
+        timerBar.style.transition = 'none';
+        timerBar.style.width = '100%';
+        timerBar.style.backgroundColor = '#62b55a';
+        timerBar.offsetWidth; // force reflow to restart animation
+        timerBar.style.transition = 'width ' + seconds + 's linear, background-color ' + (seconds * 0.4) + 's ease ' + (seconds * 0.5) + 's';
+        timerBar.style.width = '0%';
+        timerBar.style.backgroundColor = '#c62828';
+        questionTimer = setTimeout(onTimerExpired, seconds * 1000);
+    }
+
+    function clearQuestionTimer() {
+        clearTimeout(questionTimer);
+        timerBar.style.transition = 'none';
+        timerBar.style.width = '0%';
+    }
+
+    function onTimerExpired() {
+        aBtns.querySelectorAll('.btn').forEach(function (b) {
+            b.disabled = true;
+            if (b.dataset.c === '1') b.classList.add('btn-hint');
+        });
+        resetTimer();
+        setTimeout(function () {
+            idx++;
+            if (idx < shuffled.length) showQuestion(shuffled[idx]);
+            else showResults();
+        }, 1500);
     }
 
     function showQuestion(q) {
@@ -57,12 +89,15 @@
         /* Preload the next question image while user reads the current one */
         var next = shuffled[idx + 1];
         if (next) preload(next.image);
+        startQuestionTimer();
     }
 
     /* Single delegated handler — one listener instead of one per button */
     function onAnswer(e) {
         var btn = e.target.closest('.btn');
         if (!btn || btn.disabled) return;
+
+        clearQuestionTimer();
 
         var won = btn.dataset.c === '1';
         if (won) numCorrect++;
@@ -87,6 +122,8 @@
     }
 
     function showResults() {
+        clearQuestionTimer();
+
         /* Find the tier whose threshold the player reached */
         var tier = cfg.tiers.slice()
             .sort(function (a, b) { return b.min - a.min; })
@@ -146,12 +183,13 @@
     }
 
     function init() {
-        qText  = document.getElementById('question-text');
-        aBtns  = document.getElementById('answer-buttons');
-        qImg   = document.getElementById('question-image');
-        pBar   = document.getElementById('progress-bar');
-        pText  = document.getElementById('progress-text');
-        blurEl = document.getElementById('blur-overlay');
+        qText    = document.getElementById('question-text');
+        aBtns    = document.getElementById('answer-buttons');
+        qImg     = document.getElementById('question-image');
+        pBar     = document.getElementById('progress-bar');
+        pText    = document.getElementById('progress-text');
+        blurEl   = document.getElementById('blur-overlay');
+        timerBar = document.getElementById('timer-bar');
 
         /* One delegated listener on the container — handles all answer buttons */
         aBtns.addEventListener('click', onAnswer);
@@ -165,7 +203,7 @@
 
     /**
      * Entry point — called from each level's script.js
-     * config = { questions: [...], tiers: [{min, win, text}, ...] }
+     * config = { questions: [...], tiers: [{min, win, text}, ...], timerSeconds: number }
      * tiers must be sorted by min descending; last entry is the fallback (min: 0)
      */
     window.initQuiz = function (config) {
