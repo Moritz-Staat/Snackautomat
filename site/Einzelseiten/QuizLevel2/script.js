@@ -580,6 +580,7 @@ const questions = [
 ];
 
 initQuiz({
+    timerSeconds: AUTOMAT_CONFIG.frage_timer.level2,
     questions: questions,
     tiers: [
     {
