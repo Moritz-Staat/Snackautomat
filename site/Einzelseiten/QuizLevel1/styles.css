@@ -152,3 +152,20 @@ body {
     transform: translateZ(0);
     transition: filter 0.3s ease;
 }
+
+#timer-container {
+    background: #e0e0e0;
+    border-radius: 0.3125rem;
+    height: 0.75rem;
+    margin-top: 0.5rem;
+    width: 100%;
+    max-width: 90rem;
+    overflow: hidden;
+}
+
+#timer-bar {
+    height: 100%;
+    width: 100%;
+    border-radius: 0.3125rem;
+    background-color: #62b55a;
+}
