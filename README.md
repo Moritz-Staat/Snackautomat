@@ -19,6 +19,8 @@ Ein browserbasierter Quiz-Automat für Messen und Events. Besucher beantworten W
    - [Level-Seiten](#level-seiten-level1html--level3html)
    - [Quiz-Engine](#quiz-engine-quiz-corejs)
    - [Inaktivitäts-Blur & Auto-Redirect](#inaktivitäts-blur--auto-redirect)
+   - [Frage-Timer](#frage-timer)
+   - [Gewinn-Animation](#gewinn-animation)
    - [Ergebnisscreen & Tier-System](#ergebnisscreen--tier-system)
    - [Preisauswahl-Popup](#preisauswahl-popup)
    - [Relay-Auslösung](#relay-auslösung)
@@ -98,6 +100,12 @@ const AUTOMAT_CONFIG = {
     },
 
     min_richtig: 8,  // Mindestanzahl richtiger Antworten für einen Gewinn
+
+    frage_timer: {
+        level1: 15,   // Sekunden pro Frage (Anfänger)
+        level2: 25,   // Sekunden pro Frage (Fortgeschritten)
+        level3: 40    // Sekunden pro Frage (Profi)
+    },
 
     relais_ip: "http://192.168.0.120",
 
@@ -255,6 +263,28 @@ Auf den Quiz-Seiten gibt es kein Screensaver-Video, stattdessen ein zweistufiges
 | 30 Sekunden | Automatische Weiterleitung zu `Automat.html` |
 
 Jede Berührung oder jeder Klick setzt beide Timer zurück und entfernt den Blur sofort.
+
+---
+
+### Frage-Timer
+
+Jede Frage hat einen sichtbaren Countdown-Balken direkt über dem Fortschrittsbalken. Läuft die Zeit ab, ohne dass eine Antwort gegeben wurde, zählt die Frage als falsch und das Quiz geht automatisch weiter.
+
+Der Balken läuft von Grün nach Rot. Die Zeit pro Frage ist in `config.js` unter `frage_timer` individuell pro Level konfigurierbar:
+
+| Level | Standard |
+|-------|----------|
+| Level 1 – Anfänger | 15 Sekunden |
+| Level 2 – Fortgeschritten | 25 Sekunden |
+| Level 3 – Profi | 40 Sekunden |
+
+Der Frage-Timer und das bestehende Inaktivitäts-System ergänzen sich: Läuft jemand weg, greift nach 20 Sekunden der Blur und nach 30 Sekunden die Weiterleitung zur Startseite.
+
+---
+
+### Gewinn-Animation
+
+Bei einem Gewinn (≥ `min_richtig` richtige Antworten) startet automatisch eine Konfetti-Animation. 130 bunte Partikel fallen über den Bildschirm und blenden nach 4 Sekunden sanft aus. Die Animation läuft als Canvas-Overlay (`z-index: 999`) und blockiert keine Interaktionen.
 
 ---
 
