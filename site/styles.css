@@ -75,7 +75,7 @@ body {
 .schriftunten {
     font-size: 5rem;
     color: white;
-    margin-top: 12.5rem;
+    margin-top: clamp(2rem, 5vw, 12.5rem);
     font-family: 'Roboto-Bold';
     text-align: center;
 }
@@ -93,8 +93,9 @@ body {
 
 .level3, .level2, .level1 {
     position: relative;
-    width: 35rem;
-    height: 75rem;
+    width: clamp(15rem, 27vw, 35rem);
+    aspect-ratio: 7 / 15;
+    height: auto;
     border: 0.1875rem solid #62b55a;
     border-radius: 5rem;
     transition: border-color 0.3s ease;
@@ -206,7 +207,7 @@ a.level1link, a.level2link, a.level3link {
 
 /* Überschrift stylen*/
 h1 {
-font-size: 20rem;
+font-size: clamp(4rem, 12vw, 20rem);
     color:white;
     transform-origin: center;
     display: inline-block;
@@ -218,7 +219,7 @@ h2 {
     color: white;
     display: inline-block;
     transform-origin: center;
-    margin-top: -15rem;
+    margin-top: -5vw;
     font-family: 'Roboto-Bold';
 }
 h3{
