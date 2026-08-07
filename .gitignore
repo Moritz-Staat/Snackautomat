@@ -1,2 +1,9 @@
-# Lokale Konfiguration (enthält sensible Daten — nicht ins Repo!)
-site/config.js
+# Lokale Laufzeitkonfiguration (PINs, Relais-IP) — nicht ins Repo!
+# Die Datei ist optional; ohne sie greifen die Voreinstellungen aus
+# src/lib/config.ts und das Quiz läuft trotzdem.
+/config.local.js
+
+node_modules/
+
+# dist/ wird bewusst NICHT ignoriert: der Messe-PC soll ohne npm install
+# und ohne Internet lauffähig sein. Siehe README, Abschnitt Deployment.

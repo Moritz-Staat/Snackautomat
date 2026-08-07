@@ -1,0 +1,131 @@
+/*
+ * Gemeinsame Grundlage aller Seiten.
+ *
+ * Kernpunkt fuer den Messebetrieb: der Automat haengt an einem 4K-Panel im
+ * Hochformat (2160x3840). Vorher waren saemtliche Groessen feste rem-Werte bei
+ * unveraenderter Wurzel-Schriftgroesse von 16px — auf dem Panel wurde dadurch
+ * alles winzig und der Inhalt nutzte kaum die halbe Breite.
+ *
+ * Deshalb skaliert die Wurzel-Schriftgroesse jetzt mit dem Viewport. Alle
+ * rem-Angaben in den uebrigen Dateien wachsen dadurch automatisch mit, ohne
+ * dass irgendwo Pixelwerte nachgezogen werden muessen.
+ *
+ * Warum min(vw, vh): rein breitenbasiert wuerde es auf einem Querformat-
+ * Testmonitor vertikal ueberlaufen. Der kleinere der beiden Werte gewinnt,
+ * damit das Layout auf beiden Seitenverhaeltnissen sitzt.
+ *
+ *   2160 x 3840 (Kiosk)   -> min(32.4, 84.5) = 32.4px
+ *   1920 x 1080 (Test)    -> min(28.8, 23.8) = 23.8px
+ */
+html {
+    font-size: clamp(15px, min(1.5vw, 2.2vh), 40px);
+}
+
+@font-face {
+    font-family: 'Rajdhani-Bold';
+    src: url('/fonts/Rajdhani-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Rajdhani-SemiBold';
+    src: url('/fonts/Rajdhani-SemiBold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto-Bold';
+    src: url('/fonts/Roboto-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Kiosk-Grundverhalten: keine Textauswahl, kein Overscroll, kein Blaulicht
+   beim Antippen — der Automat wird ausschliesslich per Finger bedient. */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    -webkit-user-select: none;
+    user-select: none;
+    overscroll-behavior: none;
+}
+
+/* ── PIN-Modal (Startseite und Level-Seiten identisch) ──────────────────── */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    inset: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 3.75rem;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 1.25rem;
+    border: 0.125rem solid #888;
+    width: 80%;
+    max-width: 22rem;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#pinInput {
+    padding: 0.625rem;
+    font-size: 1.25rem;
+    margin: 0.625rem 0;
+    width: 80%;
+}
+
+#numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+}
+
+#numpad button {
+    padding: 1.25rem;
+    font-size: 1.25rem;
+    background-color: #646363;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+#numpad button:active {
+    background-color: #505050;
+}
+
+/* Rote Umrandung bei falscher PIN */
+.error-border {
+    border: 0.125rem solid red;
+}
+
+.blurred {
+    filter: blur(0.3125rem);
+}

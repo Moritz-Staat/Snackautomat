@@ -1,0 +1,181 @@
+@import './base.css';
+
+/*
+ * Level-Seite: Rahmen um das Quiz-iframe, plus Preisauswahl-Popup.
+ *
+ * Vorher standen hier feste Maße, die per Trial-and-Error auf genau einen
+ * Monitor getuned waren:
+ *
+ *     .quiz-container { margin-top: -20rem; height: 180rem; width: 100rem; }
+ *
+ * Bei 16px Wurzelgroeße sind das 2880x1600px mit 320px negativem Rand — auf
+ * dem 4K-Panel im Hochformat passte davon nichts. Jetzt haengt alles am
+ * Viewport, der negative Rand ist ersatzlos weg.
+ *
+ * Alle drei Level teilen sich diese Datei.
+ */
+
+body,
+html {
+    margin: 0;
+    height: 100%;
+}
+
+#wholepage {
+    background-image: url('/Images/Wallpaper_Automat.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#wholepage.blurred {
+    filter: blur(0.3125rem);
+}
+
+#mainContent {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quiz-container {
+    /* 80vh statt mehr: darunter liegt die fixierte Home-Schaltflaeche, die
+       sonst unter den unteren iframe-Rand geriet. */
+    width: min(92vw, 110rem);
+    height: min(80vh, 190rem);
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+    background: white;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* ── Home-Schaltflaeche unten links ─────────────────────────────────────── */
+
+#homesweethome {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.homesweethome {
+    height: 5rem;
+    width: 5rem;
+    display: block;
+}
+
+.Abbrechen {
+    font-size: 1.8rem;
+    margin: 0;
+    font-family: 'Rajdhani-SemiBold', sans-serif;
+    color: black;
+}
+
+/* ── Logo unten rechts (oeffnet das PIN-Modal) ──────────────────────────── */
+
+.logo {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 5rem;
+    height: 5rem;
+}
+
+/* ── Preisauswahl nach dem Quiz ─────────────────────────────────────────── */
+
+.preise {
+    display: none;
+}
+
+.preiseshown {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+#popup {
+    position: fixed;
+    inset: 0;
+    box-sizing: border-box;
+    padding: 6vh 6vw;
+    background-image: url('/Images/Wallpaper_Automat.png');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+}
+
+#popupText {
+    font-family: 'Rajdhani-SemiBold', sans-serif;
+    font-size: 4.5rem;
+    line-height: 1.3;
+    color: black;
+    margin: 0;
+    max-width: 40ch;
+}
+
+#popup img {
+    width: min(40%, 45rem);
+    height: auto;
+}
+
+#popupButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4rem;
+}
+
+#normalButton,
+#premiumButton {
+    min-width: 22rem;
+    min-height: 8rem;
+    padding: 1rem 3rem;
+    border: none;
+    border-radius: 4rem;
+    cursor: pointer;
+    font-size: 3rem;
+    font-family: 'Rajdhani-SemiBold', sans-serif;
+    color: white;
+    margin: 0;
+}
+
+#normalButton {
+    background-color: #646363;
+}
+
+#premiumButton {
+    background-color: #62b55a;
+}
+
+#normalButton:active,
+#premiumButton:active {
+    filter: brightness(0.85);
+}

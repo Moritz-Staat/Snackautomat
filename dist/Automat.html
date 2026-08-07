@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <script src="/config.local.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris-O-Mat</title>
+  <script type="module" crossorigin src="/dist/assets/automat-DL4zLuJL.js"></script>
+  <link rel="modulepreload" crossorigin href="/dist/assets/dom-BacjsX2u.js">
+  <link rel="modulepreload" crossorigin href="/dist/assets/storage-D7bdfMcD.js">
+  <link rel="stylesheet" crossorigin href="/dist/assets/automat-TN5EY_rP.css">
+</head>
+<body>
+<div id="wholepage">
+    <div id="überschriften">
+        <h1 id="animated-h1">Chris-O-Mat</h1>
+        <h2>Stelle dich den Fragen des Meistertrainers!</h2>
+    </div>
+    <div class="container">
+        <div class="quiz-options">
+            <a href="./Einzelseiten/level1.html" class="level1link">
+                <div class="level1">
+                    <h3 class="levelschriften">Anfänger</h3>
+                    <img src="/Images/01.svg" alt="" class="my-svg">
+                </div>
+            </a>
+
+            <a href="./Einzelseiten/level2.html" class="level2link">
+                <div class="level2">
+                    <h3 class="levelschriften">Fortgeschritten</h3>
+                    <img src="/Images/03.svg" alt="" class="my-svg">
+                </div>
+            </a>
+
+            <a href="./Einzelseiten/level3.html" class="level3link">
+                <div class="level3">
+                    <h3 class="levelschriften">Profi</h3>
+                    <img src="/Images/02.svg" alt="" class="my-svg">
+                </div>
+            </a>
+        </div>
+        <h2 class="schriftunten">Gewinne coole Preise!</h2>
+        <div id="marinus">
+            <img src="/Images/grünebirne.svg" id="zählstand" alt="">
+        </div>
+    </div>
+</div>
+<div id="screensaver" class="hidden">
+    <video id="screensaverVideo" muted playsinline></video>
+</div>
+<img src="/Images/WuS_Logo.svg" alt="" class="logo" id="logo">
+<div id="pinModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Bitte geben Sie Ihre PIN ein:</p>
+        <input type="password" id="pinInput" readonly>
+        <div id="numpad">
+            <button class="num">1</button>
+            <button class="num">2</button>
+            <button class="num">3</button>
+            <button class="num">4</button>
+            <button class="num">5</button>
+            <button class="num">6</button>
+            <button class="num">7</button>
+            <button class="num">8</button>
+            <button class="num">9</button>
+            <button class="num">0</button>
+            <button id="backspace">⌫</button>
+            <button id="submitPin">Eingabe</button>
+        </div>
+    </div>
+</div>
+
+<div id="statsModal" class="modal">
+    <div class="modal-content stats-modal-content">
+        <span class="close" id="statsClose">&times;</span>
+        <h3 class="stats-title">Statistiken</h3>
+        <table class="stats-table">
+            <tr>
+                <td>Level 1 &ndash; Anf&auml;nger</td>
+                <td id="stat-level1">–</td>
+            </tr>
+            <tr>
+                <td>Level 2 &ndash; Fortgeschritten</td>
+                <td id="stat-level2">–</td>
+            </tr>
+            <tr>
+                <td>Level 3 &ndash; Profi</td>
+                <td id="stat-level3">–</td>
+            </tr>
+            <tr>
+                <td>Trostpreise</td>
+                <td id="stat-loses">–</td>
+            </tr>
+            <tr>
+                <td>Kontaktanfragen</td>
+                <td id="stat-kontakt">–</td>
+            </tr>
+        </table>
+        <button id="statsCloseBtn">Schlie&szlig;en</button>
+    </div>
+</div>
+
+</body>
+</html>

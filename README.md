@@ -38,7 +38,7 @@ Besucher tippt auf Level → Quiz startet → 10 Fragen → Ergebnis
   < 8 richtig → Trostpreis-Relay → automatische Rückkehr zur Startseite
 ```
 
-Die Anwendung läuft vollständig im Browser (Vanilla JS, kein Framework, kein Build-Step) und kommuniziert per HTTP POST mit einem lokalen Microcontroller, der die physischen Relais steuert.
+Die Anwendung ist in **TypeScript** geschrieben und wird mit **Vite** zu statischem HTML/CSS/JS gebaut. Zur Laufzeit läuft alles im Browser — kein Server, keine Datenbank, kein Internet. Der einzige Netzwerkzugriff geht per HTTP POST an einen Microcontroller im lokalen Netz, der die physischen Relais steuert; ist er nicht erreichbar, läuft der Automat unverändert weiter.
 
 ---
 
@@ -46,95 +46,108 @@ Die Anwendung läuft vollständig im Browser (Vanilla JS, kein Framework, kein B
 
 ```
 Snackautomat/
-├── site/
-│   ├── Automat.html            # Startseite / Levelauswahl
-│   ├── script.js               # Logik der Startseite
-│   ├── styles.css              # Styles der Startseite
-│   ├── config.js               # ⚠ Lokale Konfiguration (nicht im Repo, siehe .gitignore)
-│   ├── config.example.js       # Vorlage für config.js
-│   └── Einzelseiten/
-│       ├── javalevel.js        # Gemeinsamer Level-Wrapper (für alle 3 Level)
-│       ├── quiz-core.js        # Gemeinsame Quiz-Engine (für alle 3 Level)
-│       ├── stylelevel1/2/3.css # Styles der Level-Seiten
-│       ├── level1.html         # Level-1-Seite (Anfänger)
-│       ├── level2.html         # Level-2-Seite (Fortgeschritten)
-│       ├── level3.html         # Level-3-Seite (Profi)
-│       ├── QuizLevel1/
-│       │   ├── index.html      # Quiz-Iframe Level 1
-│       │   ├── script.js       # Fragenkatalog + Tier-Konfiguration (43 Fragen)
-│       │   └── styles.css      # Quiz-Iframe-Styles
-│       ├── QuizLevel2/         # Analog Level 1 (55 Fragen)
-│       ├── QuizLevel3/         # Analog Level 1 (45 Fragen)
-│       ├── QuizImages/         # Gemeinsamer Bilderordner für alle 3 Level (43 Bilder)
-│       └── TESTH/              # Testseite (isoliertes Quiz ohne Relay)
-├── Images/                     # Globale Bilder (Logos, Ampelbirnen, Screensaver-Videos)
-├── fonts/                      # Schriftarten (Rajdhani, Roboto)
-├── Backend/                    # Testseite für Relay-HTTP-Requests
-├── .gitignore
+├── src/                            # Quellcode (TypeScript)
+│   ├── lib/
+│   │   ├── types.ts                # Gemeinsame Typen (Question, Tier, AutomatConfig …)
+│   │   ├── config.ts               # Voreinstellungen + optionales Runtime-Override
+│   │   ├── quiz-core.ts            # Quiz-Engine (für alle 3 Level)
+│   │   ├── level-page.ts           # Level-Wrapper (für alle 3 Level)
+│   │   ├── pin-modal.ts            # PIN-Modal mit Ziffernblock
+│   │   ├── relay.ts                # Relais-Aufrufe (fire-and-forget)
+│   │   ├── storage.ts              # Zählerstände im localStorage
+│   │   ├── confetti.ts             # Gewinn-Animation
+│   │   └── dom.ts                  # Typisierte DOM-Helfer
+│   ├── data/
+│   │   ├── level1.ts               # Fragenkatalog + Tiers (43 Fragen)
+│   │   ├── level2.ts               # (55 Fragen)
+│   │   └── level3.ts               # (45 Fragen)
+│   └── pages/                      # Vite-Root: HTML-Seiten + Einstiegsskripte
+│       ├── Automat.html            # Startseite / Levelauswahl
+│       ├── automat.ts              # Screensaver, Ampel, Statistik, PIN
+│       ├── automat.css
+│       ├── styles/
+│       │   ├── base.css            # Fluide Wurzelgröße, Fonts, PIN-Modal
+│       │   ├── level.css           # Level-Seiten (alle drei)
+│       │   └── quiz.css            # Quiz-Seiten (alle drei)
+│       └── Einzelseiten/
+│           ├── level1..3.html      # Level-Seiten (Anfänger / Fortgeschritten / Profi)
+│           ├── level1..3.ts        # Einstieg je Level
+│           └── QuizLevel1..3/
+│               ├── index.html      # Quiz-Iframe
+│               └── main.ts         # Einstieg je Quiz
+├── dist/                           # Build-Ergebnis — im Repo, siehe Deployment
+├── QuizImages/                     # Fragebilder (43 Bilder)
+├── Images/                         # Logos, Ampelbirnen, Screensaver-Videos
+├── fonts/                          # Schriftarten (Rajdhani, Roboto)
+├── hilfsdateien/                   # Testseiten, nicht Teil des Builds
+├── Backend/                        # Testseite für Relay-HTTP-Requests
+├── config.local.example.js         # Vorlage für die lokale Laufzeitkonfiguration
+├── vite.config.ts
+├── tsconfig.json
+├── package.json
 └── README.md
 ```
+
+### Warum die Medien nicht gebündelt werden
+
+`Images/`, `QuizImages/` und `fonts/` bleiben außerhalb von `dist/` und werden root-absolut referenziert (`/Images/…`). Allein die drei Screensaver-Videos wiegen rund 123 MB — würde Vite sie in ein mitcommittetes `dist/` kopieren, verdoppelte sich die Repo-Größe bei jedem Build. So bleibt `dist/` unter 100 kB.
+
+Daraus folgt die Anforderung ans Deployment: **Docroot ist das Repo-Root**, Einstiegspunkt `/dist/Automat.html`.
 
 ---
 
 ## Konfiguration
 
-Alle sensiblen und installationsspezifischen Werte stehen in `site/config.js`. Diese Datei ist in `.gitignore` eingetragen und wird **nicht** ins Repository gepusht.
+Die Konfiguration ist zweigeteilt:
+
+| | wo | im Repo? |
+|---|---|---|
+| **Voreinstellungen** — Timer, `min_richtig`, Relais-Endpunkte | `src/lib/config.ts`, fest einkompiliert | ja |
+| **Geheimnisse** — Admin-PINs, Relais-IP | `config.local.js` im Repo-Root | nein (`.gitignore`) |
+
+**`config.local.js` ist optional.** Fehlt sie, greifen die Voreinstellungen und der Automat läuft normal — lediglich die Admin-PIN-Funktionen sind inaktiv und Relais-Aufrufe werden übersprungen. Das ist Absicht: vorher brach die Seite ohne Konfigurationsdatei mit einem `ReferenceError` ab und zeigte gar keine Fragen mehr an.
 
 ### Einrichtung
 
 ```bash
-cp site/config.example.js site/config.js
+cp config.local.example.js config.local.js
 # Datei mit echten Werten befüllen
 ```
 
-### Struktur von `config.js`
-
-```javascript
-const AUTOMAT_CONFIG = {
-
-    // Admin-PINs (werden per Numpad eingegeben)
-    pins: {
-        kontakt:   "151107",  // Kontaktpreis-PIN
-        reset:     "1111",    // Reset-PIN (löscht alle Zählerstände)
-        statistik: "258"      // Statistik-PIN
-    },
-
-    min_richtig: 8,  // Mindestanzahl richtiger Antworten für einen Gewinn
-
-    frage_timer: {
-        level1: 15,   // Sekunden pro Frage (Anfänger)
-        level2: 25,   // Sekunden pro Frage (Fortgeschritten)
-        level3: 40    // Sekunden pro Frage (Profi)
-    },
-
-    relais_ip: "http://192.168.0.120",
-
-    relais_endpunkte: {
-        level1_gewinn: "/Hyper",
-        level2_gewinn: "/Beginner",
-        level3_gewinn: "/Register",
-        trostpreis:    "/Expert",
-        reset:         "/Start"
-    }
-};
-```
+Alle Felder darin sind einzeln optional; was nicht gesetzt ist, behält seine Voreinstellung. Die Struktur steht kommentiert in `config.local.example.js` — die echten PINs gehören **ausschließlich** in die lokale Datei, nie ins Repo und nie in dieses README.
 
 ---
 
 ## Deployment
 
+Der Messe-PC soll ohne Internet und ohne `npm install` starten können. Deshalb liegt das Build-Ergebnis `dist/` **mit im Repository**.
+
 ```bash
 # 1. Repository klonen
 git clone https://github.com/Moritz-Staat/Snackautomat.git
+cd Snackautomat
 
-# 2. Konfiguration anlegen
-cp site/config.example.js site/config.js
+# 2. Lokale Konfiguration anlegen (optional, aber für PINs und Relais nötig)
+cp config.local.example.js config.local.js
 
-# 3. Webserver starten (z.B. nginx, Apache)
-# Einstiegspunkt: site/Automat.html
+# 3. Webserver mit Docroot auf das Repo-Root starten (nginx, Apache …)
+#    Einstiegspunkt: /dist/Automat.html
 ```
 
-**Hinweis:** Nach einem `git pull` muss `config.js` **nicht** neu angelegt werden — sie liegt lokal auf dem Server und wird vom Update nicht berührt.
+Es ist auf dem Zielrechner **kein Node und kein Build nötig** — `dist/` ist fertig.
+
+### Entwickeln
+
+```bash
+npm install
+npm run dev        # Vite-Dev-Server mit Hot Reload
+npm run typecheck  # nur tsc --noEmit
+npm run build      # tsc --noEmit && vite build  -> schreibt dist/
+```
+
+> **Wichtig:** Nach jeder Änderung an `src/` muss `npm run build` laufen und das aktualisierte `dist/` mitcommittet werden. Sonst läuft auf dem Automaten weiter der alte Stand.
+
+**Hinweis:** Nach einem `git pull` muss `config.local.js` **nicht** neu angelegt werden — sie liegt lokal auf dem Server und wird vom Update nicht berührt.
 
 ---
 
@@ -220,15 +233,18 @@ Die Level-Seite ist zuständig für:
 - **Automatische Rückkehr** zur Startseite nach 3–10 Sekunden
 - Das **Kontakt-PIN-Modal**
 
-Alle drei Level nutzen dieselbe `javalevel.js`, konfiguriert über HTML-Data-Attribute:
+Alle drei Level nutzen dieselbe `lib/level-page.ts`, parametrisiert über das Einstiegsskript des jeweiligen Levels:
 
-```html
-<body data-storage-key="level1win" data-prize-endpoint="level1_gewinn">
+```ts
+// src/pages/Einzelseiten/level1.ts
+setupLevelPage({ storageKey: 'level1win', prizeEndpoint: 'level1_gewinn' });
 ```
+
+Beide Werte sind über `CounterKey` bzw. `RelayEndpoint` typisiert — ein Tippfehler fällt beim `npm run build` auf, nicht erst auf der Messe. Vorher kamen sie als `data-`-Attribute ungeprüft aus dem HTML.
 
 ---
 
-### Quiz-Engine (`quiz-core.js`)
+### Quiz-Engine (`lib/quiz-core.ts`)
 
 Die Kern-Logik läuft im Iframe und wird über `initQuiz(config)` gestartet.
 
@@ -383,29 +399,43 @@ Reset: Reset-PIN (`localStorage.clear()`)
 
 ```
 Automat.html
-├── script.js          (Screensaver, Birnenwechsler, PIN-Modal, Stats-Modal)
-└── styles.css
+├── automat.ts         (Screensaver, Ampel, PIN-Modal, Statistik-Modal)
+└── automat.css → styles/base.css
 
 level1/2/3.html        (Level-Wrapper, iFrame-Host)
-├── javalevel.js       (Preisauswahl, Relay-Calls, postMessage-Empfang, PIN-Modal)
-└── stylelevel1/2/3.css
+├── level1/2/3.ts → lib/level-page.ts
+│                     (Preisauswahl, Relais, postMessage-Empfang, PIN-Modal)
+└── styles/level.css → styles/base.css
 
 QuizLevel1/2/3/index.html  (Quiz-Iframe)
-├── quiz-core.js       (Engine: Shuffle, Fragen, Feedback, Timer, Ergebnis)
-├── script.js          (Fragenkatalog + Tier-Konfiguration)
-└── styles.css
+├── main.ts → lib/quiz-core.ts
+│                     (Shuffle, Fragen, Feedback, Timer, Ergebnis, Konfetti)
+│           → data/level1|2|3.ts   (Fragenkatalog + Tiers)
+└── styles/quiz.css → styles/base.css
 
-config.js              (PINs, IP, Endpunkte, min_richtig — nur lokal, nicht im Repo)
+config.local.js        (PINs, Relais-IP — nur lokal, optional, nicht im Repo)
 ```
+
+Die Engine liegt jeweils **einmal** statt dreimal: `quiz-core.ts`, `level-page.ts`, `level.css` und `quiz.css` werden von allen drei Leveln geteilt. Die Level unterscheiden sich nur noch in ihren Daten (`data/levelN.ts`) und einem dreizeiligen Einstiegsskript.
 
 **Kommunikation zwischen Level-Seite und Quiz-Iframe:**
 
 ```
-QuizLevel*/index.html  →  window.parent.postMessage("prizeCollected" | "quizFailed", "*")
-level*.html            →  window.addEventListener("message", ...)
+QuizLevel*/index.html  →  window.parent.postMessage("prizeCollected" | "quizFailed", origin)
+level*.html            →  window.addEventListener("message", ...)   // prüft event.origin
 ```
 
-Die iFrame-Architektur trennt Quiz-Logik und Level-Wrapper sauber voneinander. Beide Schichten können unabhängig entwickelt und getestet werden.
+Die Nachricht geht an die konkrete Origin statt an `"*"`, und der Empfänger prüft `event.origin` sowie den Nachrichteninhalt, bevor er reagiert.
+
+### Skalierung auf dem 4K-Panel
+
+Der Automat hängt an einem 2160×3840-Display im Hochformat. Statt fester Pixelmaße skaliert die Wurzel-Schriftgröße mit dem Viewport:
+
+```css
+html { font-size: clamp(15px, min(1.5vw, 2.2vh), 40px); }
+```
+
+Alle übrigen Maße sind in `rem` angegeben und wachsen dadurch automatisch mit. `min(vw, vh)` sorgt dafür, dass das Layout auch auf einem Querformat-Testmonitor nicht vertikal überläuft. Es gibt keine auf einen einzelnen Monitor getunten Magic Numbers mehr.
 
 ---
 
@@ -413,12 +443,12 @@ Die iFrame-Architektur trennt Quiz-Logik und Level-Wrapper sauber voneinander. B
 
 | Datei / Ordner | Zweck |
 |---|---|
-| `site/Einzelseiten/TESTH/` | Isolierte Testseite für die Quiz-Engine ohne Relay-Anbindung |
-| `site/Einzelseiten/Testseite.html` | Einfache HTML-Testseite |
+| `hilfsdateien/TESTH/` | Isolierte Testseite für die Quiz-Engine ohne Relay-Anbindung |
+| `hilfsdateien/Testseite.html` | Einfache HTML-Testseite |
 | `Backend/request.html` | Testseite zum manuellen Auslösen einzelner HTTP-Relay-Requests |
 
-Diese Dateien sind bewusst im Repository belassen und werden für Entwicklung und Debugging benötigt.
+Diese Dateien sind bewusst im Repository belassen und werden für Entwicklung und Debugging benötigt. Sie sind **nicht** Teil des Vite-Builds und laufen als eigenständige HTML-Dateien.
 
 ---
 
-*Dokumentation zuletzt aktualisiert: April 2026*
+*Dokumentation zuletzt aktualisiert: August 2026*
