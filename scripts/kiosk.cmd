@@ -22,7 +22,9 @@ for %%P in (
   "%ProgramFiles%\Google\Chrome\Application\chrome.exe"
   "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe"
   "%LocalAppData%\Google\Chrome\Application\chrome.exe"
-) do if not defined CHROME if exist %%P set CHROME=%%P
+rem  %%~P statt %%P: entfernt die Anfuehrungszeichen aus dem Wert. Sonst
+rem  steckten sie in %CHROME% und "%CHROME%" wuerde zu ""C:\Program Files\...""
+) do if not defined CHROME if exist %%P set CHROME=%%~P
 
 if not defined CHROME (
   echo [FEHLER] Chrome nicht gefunden. Pfad in scripts\kiosk.cmd eintragen.
@@ -40,8 +42,24 @@ rem --- Server im Hintergrund -------------------------------------------------
 echo Starte Server auf Port %PORT% ...
 start "Snackautomat-Server" /min cmd /c "node "%ROOT%\scripts\serve.mjs" --port %PORT%"
 
-rem kurz warten, bis der Port offen ist
-timeout /t 2 /nobreak >nul
+rem --- warten, bis der Server wirklich antwortet -----------------------------
+rem  Kein "timeout /t": das bricht mit "Eingabeumleitung wird nicht
+rem  unterstuetzt" ab, sobald das Skript mit umgeleiteter Eingabe laeuft.
+rem  Stattdessen den Port pollen, dann startet Chrome auch dann nicht zu
+rem  frueh, wenn node auf einem kalten Rechner laenger braucht.
+set /a TRIES=0
+:waitloop
+set /a TRIES+=1
+curl -s -o nul --max-time 2 "%URL%" >nul 2>&1
+if not errorlevel 1 goto serverbereit
+if %TRIES% geq 25 (
+  echo [WARNUNG] Server antwortet nach %TRIES% Versuchen nicht auf %URL%.
+  echo           Chrome wird trotzdem gestartet.
+  goto serverbereit
+)
+ping -n 2 127.0.0.1 >nul 2>&1
+goto waitloop
+:serverbereit
 
 rem --- Chrome im Kiosk-Modus -------------------------------------------------
 rem  --kiosk                          Vollbild ohne jede Browser-UI
