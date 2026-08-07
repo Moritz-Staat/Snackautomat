@@ -1,4 +1,5 @@
-import { resolve } from 'node:path';
+import { createReadStream, statSync } from 'node:fs';
+import { extname, join, normalize, resolve, sep } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 
 /**
@@ -11,20 +12,81 @@ import { defineConfig, type Plugin } from 'vite';
  * Voraussetzung im Betrieb: Docroot des Webservers = Repo-Root,
  * Einstiegspunkt /dist/Automat.html. Siehe README, Abschnitt Deployment.
  */
-const MEDIA_PREFIXES = ['/Images/', '/QuizImages/', '/fonts/'];
+const REPO_ROOT = import.meta.dirname;
+const MEDIA_DIRS = ['Images', 'QuizImages', 'fonts'];
 /** Optionale, nicht versionierte Laufzeitkonfiguration — darf fehlen. */
 const RUNTIME_CONFIG = '/config.local.js';
 
-function keepMediaAbsolute(): Plugin {
-  const passthrough = (id: string) =>
-    id === RUNTIME_CONFIG || MEDIA_PREFIXES.some((p) => id.startsWith(p));
+const MIME: Record<string, string> = {
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.webp': 'image/webp',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.ttf': 'font/ttf',
+  '.woff2': 'font/woff2',
+  '.js': 'text/javascript',
+};
 
+function isPassthrough(urlPath: string): boolean {
+  return (
+    urlPath === RUNTIME_CONFIG ||
+    MEDIA_DIRS.some((d) => urlPath.startsWith(`/${d}/`))
+  );
+}
+
+function mediaPlugin(): Plugin {
   return {
-    name: 'snackautomat:keep-media-absolute',
+    name: 'snackautomat:media',
     enforce: 'pre',
+
+    /**
+     * Zur Bauzeit bleiben diese URLs unangetastet — Rollup soll sie weder
+     * aufloesen noch nach dist/ kopieren.
+     */
     resolveId(id) {
-      return passthrough(id) ? { id, external: true } : null;
+      return isPassthrough(id) ? { id, external: true } : null;
     },
+
+    /**
+     * Zur Entwicklungszeit liegen die Medien ausserhalb der Vite-Root
+     * (src/pages) und publicDir ist aus — ohne diese Middleware liefe jeder
+     * /Images/-Aufruf im Dev-Server ins Leere. Sie bildet nach, was im
+     * Betrieb der Webserver mit Docroot auf dem Repo-Root tut.
+     */
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const urlPath = decodeURIComponent((req.url ?? '').split('?')[0] ?? '');
+        if (!isPassthrough(urlPath)) return next();
+
+        // Pfad-Traversal ausschliessen: der aufgeloeste Pfad muss im Repo liegen.
+        const full = normalize(join(REPO_ROOT, urlPath));
+        if (!full.startsWith(REPO_ROOT + sep)) {
+          res.statusCode = 403;
+          return res.end('Forbidden');
+        }
+
+        let size: number;
+        try {
+          const stat = statSync(full);
+          if (!stat.isFile()) throw new Error('kein File');
+          size = stat.size;
+        } catch {
+          // config.local.js darf fehlen — das ist der Normalfall.
+          res.statusCode = 404;
+          return res.end('Not found');
+        }
+
+        res.setHeader('Content-Type', MIME[extname(full).toLowerCase()] ?? 'application/octet-stream');
+        res.setHeader('Content-Length', String(size));
+        createReadStream(full).pipe(res);
+        return undefined;
+      });
+    },
+
     /**
      * Das Tag fuer die optionale Laufzeitkonfiguration wird erst nach der
      * HTML-Verarbeitung eingehaengt. Stuende es im Quell-HTML, wuerde Vite
@@ -38,25 +100,26 @@ function keepMediaAbsolute(): Plugin {
     transformIndexHtml: {
       order: 'post',
       handler() {
-        return [
-          { tag: 'script', attrs: { src: RUNTIME_CONFIG }, injectTo: 'head-prepend' },
-        ];
+        return [{ tag: 'script', attrs: { src: RUNTIME_CONFIG }, injectTo: 'head-prepend' }];
       },
     },
   };
 }
 
-const page = (...segments: string[]) => resolve(import.meta.dirname, 'src/pages', ...segments);
+const page = (...segments: string[]) => resolve(REPO_ROOT, 'src/pages', ...segments);
 
-export default defineConfig({
-  root: resolve(import.meta.dirname, 'src/pages'),
+export default defineConfig(({ command }) => ({
+  root: resolve(REPO_ROOT, 'src/pages'),
   publicDir: false,
-  base: '/dist/',
-  plugins: [keepMediaAbsolute()],
+  // Im Betrieb liegen die Seiten unter /dist/, im Dev-Server direkt unter /.
+  // Der Code liest den Wert ueber import.meta.env.BASE_URL, damit die
+  // Rueckkehr zur Startseite in beiden Faellen stimmt.
+  base: command === 'build' ? '/dist/' : '/',
+  plugins: [mediaPlugin()],
   // Gemeinsame Module liegen in src/lib, also ausserhalb der Vite-Root.
-  server: { fs: { allow: [resolve(import.meta.dirname, 'src')] } },
+  server: { fs: { allow: [resolve(REPO_ROOT, 'src')] } },
   build: {
-    outDir: resolve(import.meta.dirname, 'dist'),
+    outDir: resolve(REPO_ROOT, 'dist'),
     emptyOutDir: true,
     target: 'es2020',
     rollupOptions: {
@@ -71,4 +134,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

@@ -7,7 +7,8 @@ import { isQuizResultMessage, type CounterKey, type QuizResultMessage, type Rela
 
 const PREMIUM_REDIRECT_MS = 10_000;
 const NORMAL_REDIRECT_MS = 3_000;
-const HOME_URL = '/dist/Automat.html';
+// BASE_URL statt fester Pfad: im Build '/dist/', im Dev-Server '/'.
+const HOME_URL = `${import.meta.env.BASE_URL}Automat.html`;
 
 interface LevelPageOptions {
   storageKey: CounterKey;

@@ -140,9 +140,21 @@ Es ist auf dem Zielrechner **kein Node und kein Build nötig** — `dist/` ist f
 
 ```bash
 npm install
-npm run dev        # Vite-Dev-Server mit Hot Reload
+npm run dev        # Vite-Dev-Server mit Hot Reload  -> http://localhost:5173/Automat.html
 npm run typecheck  # nur tsc --noEmit
-npm run build      # tsc --noEmit && vite build  -> schreibt dist/
+npm run build      # tsc --noEmit && vite build     -> schreibt dist/
+npm run serve      # Produktionsaufbau testen       -> http://127.0.0.1:8080/dist/Automat.html
+```
+
+`npm run dev` liefert die Seiten direkt unter `/` und blendet `Images/`, `QuizImages/` und `fonts/` aus dem Repo-Root ein — ohne Build, mit Hot Reload. Zum Prüfen des echten Auslieferungspfads (Docroot = Repo-Root, Seiten unter `/dist/`) dient `npm run serve`; das Skript hat keine Abhängigkeiten und läuft auch ohne `npm install`.
+
+Den Unterschied kennt der Code über `import.meta.env.BASE_URL` — im Build `/dist/`, im Dev-Server `/`. Deshalb stimmt der automatische Rücksprung zur Startseite in beiden Fällen.
+
+Auf einem zweiten Monitor testen:
+
+```bash
+npm run serve -- --host 0.0.0.0 --port 8080
+# dann vom Kiosk-Rechner aus http://<IP-des-Entwicklungsrechners>:8080/dist/Automat.html
 ```
 
 > **Wichtig:** Nach jeder Änderung an `src/` muss `npm run build` laufen und das aktualisierte `dist/` mitcommittet werden. Sonst läuft auf dem Automaten weiter der alte Stand.

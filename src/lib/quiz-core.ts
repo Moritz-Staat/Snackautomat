@@ -202,7 +202,8 @@ function run(setup: QuizSetup): void {
       isBlurred = true;
     }, BLUR_AFTER_MS);
     inactiveTimer = window.setTimeout(() => {
-      window.top!.location.href = '/dist/Automat.html';
+      // BASE_URL statt fester Pfad: im Build '/dist/', im Dev-Server '/'.
+      window.top!.location.href = `${import.meta.env.BASE_URL}Automat.html`;
     }, RETURN_HOME_AFTER_MS);
   }
 
