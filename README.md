@@ -10,23 +10,24 @@ Ein browserbasierter Quiz-Automat für Messen und Events. Besucher beantworten W
 2. [Projektstruktur](#projektstruktur)
 3. [Konfiguration](#konfiguration)
 4. [Deployment](#deployment)
-5. [Funktionen im Detail](#funktionen-im-detail)
-   - [Startseite](#startseite-automatenhtml)
+5. [Realistisch testen](#realistisch-testen)
+6. [Funktionen im Detail](#funktionen-im-detail)
+   - [Startseite](#startseite-automathtml)
    - [Screensaver](#screensaver)
    - [Birnenwechsler (Ampel)](#birnenwechsler-ampel)
    - [PIN-Modal](#pin-modal)
    - [Statistik-Modal](#statistik-modal)
    - [Level-Seiten](#level-seiten-level1html--level3html)
-   - [Quiz-Engine](#quiz-engine-quiz-corejs)
+   - [Quiz-Engine](#quiz-engine-libquiz-corets)
    - [Inaktivitäts-Blur & Auto-Redirect](#inaktivitäts-blur--auto-redirect)
    - [Frage-Timer](#frage-timer)
    - [Gewinn-Animation](#gewinn-animation)
    - [Ergebnisscreen & Tier-System](#ergebnisscreen--tier-system)
    - [Preisauswahl-Popup](#preisauswahl-popup)
    - [Relay-Auslösung](#relay-auslösung)
-6. [Statistiken (localStorage)](#statistiken-localstorage)
-7. [Technische Architektur](#technische-architektur)
-8. [Test- und Hilfsdateien](#test--und-hilfsdateien)
+7. [Statistiken (localStorage)](#statistiken-localstorage)
+8. [Technische Architektur](#technische-architektur)
+9. [Test- und Hilfsdateien](#test--und-hilfsdateien)
 
 ---
 
@@ -160,6 +161,72 @@ npm run serve -- --host 0.0.0.0 --port 8080
 > **Wichtig:** Nach jeder Änderung an `src/` muss `npm run build` laufen und das aktualisierte `dist/` mitcommittet werden. Sonst läuft auf dem Automaten weiter der alte Stand.
 
 **Hinweis:** Nach einem `git pull` muss `config.local.js` **nicht** neu angelegt werden — sie liegt lokal auf dem Server und wird vom Update nicht berührt.
+
+---
+
+## Realistisch testen
+
+Ziel ist ein Aufbau, der dem Messebetrieb möglichst nahekommt: gebautes `dist/`, Docroot auf dem Repo-Root, Chrome im Vollbild ohne Browser-Bedienelemente, Monitor im Hochformat, Bedienung per Finger.
+
+### Ein Befehl
+
+```bat
+scripts\kiosk.cmd
+```
+
+Das Skript startet den statischen Server (Docroot = Repo-Root) und danach Chrome im Kiosk-Modus auf `/dist/Automat.html`. **Beenden mit `Alt`+`F4`** — im Kiosk-Modus gibt es kein Fensterkreuz. Der Server wird dabei mitbeendet. Optional ein anderer Port: `scripts\kiosk.cmd 9000`.
+
+Unter Linux entsprechend:
+
+```bash
+node scripts/serve.mjs --port 8080 &
+google-chrome --kiosk --autoplay-policy=no-user-gesture-required \
+  --overscroll-history-navigation=0 --disable-pinch --noerrdialogs \
+  --disable-infobars --disable-session-crashed-bubble \
+  --user-data-dir=/tmp/snackautomat-kiosk \
+  http://127.0.0.1:8080/dist/Automat.html
+```
+
+### Warum diese Chrome-Flags
+
+Ohne sie verhält sich der Automat unter Fingerbedienung anders als erwartet:
+
+| Flag | Ohne das Flag |
+|---|---|
+| `--kiosk` | Adressleiste und Tableiste fressen Höhe; das Hochkant-Layout wirkt gestaucht |
+| `--autoplay-policy=no-user-gesture-required` | Der Screensaver startet je nach Chrome-Version erst nach einer Nutzergeste |
+| `--overscroll-history-navigation=0` | Ein Wisch nach rechts navigiert im Verlauf zurück — mitten im Quiz |
+| `--disable-pinch` | Besucher zoomen die Seite auf und das Layout ist hin |
+| `--disable-session-crashed-bubble` | Nach einem Stromausfall steht beim Neustart „Seiten wiederherstellen?" quer über der Startseite |
+| `--user-data-dir=…` | Die Zählerstände im `localStorage` landen im Alltagsprofil statt in einem eigenen |
+
+### Monitor vorbereiten
+
+1. **Hochformat einstellen:** Windows-Einstellungen → System → Anzeige → *Anzeigeausrichtung: Hochformat*. Das Layout richtet sich nach dem Viewport, nicht nach einer festen Auflösung — es funktioniert also auch auf kleineren Panels, sieht aber nur im Hochformat richtig aus.
+2. **Energiesparen und Bildschirmschoner von Windows abschalten** — sonst überlagert der Windows-Bildschirmschoner den eigenen.
+3. **Skalierung auf 100 %** stellen. Eine Windows-Skalierung von 150 % verkleinert den CSS-Viewport, und die fluide Schriftgröße skaliert dann ein zweites Mal mit.
+
+### Was am echten Gerät prüfen
+
+Diese Punkte lassen sich nur auf der Hardware beurteilen, nicht im Browser am Schreibtisch:
+
+- [ ] **Lesbarkeit aus Besucherabstand** — Frage- und Antworttexte aus 1–2 m. Stellschraube ist der Faktor `1.5vw` in `src/pages/styles/base.css`; alles andere skaliert proportional mit.
+- [ ] **Trefferflächen** — Antwortbuttons sind mindestens `7.5rem` hoch (auf 2160 px Breite rund 240 px). Reicht das für Handschuhe/Winterjacke?
+- [ ] **Touch-Reaktion** — der Inaktivitäts-Reset hängt an `touchstart`; `mousemove` wird auf Touch-Geräten bewusst nicht registriert (`pointer: coarse`).
+- [ ] **Screensaver** — startet er nach 20 s? Läuft er einmal durch? Bricht eine Berührung ihn sofort ab?
+- [ ] **Timerlänge** — 15 / 25 / 40 s pro Frage. Zu knapp oder zu lang, wird in `config.local.js` unter `frage_timer` angepasst, ohne Rebuild.
+- [ ] **Inaktivitäts-Blur** nach 20 s und **Rücksprung zur Startseite** nach 30 s im Quiz.
+- [ ] **Relais** — nur mit gesetzter `relais_ip` in `config.local.js`. Ohne sie werden die Aufrufe stillschweigend übersprungen (siehe [Konfiguration](#konfiguration)).
+- [ ] **Admin-PINs** — Logo unten rechts antippen, PIN eingeben. Ohne `config.local.js` sind die PINs leer und es passiert absichtlich nichts.
+- [ ] **Neustartfestigkeit** — Rechner hart ausschalten und wieder einschalten: kommt der Automat ohne Dialog zurück?
+
+### Zählerstände zurücksetzen
+
+Zwischen Testläufen sammeln sich Gewinnzähler im `localStorage` an und verfälschen die Ampel. Entweder die Reset-PIN verwenden (falls in `config.local.js` gesetzt) oder in der Chrome-Konsole:
+
+```js
+localStorage.clear()
+```
 
 ---
 
