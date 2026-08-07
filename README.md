@@ -23,7 +23,7 @@ Ein browserbasierter Quiz-Automat für Messen und Events. Besucher beantworten W
    - [Frage-Timer](#frage-timer)
    - [Gewinn-Animation](#gewinn-animation)
    - [Ergebnisscreen & Tier-System](#ergebnisscreen--tier-system)
-   - [Preisauswahl-Popup](#preisauswahl-popup)
+   - [Preisausgabe](#preisausgabe)
    - [Relay-Auslösung](#relay-auslösung)
 7. [Statistiken (localStorage)](#statistiken-localstorage)
 8. [Technische Architektur](#technische-architektur)
@@ -306,10 +306,9 @@ level1.html
 ```
 
 Die Level-Seite ist zuständig für:
-- Anzeige des **Preisauswahl-Popups** nach Quiz-Ende
 - **Relay-Auslösung** (Gewinn oder Trostpreis)
 - **Zählerstand-Erhöhung** im localStorage
-- **Automatische Rückkehr** zur Startseite nach 3–10 Sekunden
+- **Automatische Rückkehr** zur Startseite nach 3 Sekunden
 - Das **Kontakt-PIN-Modal**
 
 Alle drei Level nutzen dieselbe `lib/level-page.ts`, parametrisiert über das Einstiegsskript des jeweiligen Levels:
@@ -422,18 +421,23 @@ Nach dem Ergebnisscreen erscheint ein Button:
 
 ---
 
-### Preisauswahl-Popup
+### Preisausgabe
 
-Nach Empfang der `postMessage` blendet die Level-Seite ein Popup ein:
+Nach Empfang der `postMessage` löst die Level-Seite unmittelbar aus:
 
 **Bei Gewinn:**
-- *Normaler Preis:* Erhöht den Gewinn-Zähler im localStorage, löst das Level-spezifische Relay aus, kehrt nach 3 Sekunden zur Startseite zurück
-- *Premium Preis:* Zeigt Hinweis Melde dich bei unserem Stand, kehrt nach 10 Sekunden zurück (kein Relay)
+- Erhöht den Gewinn-Zähler des Levels (`level1win` … `level3win`) im localStorage
+- Löst das level-spezifische Relay aus
+- Kehrt nach 3 Sekunden zur Startseite zurück
 
 **Bei Niederlage:**
 - Erhöht den `loses`-Zähler im localStorage
 - Löst das Trostpreis-Relay aus
 - Kehrt nach 3 Sekunden zur Startseite zurück
+
+Ein Durchgang löst genau einmal aus, auch wenn die Nachricht mehrfach einträfe.
+
+> **Entfernt:** Dazwischen lag früher ein Popup zur Wahl zwischen normalem und Premium-Preis (Kontaktdaten gegen höherwertigen Preis). Der Ablauf wird neu konzipiert und ist bis dahin ausgebaut — siehe [Issue #6](https://github.com/Moritz-Staat/Snackautomat/issues/6). Die Admin-PIN für den Kontaktpreis bleibt davon unberührt.
 
 ---
 
@@ -483,7 +487,7 @@ Automat.html
 
 level1/2/3.html        (Level-Wrapper, iFrame-Host)
 ├── level1/2/3.ts → lib/level-page.ts
-│                     (Preisauswahl, Relais, postMessage-Empfang, PIN-Modal)
+│                     (Relais, Zaehler, postMessage-Empfang, PIN-Modal)
 └── styles/level.css → styles/base.css
 
 QuizLevel1/2/3/index.html  (Quiz-Iframe)
