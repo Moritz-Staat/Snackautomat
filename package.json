@@ -1,6 +1,6 @@
 {
   "name": "snackautomat",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Quiz-Preisautomat für Messeeinsatz — Touch-Kiosk, 4K hochkant, Betrieb ohne Internet",
   "private": true,
   "type": "module",
