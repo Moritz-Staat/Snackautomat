@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-09T12:00:00Z",
+  "title": "Design System: Chris-O-Mat",
+  "extensions": {
+    "colorMeta": {
+      "green": { "role": "primary", "displayName": "Hauptgrün", "canonical": "#62b55a", "tonalRamp": ["#14300f", "#21491b", "#2f6328", "#3e7e36", "#4f9a46", "#62b55a", "#8ccc85", "#c8e8c3"] },
+      "green-deep": { "role": "primary", "displayName": "Academy-Grün", "canonical": "#51a175", "tonalRamp": ["#0f2a1d", "#1b432f", "#285d42", "#367956", "#44956a", "#51a175", "#86c6a2", "#c4e6d3"] },
+      "signal": { "role": "secondary", "displayName": "Signalgelb", "canonical": "#f2c230", "tonalRamp": ["#3a2c02", "#5a4504", "#7c5f08", "#a07c0f", "#c79c1b", "#f2c230", "#f7d877", "#fcefc4"] },
+      "signal-ink": { "role": "secondary", "displayName": "Signal-Dunkelgrün", "canonical": "#0b3d2a" },
+      "housing": { "role": "neutral", "displayName": "Gehäusegrün", "canonical": "#0b3d2a", "tonalRamp": ["#03140c", "#062619", "#0b3d2a", "#0f4a33", "#135238", "#2a6e52", "#6f9a7c", "#cde4c4"] },
+      "housing-deep": { "role": "neutral", "displayName": "Tafeltiefe", "canonical": "#062619" },
+      "housing-edge": { "role": "neutral", "displayName": "Gehäusekante", "canonical": "#135238" },
+      "flap": { "role": "neutral", "displayName": "Blatt oben", "canonical": "#0f4a33" },
+      "flap-lower": { "role": "neutral", "displayName": "Blatt unten", "canonical": "#0c432e" },
+      "flap-gap": { "role": "neutral", "displayName": "Spaltgrund", "canonical": "#03140c" },
+      "flap-dull": { "role": "neutral", "displayName": "Stumpfes Blatt", "canonical": "#22362d", "tonalRamp": ["#0d1712", "#16241d", "#22362d", "#33493f", "#4a6157", "#667c72", "#8c9e96", "#c3cec9"] },
+      "ink": { "role": "neutral", "displayName": "Mint", "canonical": "#cde4c4", "tonalRamp": ["#2f4229", "#46603e", "#5f7f55", "#6f9a7c", "#9fc3a4", "#b8d6b0", "#cde4c4", "#eaf4e6"] },
+      "ink-soft": { "role": "neutral", "displayName": "Mint gedämpft", "canonical": "#9fc3a4" },
+      "ink-dim": { "role": "neutral", "displayName": "Mint matt", "canonical": "#6f9a7c" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Rückfrage bei Inaktivität (--t-display)." },
+      "headline": { "displayName": "Headline", "purpose": "Ergebnistext, Preis- und Heimtaste, Ausgabemeldung, Statistik-Titel (--t-xl)." },
+      "title": { "displayName": "Title", "purpose": "Fragetext, Lauftexte, Antworttasten, Fahrtzähler (--t-l)." },
+      "body": { "displayName": "Body", "purpose": "Antworttexte, Zuglauf, Takt-Einheit, Modaltexte (--t-m)." },
+      "label": { "displayName": "Label", "purpose": "Nur Spaltenköpfe über ausgerichteten Tafelspalten (--t-s), Versalien." },
+      "flap": { "displayName": "Fallblatt", "purpose": "Zeichen in Fallblättern; Größe vom Elternelement, Blattmaße in em." }
+    },
+    "shadows": [
+      { "name": "shadow", "value": "0 0.35rem 0.9rem rgba(1, 14, 8, 0.55)", "purpose": "Außenschale des Gehäuses, Preis-Taste." },
+      { "name": "shadow-flap", "value": "0 0.12rem 0.25rem rgba(1, 14, 8, 0.6)", "purpose": "Fallblätter, Gleiskachel, Antwortzeilen, Ziffernblock, Herstellerschild." },
+      { "name": "lichtsaum", "value": "inset 0 0.08rem 0 rgba(205, 228, 196, 0.1)", "purpose": "Oberkante jeder erhabenen Fläche." },
+      { "name": "vertiefung", "value": "inset 0 0.25rem 0.6rem rgba(0, 0, 0, 0.45)", "purpose": "Eingesetzte Tafel, Lauftextband, Lampe, PIN-Feld." },
+      { "name": "fuge", "value": "inset 0 0.22rem 0 var(--flap-gap), inset 0 0.3rem 0 rgba(205, 228, 196, 0.06)", "purpose": "Trennung zwischen Tafelzeilen statt schwebender Karten." }
+    ],
+    "motion": [
+      { "name": "tick", "value": "70ms", "purpose": "Takt der gemeinsamen Fallblatt-Uhr (eine requestAnimationFrame-Schleife pro Seite); Blattfall dauert 1.3 Takte in steps(3)." },
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Ankommen: Einblendungen, Druckantwort, neue Seite, Ripple." },
+      { "name": "ease-in", "value": "cubic-bezier(0.55, 0, 0.9, 0.3)", "purpose": "Abfahren: alte Seite, ausfahrende Lok." },
+      { "name": "page-out", "value": "200ms ease-in", "purpose": "Cross-Document View Transition, alte Seite." },
+      { "name": "page-in", "value": "380ms ease-out", "purpose": "Cross-Document View Transition, neue Seite; benannte Gruppen (gleis-N) 420ms." },
+      { "name": "ripple", "value": "480ms ease-out", "purpose": "Signalring am Finger bei jedem pointerdown, höchstens vier gleichzeitig." },
+      { "name": "reveal", "value": "1500ms", "purpose": "Standzeit der Auflösung richtig/falsch." },
+      { "name": "reduced-motion", "value": "1ms", "purpose": "prefers-reduced-motion: Animationen und Übergänge auf 1ms, Lauftexte stehen, Fallblätter springen direkt aufs Ziel." }
+    ],
+    "breakpoints": [
+      { "name": "root", "value": "min(calc(100vw / 54), calc(100vh / 96))" },
+      { "name": "quiz-iframe-root", "value": "min(calc(100vw / 50.2), calc(100vh / 72))" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Gehäuse",
+      "kind": "card",
+      "refersTo": "housing",
+      "description": "Doppelter Rahmen: Außenschale mit eingesetzter, vertiefter Tafel. Trägt jede Seite und den Bildrahmen.",
+      "html": "<div class=\"ds-housing\"><div class=\"ds-housing__panel\"></div></div>",
+      "css": ".ds-housing { width: 20rem; height: 12rem; padding: 0.7rem; border-radius: 1.6rem; background: linear-gradient(180deg, rgba(205, 228, 196, 0.07), transparent 0.6rem), var(--housing, #0b3d2a); box-shadow: inset 0 0.08rem 0 rgba(205, 228, 196, 0.12), inset 0 -0.15rem 0 rgba(1, 14, 8, 0.5), 0 0.35rem 0.9rem rgba(1, 14, 8, 0.55); } .ds-housing__panel { height: 100%; border-radius: 0.9rem; background: var(--housing-deep, #062619); box-shadow: inset 0 0.25rem 0.6rem rgba(0, 0, 0, 0.45), inset 0 -0.06rem 0 rgba(205, 228, 196, 0.06); }"
+    },
+    {
+      "name": "Fallblattzeile",
+      "kind": "custom",
+      "refersTo": "flap",
+      "description": "Ein Zeichen pro Blatt, Hälften mit Mittelspalt; aufgefüllt mit leeren Blättern.",
+      "html": "<span class=\"ds-flaps\"><span class=\"ds-flap\">G</span><span class=\"ds-flap\">L</span><span class=\"ds-flap\">E</span><span class=\"ds-flap\">I</span><span class=\"ds-flap\">S</span><span class=\"ds-flap\"></span></span>",
+      "css": ".ds-flaps { display: inline-flex; gap: 0.07em; font: 700 3rem/1 Rajdhani, sans-serif; font-variant-numeric: tabular-nums; } .ds-flap { display: inline-grid; place-items: center; width: 0.74em; height: 1.12em; border-radius: 0.09em; background: linear-gradient(180deg, #0f4a33 0 49.2%, #03140c 49.2% 50.8%, #0c432e 50.8% 100%); box-shadow: 0 0.12rem 0.25rem rgba(1, 14, 8, 0.6), inset 0 0.03em 0 rgba(205, 228, 196, 0.1); color: #cde4c4; }"
+    },
+    {
+      "name": "Gleiskachel",
+      "kind": "chip",
+      "refersTo": "gleis-tile",
+      "description": "Gleisnummer in Signalgelb; trägt view-transition-name gleis-N.",
+      "html": "<span class=\"ds-gleis\">2</span>",
+      "css": ".ds-gleis { display: inline-grid; place-items: center; width: 6.4rem; height: 6.4rem; border-radius: 0.8rem; background: #f2c230 linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 45%, rgba(11, 61, 42, 0.12)); color: #0b3d2a; font: 700 4.6rem/1 Rajdhani, sans-serif; box-shadow: 0 0.12rem 0.25rem rgba(1, 14, 8, 0.6); transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-gleis:active { transform: translateY(0.15rem) scale(0.97); }"
+    },
+    {
+      "name": "Antwortzeile",
+      "kind": "button",
+      "refersTo": "answer-row",
+      "description": "Blatt mit Antworttaste, Text und Markierungsfeld; Scharniermarken statt Mittelspalt.",
+      "html": "<button class=\"ds-answer\"><span class=\"ds-answer__key\">A</span><span>19 mm</span><span></span></button>",
+      "css": ".ds-answer { position: relative; display: grid; grid-template-columns: 4.4rem 1fr 3rem; align-items: center; gap: 1.2rem; width: 40rem; min-height: 5.8rem; padding: 0.7rem 1.1rem 0.7rem 0.7rem; border: 0; border-radius: 0.9rem; background: #0f4a33; box-shadow: 0 0.12rem 0.25rem rgba(1, 14, 8, 0.6), inset 0 0.08rem 0 rgba(205, 228, 196, 0.1); color: #cde4c4; font: 600 1.75rem/1.12 Rajdhani, sans-serif; text-align: left; cursor: pointer; transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-answer::before, .ds-answer::after { content: ''; position: absolute; top: 50%; width: 0.5rem; height: 0.16rem; margin-top: -0.08rem; background: #03140c; } .ds-answer::before { left: 0; } .ds-answer::after { right: 0; } .ds-answer:active { transform: translateY(0.15rem) scale(0.99); } .ds-answer:focus-visible { outline: 0.25rem solid #f2c230; outline-offset: 0.25rem; } .ds-answer__key { display: grid; place-items: center; width: 4.4rem; height: 4.4rem; border-radius: 0.6rem; background: #f2c230 linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 45%, rgba(11, 61, 42, 0.12)); color: #0b3d2a; font-size: 2.3rem; font-weight: 700; }"
+    },
+    {
+      "name": "Antwortzeile richtig",
+      "kind": "button",
+      "refersTo": "answer-row-correct",
+      "description": "Gewählt richtig: grünes Blatt, dunkle Schrift, invertierte Taste, Haken, kurzer Puls. Hint ohne Puls.",
+      "html": "<div class=\"ds-answer-ok\"><span class=\"ds-answer-ok__key\">A</span><span>19 mm</span><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4.5 12.5l5 5L19.5 7\"/></svg></div>",
+      "css": ".ds-answer-ok { display: grid; grid-template-columns: 4.4rem 1fr 2.4rem; align-items: center; gap: 1.2rem; width: 40rem; min-height: 5.8rem; padding: 0.7rem 1.1rem 0.7rem 0.7rem; border-radius: 0.9rem; background: #62b55a; color: #0b3d2a; font: 600 1.75rem/1.12 Rajdhani, sans-serif; animation: ds-pulse 420ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-answer-ok svg { width: 2.4rem; height: 2.4rem; } .ds-answer-ok__key { display: grid; place-items: center; width: 4.4rem; height: 4.4rem; border-radius: 0.6rem; background: #0b3d2a; color: #62b55a; font-size: 2.3rem; font-weight: 700; } @keyframes ds-pulse { 35% { transform: scale(1.025); } }"
+    },
+    {
+      "name": "Antwortzeile falsch",
+      "kind": "button",
+      "refersTo": "answer-row-wrong",
+      "description": "Stumpfes Blatt, gelbes Kreuz, kurzes Rucken. Kein Rot.",
+      "html": "<div class=\"ds-answer-no\"><span class=\"ds-answer-no__key\">B</span><span>21 mm</span><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg></div>",
+      "css": ".ds-answer-no { display: grid; grid-template-columns: 4.4rem 1fr 2.4rem; align-items: center; gap: 1.2rem; width: 40rem; min-height: 5.8rem; padding: 0.7rem 1.1rem 0.7rem 0.7rem; border-radius: 0.9rem; background: #22362d; color: #6f9a7c; font: 600 1.75rem/1.12 Rajdhani, sans-serif; animation: ds-shake 360ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-answer-no svg { width: 2.4rem; height: 2.4rem; color: #f2c230; } .ds-answer-no__key { display: grid; place-items: center; width: 4.4rem; height: 4.4rem; border-radius: 0.6rem; background: #03140c; color: #f2c230; font-size: 2.3rem; font-weight: 700; } @keyframes ds-shake { 20% { transform: translateX(-0.7rem); } 45% { transform: translateX(0.55rem); } 70% { transform: translateX(-0.3rem); } }"
+    },
+    {
+      "name": "Preis-Taste",
+      "kind": "button",
+      "refersTo": "cta-prize",
+      "description": "Aktion der Ankunft bei Gewinn; Variante in Mint als Heimtaste.",
+      "html": "<button class=\"ds-cta\">Preis abholen</button>",
+      "css": ".ds-cta { width: 44rem; min-height: 8.6rem; padding: 0 2rem; border: 0; border-radius: 1rem; background: #f2c230 linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 45%, rgba(11, 61, 42, 0.12)); color: #0b3d2a; font: 700 2.9rem/1 Rajdhani, sans-serif; box-shadow: 0 0.35rem 0.9rem rgba(1, 14, 8, 0.55); cursor: pointer; transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-cta:active { transform: translateY(0.15rem) scale(0.99); } .ds-cta:focus-visible { outline: 0.25rem solid #f2c230; outline-offset: 0.25rem; }"
+    },
+    {
+      "name": "Halte im Linienband",
+      "kind": "custom",
+      "refersTo": "stop",
+      "description": "Zehn Halte auf einer Linie; aktuell, erreicht, verfehlt.",
+      "html": "<ol class=\"ds-route\"><li class=\"ds-stop ds-stop--right\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4.5 12.5l5 5L19.5 7\"/></svg></li><li class=\"ds-stop ds-stop--wrong\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg></li><li class=\"ds-stop ds-stop--current\"></li><li class=\"ds-stop\"></li></ol>",
+      "css": ".ds-route { position: relative; display: flex; justify-content: space-between; width: 20rem; margin: 0; padding: 0; list-style: none; } .ds-route::before { content: ''; position: absolute; left: 1rem; right: 1rem; top: 50%; height: 0.4rem; margin-top: -0.2rem; border-radius: 0.2rem; background: #0f4a33; } .ds-stop { position: relative; display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: #062619; box-shadow: 0 0 0 0.3rem #0f4a33; color: #0b3d2a; } .ds-stop svg { width: 1.5rem; height: 1.5rem; } .ds-stop--current { background: #cde4c4; box-shadow: 0 0 0 0.35rem #f2c230; transform: scale(1.18); } .ds-stop--right { background: #62b55a; box-shadow: 0 0 0 0.3rem #62b55a; } .ds-stop--wrong { background: #22362d; box-shadow: 0 0 0 0.3rem #22362d; color: #f2c230; }"
+    },
+    {
+      "name": "Lauftextband",
+      "kind": "custom",
+      "refersTo": "ticker-band",
+      "description": "Signalgelber Lauftext auf vertieftem Spaltgrund.",
+      "html": "<div class=\"ds-ticker\"><div class=\"ds-ticker__track\"><span>Gewinne coole Preise!</span><span>Gewinne coole Preise!</span></div></div>",
+      "css": ".ds-ticker { display: flex; align-items: center; width: 30rem; height: 4.8rem; overflow: hidden; white-space: nowrap; border-radius: 0.6rem; background: #03140c; box-shadow: inset 0 0.15rem 0.35rem rgba(0, 0, 0, 0.5); color: #f2c230; font: 700 2.3rem/1 Rajdhani, sans-serif; } .ds-ticker__track { display: inline-flex; gap: 6rem; padding-left: 6rem; animation: ds-ticker 18s linear infinite; } @keyframes ds-ticker { to { transform: translateX(-50%); } } @media (prefers-reduced-motion: reduce) { .ds-ticker__track { animation: none; } }"
+    },
+    {
+      "name": "Zifferntaste",
+      "kind": "button",
+      "refersTo": "numpad-key",
+      "description": "Taste des PIN-Ziffernblocks als Fallblatt mit Mittelspalt.",
+      "html": "<button class=\"ds-num\">7</button>",
+      "css": ".ds-num { display: grid; place-items: center; width: 8rem; height: 5.2rem; border: 0; border-radius: 0.8rem; background: linear-gradient(180deg, #0f4a33 0 49.5%, #03140c 49.5% 50.5%, #0c432e 50.5%); box-shadow: 0 0.12rem 0.25rem rgba(1, 14, 8, 0.6), inset 0 0.06rem 0 rgba(205, 228, 196, 0.1); color: #cde4c4; font: 700 2.3rem/1 Rajdhani, sans-serif; cursor: pointer; transition: transform 90ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-num:active { transform: translateY(0.15rem) scale(0.97); } .ds-num:focus-visible { outline: 0.25rem solid #f2c230; outline-offset: 0.25rem; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Die Abfahrtstafel",
+    "overview": "Der Automat ist ein Fallblatt-Zugzielanzeiger. Die ganze Fläche ist Tafelgehäuse in WuS-Dunkelgrün, jeder Inhalt sitzt auf einem Blatt oder in einer Tafelzeile. Levels sind Gleise, eine Quizrunde ist eine Fahrt mit zehn Halten, das Ergebnis ist die Ankunft. Die Welt borgt ihre Mittel aus dem Bahnhof: Fallblätter mit Mittelspalt, Bahnhofsuhr, Linienband, Lauftext, Gleisnummer in Signalgelb, die Lok als Zugart-Piktogramm.\n\nDie Tafel ist dicht und ruhig zugleich: wenige feste Schriftstufen, Rang über die Ebene (Gehäuse, eingesetzte Tafel, Blatt) statt über Größe. Bewegung ist mechanisch, nicht weich: Zeichen klappen in Schritten an einer gemeinsamen Taktuhr, Zahlen wechseln als Ereignis. Jede Berührung bekommt sofort einen Signalring am Finger.\n\nVerweigert wird der Messe-Quiz-Standard aus weißer Fläche, bunten Kacheln und Fortschrittsbalken. Rot gibt es nicht; Fehler sind stumpfe Blätter mit gelbem Kreuz.",
+    "keyCharacteristics": [
+      "Totale Farbfläche in Dunkelgrün, kein Weiß, kein Rot.",
+      "Fallblätter mit Mittelspalt als Grundbaustein für Titel, Ziele, Zähler und Ergebniszeile.",
+      "Doppelter Rahmen: Außenschale mit eingesetzter, vertiefter Tafel.",
+      "Eine Taktuhr (70 ms) für alles, was klappt; Bewegung nur über `transform` und `opacity`.",
+      "Alles in rem auf einem Referenzraster von 1080 × 1920, das am kleineren Viewport-Maß hängt."
+    ],
+    "rules": [
+      { "name": "The Kein-Rot Rule", "body": "Rot ist keine Farbe dieser Tafel. „Falsch“, PIN-Fehler und ablaufende Zeit werden mit `flap-dull`, `signal` und Bewegung gezeigt. (Die rote Profi-Lok ist eine Level-Illustration, kein Signal.)", "section": "colors" },
+      { "name": "The Dunkle-Schrift Rule", "body": "Auf Hauptgrün, Signalgelb und Mint steht Schrift immer in `signal-ink`, nie in Weiß.", "section": "colors" },
+      { "name": "The Doppelte-Kodierung Rule", "body": "Richtig und falsch tragen immer Form und Farbe: Haken bzw. Kreuz als SVG, dazu Blattfarbe und Bewegung (Puls bzw. Rucken).", "section": "colors" },
+      { "name": "The Fünf-Stufen Rule", "body": "Fließende Schrift nutzt nur die fünf Stufen `--t-display` bis `--t-s`. Abweichende Größen gibt es nur für Fallblattzeilen, deren Blattzahl die Breite bestimmt.", "section": "typography" },
+      { "name": "The Versalien-Blatt Rule", "body": "Fallblätter zeigen nur Versalien, Ziffern und `-/·` aus dem Tafelalphabet; kürzere Texte werden mit leeren Blättern aufgefüllt, wie auf einer echten Tafel.", "section": "typography" },
+      { "name": "The Abdunkeln-statt-Weichzeichnen Rule", "body": "Hinter Modals und bei Inaktivität wird die Seite über `opacity` (0.28 bzw. 0.15) und leichte Skalierung zurückgenommen. Großflächige `filter: blur()` und `backdrop-filter` sind in 4K auf dem NUC verboten.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do alle Maße in rem auf dem 54 × 96rem-Raster angeben und die Wurzelgröße an `min(100vw / 54, 100vh / 96)` hängen lassen (im Quiz-iframe `min(100vw / 50.2, 100vh / 72)`).",
+      "Do Farben nur über die `:root`-Variablen aus `base.css` beziehen.",
+      "Do Zahlen, die sich ändern, als Fallblätter zeigen; Zähler im Modus `direct`.",
+      "Do neue Bewegung an die gemeinsame Taktuhr und an `--ease-out` / `--ease-in` hängen und nur `transform` und `opacity` animieren.",
+      "Do auf Grün, Gelb und Mint immer `signal-ink` als Schrift verwenden.",
+      "Do richtig/falsch immer mit Haken bzw. Kreuz als Inline-SVG und eigener Bewegung doppelt kodieren.",
+      "Do Medien (`Images/`, `QuizImages/`, `fonts/`) außerhalb von `dist/` mit root-absoluten Pfaden in exakter Groß-/Kleinschreibung referenzieren."
+    ],
+    "donts": [
+      "Don't Rot als Signal- oder Markenfarbe einsetzen und keine weiße Schrift auf Grün.",
+      "Don't weiße Flächen, bunte Kacheln oder Fortschrittsbalken bauen; Fortschritt ist das Linienband.",
+      "Don't großflächige `filter: blur()` oder `backdrop-filter` in 4K; abdunkeln über `opacity`.",
+      "Don't Tafelzeilen als schwebende Karten absetzen; Zeilen trennen Fugen.",
+      "Don't einen durchgehenden Mittelspalt quer durch Fließtext legen; bei Textzeilen tragen Scharniermarken das Blatt.",
+      "Don't eine zweite Schrift oder Systemschrift als Display einführen; Rajdhani ist verbindlich.",
+      "Don't Versalien-Labels mit Sperrung als Überzeilen über Überschriften setzen; die Label-Stufe gibt es nur als Spaltenkopf über ausgerichteten Tafelspalten."
+    ]
+  }
+}

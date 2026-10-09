@@ -4,6 +4,8 @@ Ein browserbasierter Quiz-Automat für Messen und Events. Besucher beantworten W
 
 ---
 
+> **Design:** Die Oberfläche folgt der Welt eines Fallblatt-Zugzielanzeigers. Farben, Schrift, Komponenten und Bewegungsregeln stehen in [`DESIGN.md`](DESIGN.md), Produktfakten und Leitplanken in [`PRODUCT.md`](PRODUCT.md).
+
 ## Inhaltsverzeichnis
 
 1. [Überblick](#überblick)

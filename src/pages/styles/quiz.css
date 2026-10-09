@@ -346,7 +346,6 @@ body {
     70% { transform: translateX(-0.3rem); }
 }
 
-/* Nicht gewaehlte richtige Antwort: gruener Rahmen und Haken. */
 /* Richtige Antwort nach Fehlgriff: ebenfalls gruenes Blatt, aber ohne Puls,
    damit „gewaehlt richtig“ und „gezeigt richtig“ unterscheidbar bleiben. */
 .btn-hint {
