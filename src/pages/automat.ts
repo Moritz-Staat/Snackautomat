@@ -1,12 +1,17 @@
+import { mountStationClock } from '../lib/clock';
 import { config, pinMatches } from '../lib/config';
 import { el } from '../lib/dom';
+import { mountFlaps, type FlapBoard } from '../lib/flap';
 import { setupPinModal } from '../lib/pin-modal';
 import { triggerRelay } from '../lib/relay';
+import { setupRipples } from '../lib/ripple';
 import { clearCounters, incrementCounter, readAllCounters } from '../lib/storage';
+import type { LevelId } from '../lib/types';
 
 const SCREENSAVER_AFTER_MS = 20_000;
 const HEADING_ANIMATION_INTERVAL_MS = 10_000;
-const HEADING_ANIMATION_DURATION_MS = 2_000;
+/** So lange klappt die Zeile auf ABFAHRT und faehrt die Lok an, bevor die Seite wechselt. */
+const DEPARTURE_MS = 520;
 
 const SCREENSAVER_VIDEOS = [
   '/Images/RZ_ChrisOmat_Bildschirmschonervideo_3er_v1.mp4',
@@ -122,17 +127,41 @@ setupPinModal({
   },
 });
 
-/** Ueberschrift pulsiert alle 10 s kurz, damit der Automat Blicke faengt. */
-function setupHeadingAnimation(): void {
-  const h1 = el('animated-h1');
-  const animate = (): void => {
-    h1.classList.add('animate');
-    window.setTimeout(() => h1.classList.remove('animate'), HEADING_ANIMATION_DURATION_MS);
-  };
-  animate();
-  window.setInterval(animate, HEADING_ANIMATION_INTERVAL_MS);
+/** Die Fallblaetter der Ueberschrift klappen alle 10 s durch, damit der Automat Blicke faengt. */
+function setupFlapBoards(): Map<HTMLElement, FlapBoard> {
+  const boards = mountFlaps();
+  const title = boards.get(el('animated-h1'));
+  window.setInterval(() => title?.shuffle(), HEADING_ANIMATION_INTERVAL_MS);
+  return boards;
+}
+
+/** Gleiszeilen: Takt und Gewinnschwelle aus der Konfiguration, Abfahrt beim Antippen. */
+function setupTracks(boards: Map<HTMLElement, FlapBoard>): void {
+  document.querySelectorAll<HTMLAnchorElement>('.track').forEach((track) => {
+    const level = track.dataset['level'] as LevelId | undefined;
+    const takt = track.querySelector('[data-takt]');
+    const min = track.querySelector('[data-min]');
+    if (level && takt) takt.textContent = String(config.frage_timer[level]);
+    if (min) min.textContent = String(config.min_richtig);
+
+    track.addEventListener('click', (event) => {
+      if (track.classList.contains('is-departing')) {
+        event.preventDefault();
+        return;
+      }
+      event.preventDefault();
+      track.classList.add('is-departing');
+      const name = track.querySelector<HTMLElement>('.track__name');
+      if (name) boards.get(name)?.set('ABFAHRT');
+      window.setTimeout(() => {
+        window.location.href = track.href;
+      }, DEPARTURE_MS);
+    });
+  });
 }
 
 updateAmpel();
-setupHeadingAnimation();
+setupTracks(setupFlapBoards());
+mountStationClock(el('clock'));
+setupRipples();
 resetIdle();

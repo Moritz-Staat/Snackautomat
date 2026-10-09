@@ -19,7 +19,7 @@ Ein browserbasierter Quiz-Automat für Messen und Events. Besucher beantworten W
    - [Statistik-Modal](#statistik-modal)
    - [Level-Seiten](#level-seiten-level1html--level3html)
    - [Quiz-Engine](#quiz-engine-libquiz-corets)
-   - [Inaktivitäts-Blur & Auto-Redirect](#inaktivitäts-blur--auto-redirect)
+   - [Inaktivitäts-Hinweis & Auto-Redirect](#inaktivitäts-hinweis--auto-redirect)
    - [Frage-Timer](#frage-timer)
    - [Gewinn-Animation](#gewinn-animation)
    - [Ergebnisscreen & Tier-System](#ergebnisscreen--tier-system)
@@ -215,7 +215,7 @@ Diese Punkte lassen sich nur auf der Hardware beurteilen, nicht im Browser am Sc
 - [ ] **Touch-Reaktion** — der Inaktivitäts-Reset hängt an `touchstart`; `mousemove` wird auf Touch-Geräten bewusst nicht registriert (`pointer: coarse`).
 - [ ] **Screensaver** — startet er nach 20 s? Läuft er einmal durch? Bricht eine Berührung ihn sofort ab?
 - [ ] **Timerlänge** — 15 / 25 / 40 s pro Frage. Zu knapp oder zu lang, wird in `config.local.js` unter `frage_timer` angepasst, ohne Rebuild.
-- [ ] **Inaktivitäts-Blur** nach 20 s und **Rücksprung zur Startseite** nach 30 s im Quiz.
+- [ ] **Inaktivitäts-Hinweis** („Noch da?“) nach 20 s und **Rücksprung zur Startseite** nach 30 s im Quiz.
 - [ ] **Relais** — nur mit gesetzter `relais_ip` in `config.local.js`. Ohne sie werden die Aufrufe stillschweigend übersprungen (siehe [Konfiguration](#konfiguration)).
 - [ ] **Admin-PINs** — Logo unten rechts antippen, PIN eingeben. Ohne `config.local.js` sind die PINs leer und es passiert absichtlich nichts.
 - [ ] **Neustartfestigkeit** — Rechner hart ausschalten und wieder einschalten: kommt der Automat ohne Dialog zurück?
@@ -246,13 +246,14 @@ Nach **20 Sekunden Inaktivität** auf der Startseite startet automatisch ein Scr
 - Das Video spielt einmal durch und kehrt danach automatisch zur Startseite zurück
 - **Beenden:** Beliebige Berührung oder Klick schließt den Screensaver sofort
 - Auf Touchscreen-Geräten wird kein Mausbewegungslistener registriert (`pointer: coarse` Erkennung)
-- **Auf Quiz-Seiten gibt es keinen Screensaver** — dort greift der Inaktivitäts-Blur
+- **Auf Quiz-Seiten gibt es keinen Screensaver** — dort greift der Inaktivitäts-Hinweis
+- Ein- und Ausblenden über eine Überblendung
 
 ---
 
 ### Birnenwechsler (Ampel)
 
-Das Logo-Bild auf der Startseite wechselt automatisch die Farbe basierend auf den aktuellen Zählerständen — als visueller Hinweis, wann der Automat aufgefüllt werden muss.
+Die Füllstandslampe unten links auf der Startseite wechselt automatisch die Farbe basierend auf den aktuellen Zählerständen — als visueller Hinweis, wann der Automat aufgefüllt werden muss.
 
 | Farbe | Bedingung |
 |-------|-----------|
@@ -266,7 +267,7 @@ Die rote Bedingung wird immer zuerst geprüft, dann orange, dann grün.
 
 ### PIN-Modal
 
-Durch Tippen auf das **WuS-Logo** (unten rechts) öffnet sich ein Modal mit einem Numpad. Der Hintergrund wird dabei unscharf (Blur-Effekt). Es gibt drei PINs:
+Durch Tippen auf das **WuS-Logo** (unten rechts) öffnet sich ein Modal mit einem Numpad. Die Tafel dahinter wird abgedunkelt (bewusst kein Weichzeichner: der wäre in 4K auf dem NUC zu teuer). Es gibt drei PINs:
 
 | PIN | Funktion |
 |-----|-----------|
@@ -274,7 +275,7 @@ Durch Tippen auf das **WuS-Logo** (unten rechts) öffnet sich ein Modal mit eine
 | `reset` | Löscht alle localStorage-Zählerstände und löst das Reset-Relais aus |
 | `statistik` | Öffnet das Statistik-Modal |
 
-Bei falschem PIN: Eingabefeld kurz rot umrandet, dann schließt das Modal automatisch.
+Bei falschem PIN: Eingabefeld kurz signalgelb umrandet und rüttelt, dann schließt das Modal automatisch.
 
 **Hinweis:** Auf den Level-Seiten gibt es ebenfalls ein PIN-Modal, das jedoch nur die Kontakt-PIN akzeptiert.
 
@@ -315,10 +316,10 @@ Alle drei Level nutzen dieselbe `lib/level-page.ts`, parametrisiert über das Ei
 
 ```ts
 // src/pages/Einzelseiten/level1.ts
-setupLevelPage({ storageKey: 'level1win', prizeEndpoint: 'level1_gewinn' });
+setupLevelPage({ level: 'level1', storageKey: 'level1win', prizeEndpoint: 'level1_gewinn' });
 ```
 
-Beide Werte sind über `CounterKey` bzw. `RelayEndpoint` typisiert — ein Tippfehler fällt beim `npm run build` auf, nicht erst auf der Messe. Vorher kamen sie als `data-`-Attribute ungeprüft aus dem HTML.
+`level` liefert den Takt für die Kopfzeile. Die Werte sind über `LevelId`, `CounterKey` bzw. `RelayEndpoint` typisiert — ein Tippfehler fällt beim `npm run build` auf, nicht erst auf der Messe. Vorher kamen sie als `data-`-Attribute ungeprüft aus dem HTML.
 
 ---
 
@@ -331,8 +332,8 @@ Die Kern-Logik läuft im Iframe und wird über `initQuiz(config)` gestartet.
 1. **Shuffle:** Fisher-Yates-Algorithmus mischt den Fragenkatalog und zieht 10 zufällige Fragen
 2. **Bild-Preloading:** Bilder der 10 gezogenen Fragen sofort vorgeladen; Bild der nächsten Frage wird während der aktuellen im Hintergrund geladen
 3. **Frageanzeige:** Frage + Bild (optional) + 4 Antwort-Buttons, gerendert per `DocumentFragment` in einem einzigen DOM-Schritt
-4. **Antwort-Feedback:** Delegierter Klick-Handler; alle Buttons deaktiviert, gewählte Antwort grün/rot markiert, richtige Antwort bei Fehler zusätzlich hervorgehoben
-5. **Fortschrittsbalken:** Zeigt `aktuelle Frage / 10` in Echtzeit
+4. **Antwort-Feedback:** Delegierter Klick-Handler; alle Buttons deaktiviert, gewählte Antwort richtig (grün, Haken) bzw. falsch (stumpf, gelbes Kreuz) markiert, richtige Antwort bei Fehler zusätzlich hervorgehoben
+5. **Linienband:** 10 Halte, jeder beantwortete Halt bleibt mit Haken oder Kreuz stehen; daneben der Zähler `01/10` als Fallblatt
 6. **Weiter:** 1,5 Sekunden nach Antwort automatisch zur nächsten Frage
 
 **Fragenkataloge:**
@@ -347,16 +348,16 @@ Pro Spiel werden immer 10 Fragen zufällig gezogen.
 
 ---
 
-### Inaktivitäts-Blur & Auto-Redirect
+### Inaktivitäts-Hinweis & Auto-Redirect
 
 Auf den Quiz-Seiten gibt es kein Screensaver-Video, stattdessen ein zweistufiges Inaktivitäts-System:
 
 | Zeit ohne Interaktion | Aktion |
 |-----------------------|--------|
-| 20 Sekunden | Seite wird unscharf (Blur-Overlay erscheint) |
+| 20 Sekunden | Quiz wird abgedunkelt, Hinweis „Noch da?“ erscheint |
 | 30 Sekunden | Automatische Weiterleitung zu `Automat.html` |
 
-Jede Berührung oder jeder Klick setzt beide Timer zurück und entfernt den Blur sofort.
+Jede Berührung oder jeder Klick setzt beide Timer zurück und entfernt den Hinweis sofort.
 
 ---
 
@@ -364,7 +365,7 @@ Jede Berührung oder jeder Klick setzt beide Timer zurück und entfernt den Blur
 
 Jede Frage hat einen sichtbaren Countdown-Balken direkt über dem Fortschrittsbalken. Läuft die Zeit ab, ohne dass eine Antwort gegeben wurde, zählt die Frage als falsch und das Quiz geht automatisch weiter.
 
-Der Balken läuft von Grün nach Rot. Die Zeit pro Frage ist in `config.js` unter `frage_timer` individuell pro Level konfigurierbar:
+Der Balken läuft von Grün nach Signalgelb (kein Rot, siehe Design). Die Zeit pro Frage ist in `config.js` unter `frage_timer` individuell pro Level konfigurierbar:
 
 | Level | Standard |
 |-------|----------|
@@ -372,13 +373,13 @@ Der Balken läuft von Grün nach Rot. Die Zeit pro Frage ist in `config.js` unte
 | Level 2 – Fortgeschritten | 25 Sekunden |
 | Level 3 – Profi | 40 Sekunden |
 
-Der Frage-Timer und das bestehende Inaktivitäts-System ergänzen sich: Läuft jemand weg, greift nach 20 Sekunden der Blur und nach 30 Sekunden die Weiterleitung zur Startseite.
+Der Frage-Timer und das bestehende Inaktivitäts-System ergänzen sich: Läuft jemand weg, greift nach 20 Sekunden der Hinweis und nach 30 Sekunden die Weiterleitung zur Startseite.
 
 ---
 
 ### Gewinn-Animation
 
-Bei einem Gewinn (≥ `min_richtig` richtige Antworten) startet automatisch eine Konfetti-Animation. 130 bunte Partikel fallen über den Bildschirm und blenden nach 4 Sekunden sanft aus. Die Animation läuft als Canvas-Overlay (`z-index: 999`) und blockiert keine Interaktionen.
+Bei einem Gewinn (≥ `min_richtig` richtige Antworten) startet automatisch eine Konfetti-Animation. 130 Partikel in den Markenfarben fallen über den Bildschirm und blenden nach 4 Sekunden sanft aus. Die Animation läuft als Canvas-Overlay (`z-index: 999`) und blockiert keine Interaktionen.
 
 ---
 
@@ -428,11 +429,13 @@ Nach Empfang der `postMessage` löst die Level-Seite unmittelbar aus:
 **Bei Gewinn:**
 - Erhöht den Gewinn-Zähler des Levels (`level1win` … `level3win`) im localStorage
 - Löst das level-spezifische Relay aus
+- Zeigt „Dein Preis wird ausgegeben.“ mit Fallblatt-Countdown
 - Kehrt nach 3 Sekunden zur Startseite zurück
 
 **Bei Niederlage:**
 - Erhöht den `loses`-Zähler im localStorage
 - Löst das Trostpreis-Relay aus
+- Zeigt „Dein Trostpreis wird ausgegeben.“ mit Fallblatt-Countdown
 - Kehrt nach 3 Sekunden zur Startseite zurück
 
 Ein Durchgang löst genau einmal aus, auch wenn die Nachricht mehrfach einträfe.

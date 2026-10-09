@@ -4,26 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Level 1</title>
+    <link rel="icon" href="/Images/LOGO.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../styles/level.css">
 </head>
 <body>
-<div id="wholepage">
-<div id="mainContent">
-    <div class="quiz-container">
-        <iframe src="./QuizLevel1/index.html" title="Quiz Level 1" style="border:none"></iframe>
-    </div>
-    <div id="homesweethome">
-        <h3 class="Abbrechen">Home</h3>
-        <a href="../Automat.html">
-            <img src="/Images/house-solid.svg" alt="Zurück zur Startseite" class="homesweethome">
-        </a>
+<div id="wholepage" class="trip housing">
+    <div class="panel trip__panel">
+        <header class="trip__head">
+            <span class="trip__no" style="view-transition-name: gleis-1">1</span>
+            <span class="trip__name" data-flap="ANFÄNGER" data-flap-length="15"></span>
+            <span class="trip__takt"><b id="takt"></b> s je Frage</span>
+        </header>
+
+        <div id="mainContent" class="trip__quiz">
+            <iframe src="./QuizLevel1/index.html" title="Quiz Level 1"></iframe>
+        </div>
+
+        <footer class="trip__foot">
+            <a href="../Automat.html" id="homesweethome" class="home">
+                <img src="/Images/house-solid.svg" alt="" class="home__icon">
+                <span class="Abbrechen">Start</span>
+            </a>
+        </footer>
     </div>
 </div>
-</div>
-<img src="/Images/LOGO.svg" alt="" class="logo" id="logo">
+
+<img src="/Images/WuS_Logo.svg" alt="WuS-Technik" class="logo" id="logo">
+
 <div id="pinModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="PIN-Eingabe">
+        <button type="button" class="close" aria-label="Schließen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
         <p>Bitte geben Sie Ihre PIN ein:</p>
         <input type="password" id="pinInput" readonly>
         <div id="numpad">
@@ -37,7 +49,9 @@
             <button class="num">8</button>
             <button class="num">9</button>
             <button class="num">0</button>
-            <button id="backspace">⌫</button>
+            <button id="backspace" aria-label="Löschen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9l-6 7 6 7h12z"/><path d="M12 9l6 6M18 9l-6 6"/></svg>
+            </button>
             <button id="submitPin">Eingabe</button>
         </div>
     </div>
