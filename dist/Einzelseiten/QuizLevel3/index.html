@@ -6,29 +6,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Level 3</title>
-  <script type="module" crossorigin src="/dist/assets/quiz3-Cl2PSKb6.js"></script>
-  <link rel="modulepreload" crossorigin href="/dist/assets/dom-BacjsX2u.js">
-  <link rel="modulepreload" crossorigin href="/dist/assets/quiz-core-Da4rm6PJ.js">
-  <link rel="stylesheet" crossorigin href="/dist/assets/quiz-core-Cuo8wvlL.css">
+  <script type="module" crossorigin src="/dist/assets/quiz3-5Kaaxtgk.js"></script>
+  <link rel="modulepreload" crossorigin href="/dist/assets/ripple-D6syocOf.js">
+  <link rel="modulepreload" crossorigin href="/dist/assets/quiz-core-BA3jwvan.js">
+  <link rel="stylesheet" crossorigin href="/dist/assets/quiz-core-BaPpWoix.css">
 </head>
 <body>
-<div id="quiz-container">
-    <div id="question-container">
-        <img id="question-image" src="" alt="" style="display: none;">
-        <div id="question-text"></div>
-        <div id="answer-buttons" class="btn-container"></div>
+<div id="quiz-container" class="quiz">
+    <div class="route">
+        <ol id="progress-bar" class="route__line" aria-hidden="true"></ol>
+        <div id="timer-container" class="dial" aria-hidden="true">
+            <svg viewBox="0 0 100 100">
+                <circle class="dial__face" cx="50" cy="50" r="47"/>
+                <circle id="timer-arc" class="dial__arc" cx="50" cy="50" r="30" pathLength="100"/>
+                <g id="timer-bar" class="dial__hand">
+                    <line x1="50" y1="56" x2="50" y2="12"/>
+                    <circle cx="50" cy="13" r="6"/>
+                </g>
+                <circle class="dial__hub" cx="50" cy="50" r="3.5"/>
+            </svg>
+        </div>
+        <div id="progress-text" class="route__count" aria-live="polite"></div>
+    </div>
+    <div id="question-container" class="stage">
+        <figure id="question-frame" class="frame housing">
+            <div id="question-media" class="panel frame__panel"></div>
+        </figure>
+        <div id="question-text" class="question"></div>
+        <div id="answer-buttons" class="answers btn-container"></div>
     </div>
 </div>
 <div id="blur-overlay" class="blur-overlay">
-    <p>.</p>
-</div>
-<div id="timer-container">
-    <div id="timer-bar"></div>
-</div>
-<div id="progress-container">
-    <div id="progress-bar">
-        <div id="progress-text">0/10</div>
-    </div>
+    <p class="blur-overlay__title">Noch da?</p>
+    <p class="blur-overlay__hint">Tippe irgendwo, um weiterzuspielen.</p>
 </div>
 </body>
 </html>

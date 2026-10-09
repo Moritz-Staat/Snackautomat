@@ -1,8 +1,11 @@
 import { config, pinMatches } from './config';
+import { optionalEl } from './dom';
+import { mountFlaps } from './flap';
 import { setupPinModal } from './pin-modal';
 import { triggerRelay } from './relay';
+import { setupRipples } from './ripple';
 import { incrementCounter } from './storage';
-import { isQuizResultMessage, type CounterKey, type RelayEndpoint } from './types';
+import { isQuizResultMessage, type CounterKey, type LevelId, type RelayEndpoint } from './types';
 
 /** Wie lange das Ergebnis noch stehen bleibt, bevor es zurueck zur Startseite geht. */
 const RETURN_HOME_MS = 3_000;
@@ -10,6 +13,7 @@ const RETURN_HOME_MS = 3_000;
 const HOME_URL = `${import.meta.env.BASE_URL}Automat.html`;
 
 interface LevelPageOptions {
+  level: LevelId;
   storageKey: CounterKey;
   prizeEndpoint: RelayEndpoint;
 }
@@ -23,8 +27,13 @@ interface LevelPageOptions {
  * Preis). Das ist entfernt, der Ablauf wird neu konzipiert — siehe Issue #6.
  * Jetzt loest das Ergebnis direkt das passende Relais aus.
  */
-export function setupLevelPage({ storageKey, prizeEndpoint }: LevelPageOptions): void {
+export function setupLevelPage({ level, storageKey, prizeEndpoint }: LevelPageOptions): void {
   let handled = false;
+
+  const takt = optionalEl('takt');
+  if (takt) takt.textContent = String(config.frage_timer[level]);
+  mountFlaps();
+  setupRipples();
 
   window.addEventListener('message', (event: MessageEvent<unknown>) => {
     // Nur Nachrichten aus dem eigenen Quiz-iframe akzeptieren.

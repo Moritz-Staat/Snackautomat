@@ -4,50 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chris-O-Mat</title>
+    <link rel="icon" href="/Images/LOGO.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./automat.css">
 </head>
 <body>
-<div id="wholepage">
-    <div id="überschriften">
-        <h1 id="animated-h1">Chris-O-Mat</h1>
-        <h2>Stelle dich den Fragen des Meistertrainers!</h2>
-    </div>
-    <div class="container">
-        <div class="quiz-options">
-            <a href="./Einzelseiten/level1.html" class="level1link">
-                <div class="level1">
-                    <h3 class="levelschriften">Anfänger</h3>
-                    <img src="/Images/01.svg" alt="" class="my-svg">
+<div id="wholepage" class="board housing">
+    <main class="panel board__panel">
+        <header class="board__head">
+            <h1 id="animated-h1" class="board__title" aria-label="Chris-O-Mat" data-flap="CHRIS-O-MAT"></h1>
+        </header>
+
+        <div class="board__callrow">
+            <div id="clock" class="board__clock"></div>
+            <div class="ticker board__call" aria-label="Stelle dich den Fragen des Meistertrainers!">
+                <div class="ticker__track" aria-hidden="true">
+                    <h2>Stelle dich den Fragen des Meistertrainers!</h2>
+                    <h2>Stelle dich den Fragen des Meistertrainers!</h2>
+                    <h2>Stelle dich den Fragen des Meistertrainers!</h2>
+                    <h2>Stelle dich den Fragen des Meistertrainers!</h2>
                 </div>
+            </div>
+        </div>
+
+        <div class="tracks__legend" aria-hidden="true">
+            <span>Gleis</span>
+            <span>Ziel</span>
+            <span>Takt</span>
+        </div>
+
+        <nav class="tracks" aria-label="Schwierigkeit wählen">
+            <a href="./Einzelseiten/level1.html" class="track" data-level="level1" style="--i: 0">
+                <span class="track__no" style="view-transition-name: gleis-1">1</span>
+                <span class="track__name" data-flap="ANFÄNGER" data-flap-length="15"></span>
+                <span class="track__via">10 Fragen · ab <b data-min></b> richtig</span>
+                <img src="/Images/01.svg" alt="" class="track__loco">
+                <span class="track__takt"><b data-takt></b> s je Frage</span>
             </a>
 
-            <a href="./Einzelseiten/level2.html" class="level2link">
-                <div class="level2">
-                    <h3 class="levelschriften">Fortgeschritten</h3>
-                    <img src="/Images/03.svg" alt="" class="my-svg">
-                </div>
+            <a href="./Einzelseiten/level2.html" class="track" data-level="level2" style="--i: 1">
+                <span class="track__no" style="view-transition-name: gleis-2">2</span>
+                <span class="track__name" data-flap="FORTGESCHRITTEN" data-flap-length="15"></span>
+                <span class="track__via">10 Fragen · ab <b data-min></b> richtig</span>
+                <img src="/Images/03.svg" alt="" class="track__loco">
+                <span class="track__takt"><b data-takt></b> s je Frage</span>
             </a>
 
-            <a href="./Einzelseiten/level3.html" class="level3link">
-                <div class="level3">
-                    <h3 class="levelschriften">Profi</h3>
-                    <img src="/Images/02.svg" alt="" class="my-svg">
-                </div>
+            <a href="./Einzelseiten/level3.html" class="track" data-level="level3" style="--i: 2">
+                <span class="track__no" style="view-transition-name: gleis-3">3</span>
+                <span class="track__name" data-flap="PROFI" data-flap-length="15"></span>
+                <span class="track__via">10 Fragen · ab <b data-min></b> richtig</span>
+                <img src="/Images/02.svg" alt="" class="track__loco">
+                <span class="track__takt"><b data-takt></b> s je Frage</span>
             </a>
-        </div>
-        <h2 class="schriftunten">Gewinne coole Preise!</h2>
-        <div id="marinus">
-            <img src="/Images/grünebirne.svg" id="zählstand" alt="">
-        </div>
-    </div>
+        </nav>
+
+        <footer class="board__foot">
+            <div id="marinus" class="lamp" title="Füllstand">
+                <img src="/Images/grünebirne.svg" id="zählstand" alt="">
+            </div>
+            <div class="ticker board__prize" aria-label="Gewinne coole Preise!">
+                <div class="ticker__track" aria-hidden="true">
+                    <h2 class="schriftunten">Gewinne coole Preise!</h2>
+                    <h2 class="schriftunten">Gewinne coole Preise!</h2>
+                    <h2 class="schriftunten">Gewinne coole Preise!</h2>
+                    <h2 class="schriftunten">Gewinne coole Preise!</h2>
+                    <h2 class="schriftunten">Gewinne coole Preise!</h2>
+                    <h2 class="schriftunten">Gewinne coole Preise!</h2>
+                </div>
+            </div>
+        </footer>
+    </main>
 </div>
+
 <div id="screensaver" class="hidden">
     <video id="screensaverVideo" muted playsinline></video>
 </div>
-<img src="/Images/WuS_Logo.svg" alt="" class="logo" id="logo">
+
+<img src="/Images/WuS_Logo.svg" alt="WuS-Technik" class="logo" id="logo">
+
 <div id="pinModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="PIN-Eingabe">
+        <button type="button" class="close" aria-label="Schließen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
         <p>Bitte geben Sie Ihre PIN ein:</p>
         <input type="password" id="pinInput" readonly>
         <div id="numpad">
@@ -61,15 +100,19 @@
             <button class="num">8</button>
             <button class="num">9</button>
             <button class="num">0</button>
-            <button id="backspace">⌫</button>
+            <button id="backspace" aria-label="Löschen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H9l-6 7 6 7h12z"/><path d="M12 9l6 6M18 9l-6 6"/></svg>
+            </button>
             <button id="submitPin">Eingabe</button>
         </div>
     </div>
 </div>
 
 <div id="statsModal" class="modal">
-    <div class="modal-content stats-modal-content">
-        <span class="close" id="statsClose">&times;</span>
+    <div class="modal-content stats-modal-content" role="dialog" aria-modal="true" aria-label="Statistiken">
+        <button type="button" class="close" id="statsClose" aria-label="Schließen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
         <h3 class="stats-title">Statistiken</h3>
         <table class="stats-table">
             <tr>

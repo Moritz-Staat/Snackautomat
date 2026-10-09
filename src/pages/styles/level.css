@@ -1,99 +1,117 @@
 @import './base.css';
 
-/*
- * Level-Seite: Rahmen um das Quiz-iframe.
- *
- * Vorher standen hier feste Maße, die per Trial-and-Error auf genau einen
- * Monitor getuned waren:
- *
- *     .quiz-container { margin-top: -20rem; height: 180rem; width: 100rem; }
- *
- * Bei 16px Wurzelgroeße sind das 2880x1600px mit 320px negativem Rand — auf
- * dem 4K-Panel im Hochformat passte davon nichts. Jetzt haengt alles am
- * Viewport, der negative Rand ist ersatzlos weg.
- *
- * Alle drei Level teilen sich diese Datei.
- */
+/* ── Fahrt: Kopf mit Gleis, Quiz im Rahmen, Fuss mit Heimweg ───────────── */
 
-body,
-html {
-    margin: 0;
-    height: 100%;
-}
-
-#wholepage {
-    background-image: url('/Images/Wallpaper_Automat.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#wholepage.blurred {
-    filter: blur(0.3125rem);
-}
-
-#mainContent {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.quiz-container {
-    /* 80vh statt mehr: darunter liegt die fixierte Home-Schaltflaeche, die
-       sonst unter den unteren iframe-Rand geriet. */
-    width: min(92vw, 110rem);
-    height: min(80vh, 190rem);
-    box-sizing: border-box;
-    overflow: hidden;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
-    border-radius: 0.5rem;
-    background: white;
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-}
-
-/* ── Home-Schaltflaeche unten links ─────────────────────────────────────── */
-
-#homesweethome {
+.trip {
     position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
+    inset: 1.2rem;
 }
 
-.homesweethome {
-    height: 5rem;
-    width: 5rem;
+.trip__panel {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+    padding: 1.8rem 2rem 1.6rem;
+    overflow: hidden;
+}
+
+.trip__head {
+    position: relative;
+    display: grid;
+    grid-template-columns: 6.4rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.4rem;
+    padding: 1.2rem;
+    border-radius: 1.1rem;
+    background: var(--housing);
+    box-shadow: inset 0 0.08rem 0 rgba(205, 228, 196, 0.1);
+}
+
+.trip__no {
+    display: grid;
+    place-items: center;
+    width: 6.4rem;
+    height: 6.4rem;
+    border-radius: 0.8rem;
+    background: var(--signal);
+    color: var(--signal-ink);
+    font-size: 4.6rem;
+    font-weight: 700;
+    line-height: 1;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 45%, rgba(11, 61, 42, 0.12));
+    box-shadow: var(--shadow-flap);
+}
+
+.trip__name {
+    /* 15 Blaetter wie auf der Startseite, neben Gleis und Takt. */
+    font-size: 2.05rem;
+}
+
+.trip__takt {
+    font-size: var(--t-m);
+    font-weight: 600;
+    color: var(--ink-dim);
+    white-space: nowrap;
+}
+
+.trip__takt b {
+    font-size: var(--t-l);
+    font-weight: 700;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+}
+
+.trip__quiz {
+    position: relative;
+    min-height: 0;
+    margin: 1.2rem -2rem 0;
+}
+
+.trip__quiz iframe {
     display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color-scheme: normal;
+}
+
+.trip__foot {
+    display: flex;
+    align-items: center;
+    margin-top: 1.2rem;
+    height: 5.6rem;
+}
+
+.home {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    height: 5.6rem;
+    padding: 0 1.8rem 0 1.4rem;
+    border-radius: 0.9rem;
+    background: var(--housing);
+    box-shadow: inset 0 0.08rem 0 rgba(205, 228, 196, 0.1), var(--shadow-flap);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 120ms var(--ease-out);
+}
+
+.home:active {
+    transform: translateY(0.15rem) scale(0.98);
+}
+
+.home__icon {
+    width: 2.8rem;
+    height: 2.8rem;
 }
 
 .Abbrechen {
-    font-size: 1.8rem;
-    margin: 0;
-    font-family: 'Rajdhani-SemiBold', sans-serif;
-    color: black;
+    font-size: var(--t-m);
+    font-weight: 700;
 }
 
-/* ── Logo unten rechts (oeffnet das PIN-Modal) ──────────────────────────── */
-
 .logo {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    width: 5rem;
-    height: 5rem;
+    right: 3.2rem;
+    bottom: 2.85rem;
 }

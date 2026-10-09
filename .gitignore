@@ -7,3 +7,9 @@ node_modules/
 
 # dist/ wird bewusst NICHT ignoriert: der Messe-PC soll ohne npm install
 # und ohne Internet lauffähig sein. Siehe README, Abschnitt Deployment.
+
+# Impeccable: Screenshots und Entscheidungsseiten-Logs sind Arbeitsstand, nicht Quelle.
+.impeccable/review/
+.impeccable/questions/
+.impeccable/config.local.json
+.playwright-cli/

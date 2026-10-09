@@ -27,6 +27,8 @@ export interface QuizSetup {
   questions: Question[];
   tiers: Tier[];
   timerSeconds: number;
+  /** Lok-Illustration des Levels, faehrt bei der Ankunft ein (z. B. "/Images/01.svg"). */
+  loco?: string;
 }
 
 /** Schlüssel der Relais-Endpunkte am Microcontroller. */

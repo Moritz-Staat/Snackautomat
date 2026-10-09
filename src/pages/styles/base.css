@@ -1,131 +1,497 @@
 /*
- * Gemeinsame Grundlage aller Seiten.
+ * Gemeinsame Grundlage aller Seiten: die Abfahrtstafel.
  *
- * Kernpunkt fuer den Messebetrieb: der Automat haengt an einem 4K-Panel im
- * Hochformat (2160x3840). Vorher waren saemtliche Groessen feste rem-Werte bei
- * unveraenderter Wurzel-Schriftgroesse von 16px — auf dem Panel wurde dadurch
- * alles winzig und der Inhalt nutzte kaum die halbe Breite.
- *
- * Deshalb skaliert die Wurzel-Schriftgroesse jetzt mit dem Viewport. Alle
- * rem-Angaben in den uebrigen Dateien wachsen dadurch automatisch mit, ohne
- * dass irgendwo Pixelwerte nachgezogen werden muessen.
- *
- * Warum min(vw, vh): rein breitenbasiert wuerde es auf einem Querformat-
- * Testmonitor vertikal ueberlaufen. Der kleinere der beiden Werte gewinnt,
- * damit das Layout auf beiden Seitenverhaeltnissen sitzt.
- *
- *   2160 x 3840 (Kiosk)   -> min(32.4, 84.5) = 32.4px
- *   1920 x 1080 (Test)    -> min(28.8, 23.8) = 23.8px
+ * Zielgeraet ist ein 4K-Panel im Hochformat (2160 x 3840), bedient per Finger.
+ * Entworfen wird auf einem Referenzraster von 1080 x 1920 mit 1rem = 20px,
+ * also 54 x 96 rem. Die Wurzel-Schriftgroesse haengt am kleineren Viewport-
+ * Mass, damit dieselbe Komposition auf dem Panel (1rem = 40px), bei
+ * Windows-Skalierung (1080 x 1920, 1rem = 20px) und auf einem quer stehenden
+ * Testmonitor (Hoehe begrenzt) passt.
  */
 html {
-    font-size: clamp(15px, min(1.5vw, 2.2vh), 40px);
+    font-size: min(calc(100vw / 54), calc(100vh / 96));
+    background: var(--housing-deep);
+}
+
+:root {
+    /* Gehaeuse und Blaetter: totale Flaeche in WuS-Dunkelgruen. */
+    --housing: #0b3d2a;
+    --housing-deep: #062619;
+    --housing-edge: #135238;
+    --flap: #0f4a33;
+    --flap-lower: #0c432e;
+    --flap-gap: #03140c;
+    --flap-dull: #22362d;
+
+    /* Schrift und Signale. Text auf Hauptgruen ist immer dunkelgruen. */
+    --ink: #cde4c4;
+    --ink-soft: #9fc3a4;
+    --ink-dim: #6f9a7c;
+    --green: #62b55a;
+    --green-deep: #51a175;
+    --signal: #f2c230;
+    --signal-ink: #0b3d2a;
+
+    --shadow: 0 0.35rem 0.9rem rgba(1, 14, 8, 0.55);
+    --shadow-flap: 0 0.12rem 0.25rem rgba(1, 14, 8, 0.6);
+
+    /* Schriftgroessen: wenige feste Stufen, Rang ueber Ebene statt ueber Groesse. */
+    --t-display: 4.4rem;
+    --t-xl: 2.9rem;
+    --t-l: 2.3rem;
+    --t-m: 1.75rem;
+    --t-s: 1.05rem;
+
+    /* Bewegung: ein Takt fuer alles. */
+    --tick: 70ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.55, 0, 0.9, 0.3);
+
+    --z-ripple: 40;
+    --z-overlay: 30;
+    --z-modal: 50;
 }
 
 @font-face {
-    font-family: 'Rajdhani-Bold';
-    src: url('/fonts/Rajdhani-Bold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    font-family: 'Rajdhani';
+    src: url('/fonts/Rajdhani-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-display: block;
 }
 
 @font-face {
-    font-family: 'Rajdhani-SemiBold';
+    font-family: 'Rajdhani';
+    src: url('/fonts/Rajdhani-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
     src: url('/fonts/Rajdhani-SemiBold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    font-weight: 600;
+    font-display: block;
 }
 
 @font-face {
-    font-family: 'Roboto-Bold';
-    src: url('/fonts/Roboto-Bold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+    font-family: 'Rajdhani';
+    src: url('/fonts/Rajdhani-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-display: block;
 }
 
-/* Kiosk-Grundverhalten: keine Textauswahl, kein Overscroll, kein Blaulicht
-   beim Antippen — der Automat wird ausschliesslich per Finger bedient. */
-* {
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
 
+html,
 body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--housing-deep);
     -webkit-user-select: none;
     user-select: none;
     overscroll-behavior: none;
+    overflow: hidden;
+    cursor: default;
 }
 
-/* ── PIN-Modal (Startseite und Level-Seiten identisch) ──────────────────── */
+::selection {
+    background: var(--signal);
+    color: var(--signal-ink);
+}
+
+button {
+    font: inherit;
+    color: inherit;
+}
+
+:focus-visible {
+    outline: 0.25rem solid var(--signal);
+    outline-offset: 0.25rem;
+}
+
+/* ── Gehaeuse (doppelter Rahmen: Aussenschale + eingesetzte Tafel) ─────── */
+
+.housing {
+    background:
+        linear-gradient(180deg, rgba(205, 228, 196, 0.07), transparent 0.6rem),
+        var(--housing);
+    border-radius: 1.6rem;
+    padding: 0.7rem;
+    box-shadow:
+        inset 0 0.08rem 0 rgba(205, 228, 196, 0.12),
+        inset 0 -0.15rem 0 rgba(1, 14, 8, 0.5),
+        var(--shadow);
+}
+
+.housing > .panel {
+    background: var(--housing-deep);
+    border-radius: calc(1.6rem - 0.7rem);
+    box-shadow:
+        inset 0 0.25rem 0.6rem rgba(0, 0, 0, 0.45),
+        inset 0 -0.06rem 0 rgba(205, 228, 196, 0.06);
+}
+
+/* ── Fallblatt ─────────────────────────────────────────────────────────── */
+
+.flaps {
+    display: inline-flex;
+    gap: 0.07em;
+    line-height: 1;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.flap {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 0.74em;
+    height: 1.12em;
+    border-radius: 0.09em;
+    background: linear-gradient(
+        180deg,
+        var(--flap) 0 49.2%,
+        var(--flap-gap) 49.2% 50.8%,
+        var(--flap-lower) 50.8% 100%
+    );
+    box-shadow: var(--shadow-flap), inset 0 0.03em 0 rgba(205, 228, 196, 0.1);
+    color: var(--ink);
+    overflow: hidden;
+}
+
+.flap__char {
+    position: relative;
+    top: 0.04em;
+}
+
+/* Das fallende obere Blatt: ein einziges transform pro Zeichenwechsel. */
+.flap::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 50.8% 0;
+    background: var(--flap);
+    transform-origin: 50% 100%;
+    transform: scaleY(0);
+    pointer-events: none;
+}
+
+.flap.tick-a::after {
+    animation: flap-fall-a calc(var(--tick) * 1.3) steps(3, end);
+}
+
+.flap.tick-b::after {
+    animation: flap-fall-b calc(var(--tick) * 1.3) steps(3, end);
+}
+
+@keyframes flap-fall-a {
+    from { transform: scaleY(1); }
+    to { transform: scaleY(0); }
+}
+
+@keyframes flap-fall-b {
+    from { transform: scaleY(1); }
+    to { transform: scaleY(0); }
+}
+
+.flap--blank .flap__char {
+    visibility: hidden;
+}
+
+/* ── Lauftext ──────────────────────────────────────────────────────────── */
+
+.ticker {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.ticker__track {
+    display: inline-flex;
+    gap: 6rem;
+    padding-left: 6rem;
+    animation: ticker 22s linear infinite;
+    will-change: transform;
+}
+
+@keyframes ticker {
+    to { transform: translateX(-50%); }
+}
+
+/* ── Beruehrungsantwort ────────────────────────────────────────────────── */
+
+.ripple {
+    position: fixed;
+    z-index: var(--z-ripple);
+    width: 9rem;
+    height: 9rem;
+    margin: -4.5rem 0 0 -4.5rem;
+    border-radius: 50%;
+    border: 0.35rem solid var(--signal);
+    pointer-events: none;
+    animation: ripple 480ms var(--ease-out) forwards;
+}
+
+@keyframes ripple {
+    from { transform: scale(0.15); opacity: 0.9; }
+    to { transform: scale(1); opacity: 0; }
+}
+
+/* ── Seitenwechsel (Cross-Document View Transitions, Chrome) ───────────── */
+
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root) {
+    animation: page-out 200ms var(--ease-in) both;
+}
+
+::view-transition-new(root) {
+    animation: page-in 380ms var(--ease-out) both;
+}
+
+::view-transition-group(*) {
+    animation-duration: 420ms;
+    animation-timing-function: var(--ease-out);
+}
+
+@keyframes page-out {
+    to { opacity: 0; transform: translateY(-1.5%); }
+}
+
+@keyframes page-in {
+    from { opacity: 0; transform: translateY(2.5%); }
+}
+
+/* ── Abdunkeln hinter Modals (statt teurem Weichzeichner in 4K) ────────── */
+
+#wholepage {
+    transition: opacity 220ms var(--ease-out), transform 320ms var(--ease-out);
+}
+
+.blurred {
+    opacity: 0.28;
+    transform: scale(0.985);
+}
+
+/* ── PIN- und Statistik-Modal ──────────────────────────────────────────── */
 
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: var(--z-modal);
     inset: 0;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    padding-top: 3.75rem;
+    background: rgba(2, 16, 10, 0.66);
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 1.25rem;
-    border: 0.125rem solid #888;
-    width: 80%;
-    max-width: 22rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30rem;
+    transform: translate(-50%, -50%);
+    padding: 2.4rem 2.2rem 2.2rem;
+    border-radius: 1.6rem;
+    background: var(--housing);
+    box-shadow:
+        inset 0 0.08rem 0 rgba(205, 228, 196, 0.14),
+        0 1.5rem 4rem rgba(0, 0, 0, 0.55);
     text-align: center;
+    animation: modal-in 320ms var(--ease-out);
+}
+
+@keyframes modal-in {
+    from { opacity: 0; transform: translate(-50%, -46%) scale(0.97); }
+}
+
+.modal-content p {
+    margin: 0 0 1.2rem;
+    font-size: var(--t-m);
+    font-weight: 600;
+    color: var(--ink);
 }
 
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 1.75rem;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    display: grid;
+    place-items: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.8rem;
+    background: var(--flap);
+    color: var(--ink-soft);
     cursor: pointer;
 }
 
+.close svg,
+#backspace svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.close:active {
+    transform: translateY(0.1rem);
+    background: var(--flap-lower);
+}
+
 #pinInput {
-    padding: 0.625rem;
-    font-size: 1.25rem;
-    margin: 0.625rem 0;
-    width: 80%;
+    width: 100%;
+    height: 4.6rem;
+    margin: 0 0 1.4rem;
+    padding: 0 1.2rem;
+    border: 0.2rem solid transparent;
+    border-radius: 0.8rem;
+    background: var(--housing-deep);
+    box-shadow: inset 0 0.2rem 0.5rem rgba(0, 0, 0, 0.5);
+    color: var(--ink);
+    font: 700 var(--t-l) 'Rajdhani', sans-serif;
+    letter-spacing: 0.5em;
+    text-align: center;
+    caret-color: transparent;
+    outline: none;
 }
 
 #numpad {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.625rem;
-    margin-top: 0.625rem;
+    gap: 0.8rem;
 }
 
 #numpad button {
-    padding: 1.25rem;
-    font-size: 1.25rem;
-    background-color: #646363;
-    color: white;
-    border: none;
-    border-radius: 0.25rem;
+    display: grid;
+    place-items: center;
+    height: 5.2rem;
+    border: 0;
+    border-radius: 0.8rem;
+    background: linear-gradient(180deg, var(--flap) 0 49.5%, var(--flap-gap) 49.5% 50.5%, var(--flap-lower) 50.5%);
+    box-shadow: var(--shadow-flap), inset 0 0.06rem 0 rgba(205, 228, 196, 0.1);
+    color: var(--ink);
+    font-size: var(--t-l);
+    font-weight: 700;
     cursor: pointer;
+    transition: transform 90ms var(--ease-out), background-color 90ms;
 }
 
 #numpad button:active {
-    background-color: #505050;
+    transform: translateY(0.15rem) scale(0.97);
 }
 
-/* Rote Umrandung bei falscher PIN */
+#numpad #submitPin {
+    background: var(--green);
+    color: var(--signal-ink);
+    font-size: var(--t-m);
+}
+
+/* Falsche PIN: Signalgelb und ein kurzes Schuetteln, kein Rot. */
 .error-border {
-    border: 0.125rem solid red;
+    border-color: var(--signal) !important;
+    animation: shake 320ms var(--ease-out);
 }
 
-.blurred {
-    filter: blur(0.3125rem);
+@keyframes shake {
+    20% { transform: translateX(-0.6rem); }
+    45% { transform: translateX(0.5rem); }
+    70% { transform: translateX(-0.3rem); }
+}
+
+.stats-modal-content {
+    width: 38rem;
+    text-align: left;
+}
+
+.stats-title {
+    margin: 0 0 1.4rem;
+    font-size: var(--t-xl);
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    font-size: var(--t-m);
+}
+
+.stats-table td {
+    padding: 0.8rem 1.1rem;
+    background: var(--flap);
+}
+
+.stats-table td:first-child {
+    border-radius: 0.6rem 0 0 0.6rem;
+    color: var(--ink-soft);
+}
+
+.stats-table td:last-child {
+    border-radius: 0 0.6rem 0.6rem 0;
+    text-align: right;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+}
+
+#statsCloseBtn {
+    width: 100%;
+    height: 4.8rem;
+    margin-top: 1.4rem;
+    border: 0;
+    border-radius: 0.8rem;
+    background: var(--green);
+    color: var(--signal-ink);
+    font-size: var(--t-m);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#statsCloseBtn:active {
+    transform: translateY(0.15rem);
+}
+
+/* ── WuS-Logo als Herstellerschild (zugleich PIN-Ausloeser) ────────────── */
+
+.logo {
+    position: fixed;
+    right: 1.9rem;
+    bottom: 1.6rem;
+    z-index: 5;
+    width: 8.4rem;
+    height: auto;
+    padding: 0.55rem 0.8rem;
+    border-radius: 0.6rem;
+    background: var(--ink);
+    box-shadow: var(--shadow-flap), inset 0 -0.08rem 0 rgba(1, 14, 8, 0.25);
+    cursor: pointer;
+}
+
+/* ── Weniger Bewegung, wenn das System es verlangt ─────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+    }
+
+    .ticker__track {
+        animation: none;
+        transform: none;
+    }
 }

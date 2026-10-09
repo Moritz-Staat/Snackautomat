@@ -1,0 +1,126 @@
+{
+  "title": "Visuelle Welt für den Chris-O-Mat",
+  "question": "Gezogen wurde der Fallblatt-Zugzielanzeiger. Übernehmen, eine Alternative wählen oder neu würfeln.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Fallblatt-Zugzielanzeiger",
+      "kicker": "THE ROLL",
+      "lineage": "Fallblattanzeiger in deutschen Bahnhöfen, Zugzielanzeiger am Bahnsteig",
+      "thesis": "Der Automat ist die Abfahrtstafel: Jede Quizrunde ist ein Zug, der Wissen ansagt und Station für Station einfährt.",
+      "palette": ["#0B3D2A", "#062619", "#62B55A", "#CDE4C4", "#F2C230"],
+      "materials": ["mattierte Fallblätter mit Mittelspalt", "gebürstetes Gehäuse", "Rajdhani als Tafelschrift"],
+      "viewport": "Hochkant eine einzige Anzeigetafel: oben die Kopfzeile „Chris-O-Mat · Abfahrt“ mit Bahnhofsuhr, darunter drei Gleiszeilen (Gleis 1 Anfänger, 2 Fortgeschritten, 3 Profi) als riesige, antippbare Fallblattzeilen mit Ziel, Fragenzahl und Takt. Beim Antippen klappt die Zeile durch.",
+      "risk": "Wird zur Nostalgie-Kulisse, wenn die Fallblätter nur Dekoration sind; sie müssen Frage, Antworten und Ergebnis tatsächlich tragen. Das Klappen vieler Zeichen in 4K kostet Leistung, daher nur Überschriften und Zahlen auf Einzelzeichen-Ebene.",
+      "raised": [
+        { "from": "challenger-nixie", "raise": "Jede Zahl, die sich ändert (Fortschritt, Punkte, Countdown-Ende), ist ein sichtbares mechanisches Ereignis, kein stiller Austausch." },
+        { "from": "challenger-acetate", "raise": "Bewegung in mechanischen Schritten statt weichem Gleiten; wenige feste Schriftgrößen, Rang über Ebene statt über viele Größen." },
+        { "from": "challenger-decollage", "raise": "Beantwortete Fragen bleiben als Spur stehen: Das Linienband mit 10 Halten zeigt jede Station grün oder markiert." },
+        { "from": "challenger-sun", "raise": "Totale Farbverpflichtung: Die ganze Fläche ist Tafel-Dunkelgrün, keine weiße Webseite mit grünen Akzenten." },
+        { "from": "challenger-plankton", "raise": "Jede Berührung hinterlässt sofort eine sichtbare Antwort am Finger, die kurz nachklingt." },
+        { "from": "challenger-cracktro", "raise": "Alle Bewegungen laufen von einer gemeinsamen Taktuhr, keine verstreuten Einzelanimationen." }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Spurplan-Stelltisch",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Relaisstellwerk SpDrS60, Spurplan-Stelltisch mit Fahrstraßenausleuchtung",
+      "thesis": "Der Besucher stellt eine Fahrstraße: Jede richtige Antwort leuchtet ein weiteres Gleisstück aus, bis der Zug am Preis ankommt.",
+      "palette": ["#0B3D2A", "#51A175", "#62B55A", "#CDE4C4", "#F2C230"],
+      "materials": ["emaillierte Stelltischfelder", "eingelassene Gleislinien", "quadratische Tasten mit Gravur"],
+      "viewport": "Hochkant ein Stelltischausschnitt: Drei Gleise führen von unten nach oben zu drei Zielsignalen (Anfänger, Fortgeschritten, Profi); die Start-Tasten am Gleisanfang sind die Levelwahl.",
+      "risk": "Am vertrautesten für das Fachpublikum und genau deshalb die Richtung, auf die die meisten Läufe zusteuern würden; für Laufpublikum ohne Stellwerkserfahrung weniger sofort lesbar."
+    },
+    {
+      "id": "challenger-nixie",
+      "label": "Nixie-Zählwerk",
+      "verdict": "declined",
+      "lineage": "Labor-Zähler mit Nixie-Röhren",
+      "thesis": "Punkte und Countdown als glühende Ziffern in Glasröhren.",
+      "palette": ["#121212", "#FF7A1A", "#7A7A7A"],
+      "materials": ["Glasröhren", "geschwärzter Stahl"],
+      "viewport": "Ein Röhrenblock mit Punktestand über den Antworten.",
+      "case": "Stark für Zahlen, aber Orange auf Schwarz verlässt die grüne Markenwelt, und Bahnpublikum erkennt sich darin nicht wieder.",
+      "risk": "Wirkt wie Laborgerät, nicht wie Bahn.",
+      "kept": "Zahlenwechsel als sichtbares mechanisches Ereignis."
+    },
+    {
+      "id": "challenger-acetate",
+      "label": "Handbuch mit Acetat-Registern",
+      "verdict": "declined",
+      "lineage": "Software-Handbücher mit Registertabs",
+      "thesis": "Levels als farbige Registertabs, Fragen als Folienblätter.",
+      "palette": ["#E8A317", "#2E8B57", "#F4F1EA"],
+      "materials": ["Acetatfolie", "Registerkarton"],
+      "viewport": "Aufgeschlagenes Handbuch mit Tab-Leiste am Rand.",
+      "case": "Klare Struktur, aber ein Büro-Handbuch zieht auf der Messe keine Blicke, und die Palette sprengt die Markenfarben.",
+      "risk": "Zu leise für einen Blickfang.",
+      "kept": "Mechanische Schrittbewegung, wenige feste Schriftgrößen."
+    },
+    {
+      "id": "challenger-decollage",
+      "label": "Abgerissene Plakatwand",
+      "verdict": "declined",
+      "lineage": "Décollage, Pariser Plakatwände",
+      "thesis": "Jede Frage reißt eine Plakatschicht ab.",
+      "palette": ["#D9D2C5", "#8C8C8C", "#C23B22"],
+      "materials": ["Plakatpapier", "Kleister"],
+      "viewport": "Collage aus zerrissenen Plakaten mit der Frage obenauf.",
+      "case": "Lesbarkeit der Fragen leidet, und Rot-Grau widerspricht der Marke.",
+      "risk": "Chaotisch statt fachlich.",
+      "kept": "Beantwortetes bleibt als Spur sichtbar."
+    },
+    {
+      "id": "challenger-sun",
+      "label": "Halle mit Kunstsonne",
+      "verdict": "declined",
+      "lineage": "Installationskunst, Natriumdampflicht",
+      "thesis": "Alles in Bernstein getaucht, ein Horizont.",
+      "palette": ["#E8A33D", "#1A1A1A"],
+      "materials": ["Dunst", "Spiegeldecke"],
+      "viewport": "Halbsonne über einem Horizont, Text als Silhouetten.",
+      "case": "Atmosphärisch, aber ohne Bezug zu Bahn oder Quiz und farblich gegen die Marke.",
+      "risk": "Kunstinstallation statt Automat.",
+      "kept": "Totale Farbverpflichtung der Fläche."
+    },
+    {
+      "id": "challenger-plankton",
+      "label": "Leuchtplankton",
+      "verdict": "declined",
+      "lineage": "Biolumineszenz im Nachtmeer",
+      "thesis": "Berührungen ziehen leuchtende Spuren.",
+      "palette": ["#02060F", "#1E90FF", "#7FFFD4"],
+      "materials": ["Partikel", "Lichtspuren"],
+      "viewport": "Schwarze Fläche, Finger zieht blaue Spuren.",
+      "case": "Schöner Touch-Effekt, aber Blau auf Schwarz ohne Bahn- oder Markenbezug.",
+      "risk": "GPU-Partikel in 4K auf dem NUC riskant.",
+      "kept": "Sofortige sichtbare Antwort auf jede Berührung."
+    },
+    {
+      "id": "challenger-cracktro",
+      "label": "Demo-Szene-Titelbild",
+      "verdict": "declined",
+      "lineage": "Cracktro-Scroller der Heimcomputer",
+      "thesis": "Bitmap-Schrift über driftendem Sternenstaub.",
+      "palette": ["#000000", "#F0EAD6", "#FFB000"],
+      "materials": ["Bitmap-Schrift", "Staubfelder"],
+      "viewport": "Eine ruhende Textzeile vor driftenden Ebenen.",
+      "case": "Spricht Retro-Gamer an, nicht Bahntechnik; Bitmap-Schrift kollidiert mit Rajdhani.",
+      "risk": "Insider-Ästhetik.",
+      "kept": "Alle Bewegung von einer gemeinsamen Taktuhr."
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "code" },
+  "canon": true,
+  "canonCard": {
+    "label": "Der Kategorie-Standard",
+    "thesis": "Ein Messe-Quiz wie Kahoot: helle Fläche, große bunte Antwortkacheln, Fortschrittsbalken.",
+    "palette": ["#FFFFFF", "#62B55A", "#0B3D2A"],
+    "materials": ["flache Kacheln", "Icons"],
+    "viewport": "Logo oben, Frage groß, vier Antwortkacheln im Raster, Balken unten.",
+    "risk": "Austauschbar mit jedem anderen Messe-Quiz."
+  },
+  "steer": true
+}

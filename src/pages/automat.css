@@ -1,200 +1,319 @@
 @import './styles/base.css';
 
-.container, .quiz-options, .quiz-link, .quiz3container, .quiz2container, .quiz1container {
-    text-align: center;
+/* ── Tafel ─────────────────────────────────────────────────────────────── */
+
+.board {
+    position: fixed;
+    inset: 1.2rem;
 }
 
-.quiz-options {
-    margin-top: 1.25rem;
-}
-
-.quiz-link {
-    display: block;
-    margin: 6.25rem auto;
-}
-
-/* Body und HTML */
-html {
-    margin: 0;
-    padding: 0;
+.board__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr auto;
     height: 100%;
-    text-align: center;
+    padding: 2.2rem 2rem 1.6rem;
+    overflow: hidden;
 }
 
-body {
-    background: linear-gradient(to bottom, #62b55a, #2e9633, #054824);
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background-size: cover;
+.board__head {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
 }
 
+.board__title {
+    margin: 0;
+    /* Volle Innenbreite: 11 Blaetter a 0,81 em in 46 rem. Mehr laesst das
+       Hochformat nicht zu (ca. 6 % der Hoehe); der Name ist das groesste
+       Element der Tafel. */
+    font-size: 5.1rem;
+    letter-spacing: 0;
+}
+
+/* Uhr und Lauftext teilen sich ein Band; die Uhr haengt links hinein. */
+.board__callrow {
+    position: relative;
+    display: grid;
+    grid-template-columns: 9.6rem minmax(0, 1fr);
+    align-items: center;
+    gap: 1.2rem;
+    margin-top: 1.8rem;
+}
+
+.board__clock {
+    position: relative;
+    z-index: 1;
+    width: 9.6rem;
+    height: 9.6rem;
+}
+
+/* Bahnhofsuhr: Mint statt Weiss, Signalgelb statt Rot. */
+.station-clock {
+    display: block;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0.3rem 0.5rem rgba(0, 0, 0, 0.45));
+}
+
+.station-clock__face {
+    fill: var(--ink);
+    stroke: var(--housing-edge);
+    stroke-width: 2.4;
+}
+
+.station-clock__bar {
+    stroke: var(--housing);
+    stroke-width: 3.4;
+}
+
+.station-clock__tick {
+    stroke: var(--housing);
+    stroke-width: 1.2;
+}
+
+.station-clock__hand,
+.station-clock__second {
+    transform-origin: 50px 50px;
+    transform-box: view-box;
+}
+
+.station-clock__hour {
+    stroke: var(--housing);
+    stroke-width: 6;
+}
+
+.station-clock__minute {
+    stroke: var(--housing);
+    stroke-width: 4.2;
+}
+
+.station-clock__sec-line {
+    stroke: var(--signal);
+    stroke-width: 1.4;
+}
+
+.station-clock__disc,
+.station-clock__hub {
+    fill: var(--signal);
+}
+
+.station-clock__second {
+    animation: sweep 60s linear infinite;
+}
+
+@keyframes sweep {
+    0% { transform: rotate(0deg); }
+    97.5% { transform: rotate(360deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ── Lauftexte: Signalgelb auf Spaltgrund ──────────────────────────────── */
+
+.board__call,
+.board__prize {
+    display: flex;
+    align-items: center;
+    height: 4.8rem;
+    border-radius: 0.6rem;
+    background: var(--flap-gap);
+    box-shadow: inset 0 0.15rem 0.35rem rgba(0, 0, 0, 0.5);
+}
+
+.board__call h2,
+.board__prize h2 {
+    margin: 0;
+    font-size: var(--t-l);
+    font-weight: 700;
+    color: var(--signal);
+}
+
+.board__prize .ticker__track {
+    animation-duration: 18s;
+}
+
+/* ── Gleise: jede Zeile eine Tafelzeile ────────────────────────────────── */
+
+.tracks__legend {
+    display: grid;
+    grid-template-columns: 6.4rem 1fr auto;
+    gap: 1.4rem;
+    margin: 2.4rem 0 0.8rem;
+    padding: 0 1.4rem;
+    font-size: var(--t-s);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+}
+
+.tracks {
+    display: grid;
+    grid-auto-rows: 1fr;
+    gap: 0;
+    min-height: 0;
+    border-radius: 1.1rem;
+    background: var(--housing);
+    box-shadow: inset 0 0.08rem 0 rgba(205, 228, 196, 0.1), 0 0.4rem 1rem rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+}
+
+.track {
+    position: relative;
+    display: grid;
+    grid-template-columns: 6.4rem minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    align-content: center;
+    column-gap: 1.2rem;
+    row-gap: 1.1rem;
+    padding: 1.4rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 140ms;
+    animation: track-in 520ms var(--ease-out) both;
+    animation-delay: calc(var(--i) * 90ms + 120ms);
+}
+
+/* Fugen zwischen den Tafelzeilen statt schwebender Karten. */
+.track + .track {
+    box-shadow: inset 0 0.22rem 0 var(--flap-gap), inset 0 0.3rem 0 rgba(205, 228, 196, 0.06);
+}
+
+@keyframes track-in {
+    from { opacity: 0; transform: translateX(-3%); }
+}
+
+.track:active {
+    background-color: var(--housing-edge);
+}
+
+.track__no {
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    place-items: center;
+    width: 6.4rem;
+    height: 6.4rem;
+    border-radius: 0.8rem;
+    background: var(--signal);
+    color: var(--signal-ink);
+    font-size: 4.6rem;
+    font-weight: 700;
+    line-height: 1;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 45%, rgba(11, 61, 42, 0.12));
+    box-shadow: var(--shadow-flap);
+    transition: transform 120ms var(--ease-out);
+}
+
+.track:active .track__no {
+    transform: translateY(0.15rem) scale(0.97);
+}
+
+.track__name {
+    grid-column: 2 / -1;
+    /* 15 Blaetter (FORTGESCHRITTEN) ueber die ganze Zeilenbreite. */
+    font-size: 2.93rem;
+}
+
+.track__via {
+    grid-column: 2;
+    align-self: center;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--t-m);
+    font-weight: 500;
+    color: var(--ink-soft);
+}
+
+.track__via b {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+/* Die Lok ist das Zugart-Piktogramm der Zeile, wie ICE/RE an echten Tafeln. */
+.track__loco {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: center;
+    width: 6.4rem;
+    height: 6.4rem;
+    filter: drop-shadow(0 0.4rem 0.5rem rgba(0, 0, 0, 0.4));
+    transition: transform 420ms var(--ease-in), opacity 420ms var(--ease-in);
+}
+
+.track.is-departing .track__loco {
+    transform: translateX(44rem);
+    opacity: 0;
+}
+
+.track__takt {
+    grid-column: 3;
+    align-self: center;
+    font-size: var(--t-m);
+    font-weight: 600;
+    color: var(--ink-dim);
+    white-space: nowrap;
+}
+
+.track__takt b {
+    font-size: var(--t-l);
+    font-weight: 700;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Fuss: Fuellstandslampe und Preis-Lauftext ─────────────────────────── */
+
+.board__foot {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1.4rem;
+    margin-top: 1.8rem;
+    padding-right: 10.4rem;
+}
+
+.lamp {
+    display: grid;
+    place-items: center;
+    width: 4.8rem;
+    height: 4.8rem;
+    border-radius: 50%;
+    background: var(--flap-gap);
+    box-shadow: inset 0 0.2rem 0.4rem rgba(0, 0, 0, 0.5);
+}
+
+.lamp img {
+    width: 2.6rem;
+    height: 2.6rem;
+}
+
+.logo {
+    right: 3.2rem;
+    bottom: 2.95rem;
+    width: 9rem;
+}
+
+/* ── Bildschirmschoner ─────────────────────────────────────────────────── */
 
 #screensaver {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    inset: 0;
+    z-index: var(--z-overlay);
+    background: #000;
+    opacity: 1;
+    transition: opacity 600ms var(--ease-out), visibility 0s;
 }
 
 #screensaver.hidden {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 260ms var(--ease-in), visibility 0s 260ms;
 }
 
 #screensaverVideo {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.schriftunten {
-    font-size: 5rem;
-    color: white;
-    margin-top: clamp(2rem, 5vw, 12.5rem);
-    font-family: 'Roboto-Bold';
-    text-align: center;
-}
-
-/* Flexbox für TESTH-Bilder */
-.quiz-options {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
-}
-
-.quiz-link {
-    text-align: center;
-}
-
-.level3, .level2, .level1 {
-    position: relative;
-    width: clamp(15rem, 27vw, 35rem);
-    aspect-ratio: 7 / 15;
-    height: auto;
-    border: 0.1875rem solid #62b55a;
-    border-radius: 5rem;
-    transition: border-color 0.3s ease;
-    background-color: white;
-    margin-top: 6.25rem;
-}
-a.level1link, a.level2link, a.level3link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-
-/* Stylen unten rechts Logo */
-.logo {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 10rem;
-    height: 10rem;
-}
-
-.levelschriften {
-    font-size: 5rem;
-    font-family: 'Rajdhani-SemiBold';
-}
-
-#zählstand{
-    height: 20rem;
-    width: 20rem;
-}
-
-
-/* Überschrift stylen*/
-h1 {
-font-size: clamp(4rem, 12vw, 20rem);
-    color:white;
-    transform-origin: center;
-    display: inline-block;
-    font-family: 'Rajdhani-Bold';
-}
-
-h2 {
-    font-size: 5rem;
-    color: white;
-    display: inline-block;
-    transform-origin: center;
-    margin-top: -5vw;
-    font-family: 'Roboto-Bold';
-}
-h3{
-    color:black;
-    font-family: 'Rajdhani-SemiBold';
-}
-/* Heading pulse animation — used by script.js */
-@keyframes headingPulse {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(1.03); }
-    100% { transform: scale(1); }
-}
-.animate {
-    animation: headingPulse 2s ease-in-out;
-}
-
-/* Stats Modal */
-.stats-modal-content {
-    max-width: 44rem;
-    width: 90%;
-    padding: 2.5rem;
-}
-
-.stats-title {
-    font-size: 3rem;
-    margin: 0 0 1.5rem 0;
-    color: #054824;
-    font-family: 'Rajdhani-Bold';
-    text-align: center;
-    float: none;
-}
-
-.stats-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-}
-
-.stats-table td {
-    padding: 0.8rem 1rem;
-    border-bottom: 0.0625rem solid #e0e0e0;
-    text-align: left;
-}
-
-.stats-table td:last-child {
-    text-align: right;
-    font-weight: bold;
-    color: #054824;
-    min-width: 4rem;
-}
-
-.stats-table tr:last-child td {
-    border-bottom: none;
-}
-
-#statsCloseBtn {
-    width: 100%;
-    padding: 1.2rem;
-    font-size: 1.8rem;
-    background-color: #2e9633;
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-family: 'Rajdhani-Bold';
-}
-
-#statsCloseBtn:active {
-    background-color: #054824;
 }

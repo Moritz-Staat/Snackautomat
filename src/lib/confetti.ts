@@ -10,7 +10,8 @@ interface Particle {
   drift: number;
 }
 
-const COLORS = ['#62b55a', '#2e7d32', '#ffd700', '#ff6b35', '#4fc3f7', '#ffffff'] as const;
+/** Markenfarben der Tafel: Gruen, Mint, Signalgelb. */
+const COLORS = ['#62b55a', '#51a175', '#cde4c4', '#f2c230', '#9ad18b'] as const;
 const PARTICLE_COUNT = 130;
 const DURATION_MS = 4000;
 /** Ab diesem Anteil der Laufzeit blenden die Schnipsel aus. */
@@ -37,16 +38,18 @@ export function startConfetti(): void {
   canvas.height = Math.round(height * dpr);
   ctx.scale(dpr, dpr);
 
+  // Groessen sind fuer 1rem = 20px entworfen und wachsen mit der Tafel mit.
+  const unit = (Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 20) / 20;
   const particles: Particle[] = Array.from({ length: PARTICLE_COUNT }, () => ({
     x: Math.random() * width,
     y: Math.random() * height - height,
-    w: Math.random() * 12 + 6,
-    h: Math.random() * 6 + 4,
+    w: (Math.random() * 12 + 6) * unit,
+    h: (Math.random() * 6 + 4) * unit,
     color: COLORS[Math.floor(Math.random() * COLORS.length)] ?? COLORS[0],
-    speed: Math.random() * 3 + 2,
+    speed: (Math.random() * 3 + 2) * unit,
     angle: Math.random() * Math.PI * 2,
     spin: (Math.random() - 0.5) * 0.2,
-    drift: (Math.random() - 0.5) * 1.5,
+    drift: (Math.random() - 0.5) * 1.5 * unit,
   }));
 
   let start: number | null = null;

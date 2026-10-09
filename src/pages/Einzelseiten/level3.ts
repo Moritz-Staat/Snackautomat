@@ -1,3 +1,3 @@
 import { setupLevelPage } from '../../lib/level-page';
 
-setupLevelPage({ storageKey: 'level3win', prizeEndpoint: 'level3_gewinn' });
+setupLevelPage({ level: 'level3', storageKey: 'level3win', prizeEndpoint: 'level3_gewinn' });
